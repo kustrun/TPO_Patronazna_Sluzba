@@ -1,0 +1,21 @@
+{% extends "./base_register.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div>
+        <h2>Registracija</h2>
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            {{ pacientForm.as_p }}
+            {{ uporabniskiRacunForm.as_p }}
+            {% if match %}
+            <p>Gesli se ne ujemata.</p>
+            {% elif regex %}
+            <p>Geslo mora vsebovati vsaj en numerični in en črkovni znak.</p>
+            {% endif %}
+            <input id="send" type="submit" value="Registriraj"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

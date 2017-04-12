@@ -6,9 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
-
+from datetime import datetime
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Aktivnosti(models.Model):
     sifra = models.CharField(max_length=32)
@@ -25,6 +25,9 @@ class AuthGroup(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_group'
+
+    def __str__(self):
+        return self.name
 
 
 class AuthGroupPermissions(models.Model):
@@ -51,14 +54,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.BooleanField()
+    is_superuser = models.BooleanField(default=False)
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(blank=True, null=True, max_length=30)
+    last_name = models.CharField(blank=True, null=True, max_length=30)
     email = models.CharField(max_length=254)
-    is_staff = models.BooleanField()
-    is_active = models.BooleanField()
-    date_joined = models.DateTimeField()
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=datetime.now())
 
     class Meta:
         managed = False
@@ -97,7 +100,7 @@ class CrnaLista(models.Model):
     ip = models.TextField()  # This field type is a guess.
     poiskusi = models.IntegerField()
     datum_zaklepanja = models.DateField()
-    id_ur = models.ForeignKey('UporabnikiRaun', models.DO_NOTHING, db_column='id_ur')
+    id_ur = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='id_ur')
 
     class Meta:
         managed = False
@@ -194,6 +197,9 @@ class IzvajalecZd(models.Model):
         managed = False
         db_table = 'izvajalec_zd'
 
+    def __str__(self):
+        return self.šifra
+
 
 class KontaktnaOseba(models.Model):
     ime = models.CharField(max_length=64)
@@ -201,7 +207,9 @@ class KontaktnaOseba(models.Model):
     naslov = models.CharField(max_length=128)
     posta = models.ForeignKey('Posta', models.DO_NOTHING, db_column='posta')
     telefon = models.CharField(max_length=64)
-
+    razmerje = models.ForeignKey('SorodstvenaVez', models.DO_NOTHING, related_name='razmerje',
+                                         db_column='razmerje')
+    pacient = models.ForeignKey('Pacient', models.DO_NOTHING, db_column='pacient')
     class Meta:
         managed = False
         db_table = 'kontaktna_oseba'
@@ -278,22 +286,26 @@ class Okolis(models.Model):
         managed = False
         db_table = 'okolis'
 
+    def __str__(self):
+        return self.šifra
+
 
 class Osebje(models.Model):
+    id_racuna = models.OneToOneField(User, models.DO_NOTHING, db_column='id_racuna')
     šifra = models.CharField(unique=True, max_length=5)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
     telefon = models.CharField(max_length=32)
-    email = models.CharField(max_length=64, blank=True, null=True)
-    geslo = models.CharField(max_length=128, blank=True, null=True)
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
-    id_vloga = models.ForeignKey('VlogaOsebja', models.DO_NOTHING, db_column='id_vloga')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'osebje'
+
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
 
 
 class Oskrba(models.Model):
@@ -317,23 +329,28 @@ class OstaliPodatki(models.Model):
         db_table = 'ostali_podatki'
 
 
+
 class Pacient(models.Model):
-    id_racuna = models.ForeignKey('UporabnikiRaun', models.DO_NOTHING, db_column='id_racuna')
+    id_racuna = models.ForeignKey(User, models.DO_NOTHING, db_column='id_racuna')
     st_kartice = models.CharField(max_length=32)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
+    telefon = models.CharField(max_length=64)
     datum_rojstva = models.DateField()
     naslov = models.CharField(max_length=128)
     id_posta = models.ForeignKey('Posta', models.DO_NOTHING, db_column='id_posta')
     id_okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='id_okolis')
-    lastnik_racuna = models.IntegerField()
-    razmerje_kontakt = models.ForeignKey('SorodstvenaVez', models.DO_NOTHING, related_name='razmerje_kontakt', db_column='razmerje_kontakt', blank=True, null=True)
-    razmerje_ur = models.ForeignKey('SorodstvenaVez', models.DO_NOTHING, related_name='razmerje_ur', db_column='razmerje_ur', blank=True, null=True)
+    lastnik_racuna = models.BooleanField(default=False)
     spol = models.CharField(max_length=6)
+    razmerje_ur = models.ForeignKey('SorodstvenaVez', models.DO_NOTHING, related_name='razmerje_ur',
+                                 db_column='razmerje_ur')
 
     class Meta:
         managed = False
         db_table = 'pacient'
+
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
 
 
 class Posta(models.Model):
@@ -344,6 +361,9 @@ class Posta(models.Model):
         managed = False
         db_table = 'posta'
 
+    def __str__(self):
+        return str(self.st_poste)
+
 
 class SorodstvenaVez(models.Model):
     naziv = models.CharField(max_length=64)
@@ -351,6 +371,9 @@ class SorodstvenaVez(models.Model):
     class Meta:
         managed = False
         db_table = 'sorodstvena_vez'
+
+    def __str__(self):
+        return self.naziv
 
 
 class StatusDn(models.Model):
@@ -384,26 +407,6 @@ class TipObiska(models.Model):
         managed = False
         db_table = 'tip_obiska'
 
-
-class UporabnikiRaun(models.Model):
-    email = models.CharField(unique=True, max_length=64)
-    geslo = models.CharField(max_length=128)
-    telefon = models.CharField(max_length=64)
-    id_status = models.ForeignKey(StatusUr, models.DO_NOTHING, db_column='id_status', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'uporabniški_račun'
-
-
-class VlogaOsebja(models.Model):
-    naziv = models.CharField(unique=True, max_length=64)
-
-    class Meta:
-        managed = False
-        db_table = 'vloga_osebja'
-
-
 class VrstaObiska(models.Model):
     naziv = models.CharField(max_length=32, blank=True, null=True)
     tip = models.ForeignKey(TipObiska, models.DO_NOTHING, db_column='tip', blank=True, null=True)
@@ -411,6 +414,9 @@ class VrstaObiska(models.Model):
     class Meta:
         managed = False
         db_table = 'vrsta_obiska'
+
+    def __str__(self):
+        return self.naziv
 
 
 class VrstaPodatka(models.Model):
@@ -430,6 +436,9 @@ class VrstaStoritve(models.Model):
     class Meta:
         managed = False
         db_table = 'vrsta_storitve'
+
+    def __str__(self):
+        return self.naziv
 
 
 class Zdravila(models.Model):

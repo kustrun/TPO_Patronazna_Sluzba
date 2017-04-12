@@ -1,0 +1,22 @@
+{% extends "./base_register.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div>
+        <p>Na mail je bila poslana aktivacijska koda za vaš račun.<br>Če želite, lahko dodate še kontaktno osebo.</p>
+        <h2>Kontakt</h2>
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            {{ kontaktForm.as_p }}
+            <input name="dodaj" id="send" type="submit" value="Dodaj"/>
+
+        </form>
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <input name="preklici" type = "submit" value="Prekliči"/>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+

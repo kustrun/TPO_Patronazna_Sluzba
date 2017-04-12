@@ -1,0 +1,86 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-3">
+        <h2>Filtri</h2>
+        <form method="POST">
+            {% csrf_token %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>Izdajatelj</label>
+                <input type="text" name="izdajatelj">
+            </li>
+            <li class="list-group-item">
+                <label>Patronažna sestra</label>
+                <input type="text" name="sestra">
+            </li>
+            <li class="list-group-item">
+                <label>Nadomestna sestra</label>
+                <input type="text" name="nadomestnaSestra">
+            </li>
+            <li class="list-group-item">
+                <label>Pacient</label>
+                <input type="text" name="pacient">
+            </li>
+            <li class="list-group-item">
+                <label>Od</label>
+                <input type="date" name="od">
+            </li>
+            <li class="list-group-item">
+                <label>Do</label>
+                <input type="date" name="do">
+            </li>
+            <li class="list-group-item">
+                <label>Vrsta</label>
+                <select name = "vrsta">
+                    <option value="">---------</option>
+                    {% for obisk in obiski %}
+                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+
+        </ul>
+            <input type="submit" value="Filtriraj">
+        </form>
+    </div>
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th><a href="?order=id_osebje.priimek">Izdajatelj</a></th>
+                    <th><a href="?order=id_vrsta">Vrsta obiska</a></th>
+                    <th><a href="?order=vrsta_storitve">Medicinska sestra</a></th>
+                    <th><a href="?order=vrsta_storitve">Nadomestna sestra</a></th>
+                    <th><a href="?order=vrsta_storitve">Pacient</a></th>
+                    <th>Podrobnosti</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in delavniNalogi %}
+                <tr>
+                    <th>{{ d.id_osebje }}</th>
+                    <th>{{ d.id_vrsta }}</th>
+                    <th>sestra</th>
+                    <th>sestra</th>
+                    <th>pacient</th>
+                    <th><a href="{% url 'delovni_nalog_podrobnosti' id=d.id %}">Podrobnosti</a></th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <ul class="pagination">
+        {% if delavniNalogi.has_previous %}
+        <li><a href="?page={{ delavniNalogi.previous_page_number }}">«</a></li>
+        {% endif %}
+        <li><a class="active" href="&">{{ delavniNalogi.number }}</a></li>
+        {% if delavniNalogi.has_next %}
+        <li><a href="?page={{ delavniNalogi.next_page_number }}">»</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

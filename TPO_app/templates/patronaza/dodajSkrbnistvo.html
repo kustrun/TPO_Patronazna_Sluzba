@@ -1,0 +1,10 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+    <h2>Podatki o osebi</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ skrbnistvoForm.as_p }}
+        <input type="submit" value="Dodaj">
+    </form>
+{% endblock %}
