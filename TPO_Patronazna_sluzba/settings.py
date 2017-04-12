@@ -105,6 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Custom authentication backend for email authentication
+
+AUTHENTICATION_BACKENDS = ['TPO_app.auth.EmailBackend']
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

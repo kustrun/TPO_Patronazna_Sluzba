@@ -1,0 +1,16 @@
+{% extends "TPO_app/base.html" %}
+
+{% block content %}
+<div>
+	<form method='POST' action='#'>
+		{% csrf_token %}
+		{{ loginForm.as_table }}
+		<input type="submit" value="Login" />
+	</form>
+	<div class="error_message">
+		<p>
+			{{ errorMessage|linebreaksbr }}
+		</p>
+	</div>
+</div>
+{% endblock %}
