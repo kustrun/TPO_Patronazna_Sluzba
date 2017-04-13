@@ -188,7 +188,7 @@ class Injekcije(models.Model):
 
 
 class IzvajalecZd(models.Model):
-    šifra = models.CharField(unique=True, max_length=5)
+    sifra = models.CharField(unique=True, max_length=5)
     naziv = models.CharField(max_length=64)
     naslov = models.CharField(max_length=64)
     posta = models.ForeignKey('Posta', models.DO_NOTHING, db_column='posta', blank=True, null=True)
@@ -198,7 +198,7 @@ class IzvajalecZd(models.Model):
         db_table = 'izvajalec_zd'
 
     def __str__(self):
-        return self.šifra
+        return self.sifra
 
 
 class KontaktnaOseba(models.Model):
@@ -279,7 +279,7 @@ class OdvzemKrvi(models.Model):
 
 
 class Okolis(models.Model):
-    šifra = models.CharField(max_length=32)
+    sifra = models.CharField(max_length=32)
     naziv = models.CharField(max_length=64)
 
     class Meta:
@@ -287,12 +287,12 @@ class Okolis(models.Model):
         db_table = 'okolis'
 
     def __str__(self):
-        return self.šifra
+        return self.sifra
 
 
 class Osebje(models.Model):
     id_racuna = models.OneToOneField(User, models.DO_NOTHING, db_column='id_racuna')
-    šifra = models.CharField(unique=True, max_length=5)
+    sifra = models.CharField(unique=True, max_length=5)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
     telefon = models.CharField(max_length=32, blank=True, null=True)

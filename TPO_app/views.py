@@ -134,7 +134,7 @@ def delovniNalog(request, delovniNalogId=0):
         odvzemKrviDB = OdvzemKrvi.objects.filter(id_obisk=obiskDB)
         pacientiDB = Oskrba.objects.filter(id_dn=delovniNalogDB)
 
-        osebje.fields["sifra"].initial = osebjeDB.šifra
+        osebje.fields["sifra"].initial = osebjeDB.sifra
         osebje.fields["ime"].initial = osebjeDB.ime
         osebje.fields["priimek"].initial = osebjeDB.priimek
 
@@ -190,7 +190,7 @@ def delovniNalog(request, delovniNalogId=0):
 
             #SHRANI DELOVNI NALOG
             dn = delovniNalog.save(commit=False)
-            dn.id_osebje = Osebje.objects.get(šifra=osebje.data['sifra'], ime=osebje.data['ime'], priimek=osebje.data['priimek'])
+            dn.id_osebje = Osebje.objects.get(sifra=osebje.data['sifra'], ime=osebje.data['ime'], priimek=osebje.data['priimek'])
             dn.id_vrsta = VrstaObiska.objects.get(naziv=vrstaObiska.data['vrstaObiska'], tip=TipObiska.objects.get(tip=tipObiska.data['tip']))
             dn.vrsta_storitve=VrstaStoritve.objects.get(naziv="obisk") #zakaj se uporablja to polje?
             dn.status_dn=StatusDn.objects.get(naziv="aktiven")
@@ -398,7 +398,7 @@ def registracija(request):
             instance = pform.save(commit=False)
             instance.id_racuna = u
             instance.lastnik_racuna = True
-            instance.id_okolis = Okolis.objects.get(šifra=str(instance.id_posta.st_poste))
+            instance.id_okolis = Okolis.objects.get(sifra=str(instance.id_posta.st_poste))
             instance.save()
 
             g = Group.objects.get(name='Pacient')
@@ -464,7 +464,7 @@ def dodaj_skrbnistvo(request):
             instance = sform.save(commit=False)
             instance.id_racuna = request.user
             instance.lastnik_racuna = False
-            instance.id_okolis = Okolis.objects.get(šifra=str(instance.id_posta.st_poste))
+            instance.id_okolis = Okolis.objects.get(sifra=str(instance.id_posta.st_poste))
             instance.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
     return render(request, 'patronaza/dodajSkrbnistvo.html', context)
@@ -517,13 +517,13 @@ def izpisi_delavne_naloge(request):
         do = request.POST.get('do',False)
         vrsta = request.POST.get('vrsta',False)
         if(izdajatelj):
-            dn_list = dn_list.filter(id_dn__id_osebje__šifra=izdajatelj)
+            dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if(pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
         if(sestra):
-            dodeljeno = dodeljeno.filter(id_osebja__šifra=sestra)
+            dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra)
         if(nadomestnaSestra):
-            dodeljeno = dodeljeno.filter(id_osebja__šifra=nadomestnaSestra)
+            dodeljeno = dodeljeno.filter(id_osebja__sifra=nadomestnaSestra)
         if(od and do):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od,do))
         if(vrsta):
