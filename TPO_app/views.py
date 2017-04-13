@@ -508,6 +508,11 @@ def izpisi_delavne_naloge(request):
     context['oseba'] = oseba
     obiski = VrstaObiska.objects.all()
     dn_list = Oskrba.objects.all()
+    if(request.user.groups.all()[0].name == 'Patronažna sestra'):
+        obiski = obiski.filter(id_osebja=oseba)
+    elif(request.user.groups.all()[0].name != 'Patronažna sestra'):
+        dn_list = dn_list.filter(id_dn__id_osebje=oseba)
+        print(oseba)
     dodeljeno = DodeljenoOsebje.objects.all()
     context['obiski'] = obiski
     if request.method == 'POST':
@@ -523,9 +528,9 @@ def izpisi_delavne_naloge(request):
         if(pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
         if(sestra):
-            dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra)
+            dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra).filter(je_zadolzena=0)
         if(nadomestnaSestra):
-            dodeljeno = dodeljeno.filter(id_osebja__sifra=nadomestnaSestra)
+            dodeljeno = dodeljeno.filter(id_osebja__sifra=nadomestnaSestra).filter(je_zadolzena=1)
         if(od and do):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od,do))
         if(vrsta):
@@ -537,7 +542,7 @@ def izpisi_delavne_naloge(request):
         elif(dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn).exists()):
             hash[d] = [dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,'/']
 
-    
+
     context['delavniNalogi'] = dn_list
     context['hash'] = hash
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
