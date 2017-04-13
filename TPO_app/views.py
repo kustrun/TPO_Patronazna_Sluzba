@@ -12,6 +12,7 @@ def index(request):
 def login(request):
 	context = {'loginForm':LoginForm(), 'message':""}
 	ip = request.META.get('REMOTE_ADDR')
+	message = ""
 	
 	if request.method=='POST':
 		if BlackListBackend().login_allowed(ip=ip):
@@ -23,15 +24,18 @@ def login(request):
 					BlackListBackend().add_ip_to_user(user=user, ip=ip)
 					return HttpResponse("Hello, " + user.email)
 				else:
-					message = "Napacen email in/ali geslo"
-					ip_user = BlackListBackend().failed_login(ip=ip)
+					message = "Napacen email in/ali geslo."
+					BlackListBackend().failed_login(ip=ip)
 					form = LoginForm()
+			else:
+				message = "Napacen vnos podatkov."
+				BlackListBackend().failed_login(ip=ip)
+				form = LoginForm()
 		else:
 			form = LoginForm()
 			message = "Blokirani ste zaradi 3x zapored napacno vnesenih podatkov.\nPreostali cas: " + BlackListBackend().lockup_to_string(ip=ip)
 	else:
 		form = LoginForm()
-		message = ""
 		
 	context['loginForm'] = form
 	context['message'] = message

@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 
 class LoginForm(forms.Form):
-	email = forms.CharField(label=_('Email'), max_length=64, localize=True)
+	email = forms.EmailField(label=_('Email'), max_length=64, localize=True)
 	geslo = forms.CharField(label=_('Geslo'), max_length=128, widget=forms.PasswordInput, localize=True)
 	
 class PasswordChangeForm(forms.Form):
