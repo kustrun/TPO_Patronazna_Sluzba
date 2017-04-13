@@ -410,7 +410,7 @@ def registracija(request):
             ciphertext = hashids.encode(u.id)
             time = datetime.datetime.now().time()
             date = datetime.datetime.now().date()
-            sendString = "http://localhost:8000/patronaza/aktivacija/" + ciphertext + "/" + str(date)+"*"+str(time)
+            sendString = "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ciphertext + "/" + str(date)+"*"+str(time)
             posli_email(sendString,str(u.email))
             return HttpResponseRedirect(reverse('kontakt',kwargs={'id':instance.id}))
         else:
@@ -479,7 +479,7 @@ def aktivacija(request,ur_id,date):
     if request.method == 'POST':
         time = datetime.datetime.now().time()
         date = datetime.datetime.now().date()
-        sendString = "http://localhost:8000/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
+        sendString = "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
         posli_email(sendString, str('testko.test2@gmail.com'))
         return HttpResponseRedirect(reverse('login'))
     (d,t) = date.split("*")
