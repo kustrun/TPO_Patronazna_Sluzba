@@ -1,0 +1,16 @@
+{% extends "TPO_app/base.html" %}
+
+{% block content %}
+	<form method="post" autocomplete="on" id="login_form" enctype='multipart/form-data'>
+		<fieldset >
+			<legend >Dodajanje osebja</legend>
+			{% csrf_token %}
+			{{ uForm.as_table }}			
+			{{ oForm.as_table }}
+			{% if regex %}
+			<p>Geslo mora vsebovati vsaj en numeričen in en črkovni znak</p>
+			{% endif %}
+			<input type="Submit" name="Potrdi registracijo" >
+		</fieldset>
+	</form>
+{% endblock %}

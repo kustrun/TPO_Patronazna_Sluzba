@@ -304,9 +304,6 @@ class Osebje(models.Model):
         managed = False
         db_table = 'osebje'
 
-    def __str__(self):
-        return self.ime + ' ' + self.priimek
-
 
 class Oskrba(models.Model):
     id_dn = models.ForeignKey(DelovniNalog, models.DO_NOTHING, db_column='id_dn')
@@ -329,7 +326,6 @@ class OstaliPodatki(models.Model):
         db_table = 'ostali_podatki'
 
 
-
 class Pacient(models.Model):
     id_racuna = models.ForeignKey(User, models.DO_NOTHING, db_column='id_racuna')
     st_kartice = models.CharField(max_length=32)
@@ -348,9 +344,6 @@ class Pacient(models.Model):
     class Meta:
         managed = False
         db_table = 'pacient'
-
-    def __str__(self):
-        return self.ime + ' ' + self.priimek
 
 
 class Posta(models.Model):
@@ -415,9 +408,6 @@ class VrstaObiska(models.Model):
         managed = False
         db_table = 'vrsta_obiska'
 
-    def __str__(self):
-        return self.naziv
-
 
 class VrstaPodatka(models.Model):
     naziv = models.CharField(max_length=64)
@@ -436,9 +426,6 @@ class VrstaStoritve(models.Model):
     class Meta:
         managed = False
         db_table = 'vrsta_storitve'
-
-    def __str__(self):
-        return self.naziv
 
 
 class Zdravila(models.Model):
