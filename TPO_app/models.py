@@ -295,7 +295,7 @@ class Osebje(models.Model):
     šifra = models.CharField(unique=True, max_length=5)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
-    telefon = models.CharField(max_length=32)
+    telefon = models.CharField(max_length=32, blank=True, null=True)
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)

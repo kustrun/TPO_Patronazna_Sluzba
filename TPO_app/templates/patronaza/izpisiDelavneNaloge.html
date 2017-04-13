@@ -9,15 +9,15 @@
         <ul class="list-group">
             <li class="list-group-item">
                 <label>Izdajatelj</label>
-                <input type="text" name="izdajatelj">
+                <input type="text" name="izdajatelj" value = {% if request.user.groups.all.0.name == 'Zdravnik' or request.user.groups.all.0.name == 'Vodja patronaže' %}{{ oseba.šifra }} {% endif %} >
             </li>
             <li class="list-group-item">
                 <label>Patronažna sestra</label>
-                <input type="text" name="sestra">
+                <input type="text" name="sestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ osebje.šifra }} {% endif %}>
             </li>
             <li class="list-group-item">
                 <label>Nadomestna sestra</label>
-                <input type="text" name="nadomestnaSestra">
+                <input type="text" name="nadomestnaSestra" value="{% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ osebje.šifra }} {% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>
@@ -49,23 +49,24 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th><a href="?order=id_osebje.priimek">Izdajatelj</a></th>
-                    <th><a href="?order=id_vrsta">Vrsta obiska</a></th>
-                    <th><a href="?order=vrsta_storitve">Medicinska sestra</a></th>
-                    <th><a href="?order=vrsta_storitve">Nadomestna sestra</a></th>
-                    <th><a href="?order=vrsta_storitve">Pacient</a></th>
+                    <th>Izdajatelj</th>
+                    <th>Vrsta obiska</th>
+                    <th>Medicinska sestra</th>
+                    <th>Nadomestna sestra</th>
+                    <th>Pacient</th>
                     <th>Podrobnosti</th>
                 </tr>
             </thead>
             <tbody>
-            {% for d in delavniNalogi %}
+            {% for o,values in hash.items %}
                 <tr>
-                    <th>{{ d.id_osebje }}</th>
-                    <th>{{ d.id_vrsta }}</th>
-                    <th>sestra</th>
-                    <th>sestra</th>
-                    <th>pacient</th>
-                    <th><a href="{% url 'delovni_nalog_podrobnosti' id=d.id %}">Podrobnosti</a></th>
+                    <th>{{ o.id_dn.id_osebje }}</th>
+                    <th>{{ o.id_dn.id_vrsta }}</th>
+                    {% for v in values %}
+                    <th>{{ v }}</th>
+                    {% endfor %}
+                    <th>{{ o.id_pacient }}</th>
+                    <th><a href="{% url 'delovni_nalog_podrobnosti' id=o.id_dn.id %}">Podrobnosti</a></th>
                 </tr>
             {% endfor %}
             </tbody>

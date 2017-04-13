@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
 from .forms import *
 from .models import *
+from django.db.models import Q,Count
 from django.contrib.auth.models import User,Group
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -23,6 +24,29 @@ def posli_email(sendString,email):
         [email],
         fail_silently=False,
     )
+
+class BasePacientaFormSet(BaseFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+
+        pacienti = []
+        duplicates = False
+
+        for form in self.forms:
+            if form.cleaned_data:
+                pacient = form.cleaned_data['ime']
+
+                if pacient in pacienti:
+                    duplicates = True
+
+                pacienti.append(pacient)
+
+                if duplicates:
+                    raise forms.ValidationError(
+                        'Podvojena vnosa pacienta: %(pacient)s.',
+                        params={'pacient': pacient},
+                    )
 
 class BaseZdravilaFormSet(BaseFormSet):
     def clean(self):
@@ -46,6 +70,7 @@ class BaseZdravilaFormSet(BaseFormSet):
                         'Podvojena vnosa zdravila: %(zdravilo)s.',
                         params={'zdravilo': zdravilo},
                     )
+
 
 class BaseBarvaEpruvetFormSet(BaseFormSet):
     def clean(self):
@@ -71,23 +96,82 @@ class BaseBarvaEpruvetFormSet(BaseFormSet):
                     )
 
 @login_required
-def delovniNalog(request):
+def delovniNalog(request, delovniNalogId=0):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-    else:
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
-    osebje = DelovniNalogOsebjeForm(initial={'sifra': 12345, 'ime': 'Domen', 'priimek': 'Balantič'})
-    vrstaObiska = DelovniNalogVrstaObiskaForm()
+    else:
+        ime = request.user.username
+    osebje = DelovniNalogOsebjeForm()
+    osebje.fields["sifra"].initial = 12345
+    osebje.fields["ime"].initial = 'Domen'
+    osebje.fields["priimek"].initial = 'Balantič'
+
     tipObiska = DelovniNalogTipObiskaForm()
+    vrstaObiska = DelovniNalogVrstaObiskaForm()
     delovniNalog = DelovniNalogForm()
 
     # Create the formset, specifying the form and formset we want to use.
+    IzberiPacientaFormSet = formset_factory(DelovniNalogPacientForm, formset=BasePacientaFormSet)
+    izberiPacientaFormSet = IzberiPacientaFormSet(prefix='izberiPacienta')
+
     ZdravilaFormSet = formset_factory(DelovniNalogZdravilaForm, formset=BaseZdravilaFormSet)
     zdravilaFormSet = ZdravilaFormSet(prefix='zdravila')
 
     BarvaEpruvetFormSet = formset_factory(DelovniNalogBarvaEpruveteForm, formset=BaseBarvaEpruvetFormSet)
     barvaEpruvetFormSet = BarvaEpruvetFormSet(prefix='barva')
+
+    if delovniNalogId != 0:
+        delovniNalogDB = DelovniNalog.objects.get(id=delovniNalogId)
+        obiskDB = Obisk.objects.filter(id_dn=delovniNalogDB)[0]
+        dodeljenoOsebjeDB = DodeljenoOsebje.objects.get(id_obisk=obiskDB)
+        osebjeDB = dodeljenoOsebjeDB.id_osebja
+        vrstaObiskaDB = delovniNalogDB.id_vrsta
+        tipObiskaDB = vrstaObiskaDB.tip
+        injekcijeDB = Injekcije.objects.filter(id_obisk=obiskDB)
+        odvzemKrviDB = OdvzemKrvi.objects.filter(id_obisk=obiskDB)
+        pacientiDB = Oskrba.objects.filter(id_dn=delovniNalogDB)
+
+        osebje.fields["sifra"].initial = osebjeDB.šifra
+        osebje.fields["ime"].initial = osebjeDB.ime
+        osebje.fields["priimek"].initial = osebjeDB.priimek
+
+        delovniNalog.fields["datum_prvega_obiska"].initial = delovniNalogDB.datum_prvega_obiska
+        delovniNalog.fields["tip_prvega_obiska"].initial = 'obvezen'
+        delovniNalog.fields["st_obiskov"].initial = delovniNalogDB.st_obiskov
+        delovniNalog.fields["cas_med_dvema"].initial = delovniNalogDB.cas_med_dvema
+        delovniNalog.fields["casovno_obdobje"].initial = delovniNalogDB.casovno_obdobje
+
+        tipObiska.fields["tip"].initial = tipObiskaDB.tip
+
+        vrstaObiska.fields["vrstaObiska"].initial = vrstaObiskaDB.naziv
+
+        pacientiLen = len(pacientiDB)
+        IzberiPacientaFormSet = formset_factory(DelovniNalogPacientForm, formset=BasePacientaFormSet, extra=pacientiLen)
+        izberiPacientaFormSet = IzberiPacientaFormSet(prefix='izberiPacienta')
+
+        for i in range(0, pacientiLen):
+            izberiPacientaFormSet[i].fields["ime"].initial = pacientiDB[i].id_pacient.st_kartice + ": " + pacientiDB[i].id_pacient.ime + " " + pacientiDB[i].id_pacient.priimek
+
+        injekcijeLen = len(injekcijeDB)
+        ZdravilaFormSet = formset_factory(DelovniNalogZdravilaForm, formset=BaseZdravilaFormSet, extra=injekcijeLen)
+        zdravilaFormSet = ZdravilaFormSet(prefix='zdravila')
+
+        for i in range(0, injekcijeLen):
+            zdravilaFormSet[i].fields["naziv"].initial = injekcijeDB[i].id_zdravilo.naziv
+            zdravilaFormSet[i].fields["st_injekcij"].initial = injekcijeDB[i].st_injekcij
+
+        odvzemKrviLen = len(odvzemKrviDB)
+        BarvaEpruvetFormSet = formset_factory(DelovniNalogBarvaEpruveteForm, formset=BaseBarvaEpruvetFormSet, extra=odvzemKrviLen)
+        barvaEpruvetFormSet = BarvaEpruvetFormSet(prefix='barva')
+
+        for i in range(0, odvzemKrviLen):
+            barvaEpruvetFormSet[i].fields["barva"].initial = odvzemKrviDB[i].barva.barva
+            barvaEpruvetFormSet[i].fields["st_epruvet"].initial = odvzemKrviDB[i].st_epruvet
+
+
 
 
     # if this is a POST request we need to process the form data
@@ -97,20 +181,33 @@ def delovniNalog(request):
         tipObiska = DelovniNalogTipObiskaForm(request.POST)
         vrstaObiska = DelovniNalogVrstaObiskaForm(request.POST)
         delovniNalog = DelovniNalogForm(request.POST)
+        izberiPacientaFormSet = IzberiPacientaFormSet(request.POST, prefix='izberiPacienta')
         zdravilaFormSet =  ZdravilaFormSet(request.POST, prefix='zdravila')
         barvaEpruvetFormSet = BarvaEpruvetFormSet(request.POST, prefix='barva')
 
         # check whether it's valid:
-        if osebje.is_valid() and tipObiska.is_valid() and vrstaObiska.is_valid() and delovniNalog.is_valid() and zdravilaFormSet.is_valid() and barvaEpruvetFormSet.is_valid():
+        if osebje.is_valid() and tipObiska.is_valid() and vrstaObiska.is_valid() and delovniNalog.is_valid() and izberiPacientaFormSet.is_valid():
 
             #SHRANI DELOVNI NALOG
             dn = delovniNalog.save(commit=False)
             dn.id_osebje = Osebje.objects.get(šifra=osebje.data['sifra'], ime=osebje.data['ime'], priimek=osebje.data['priimek'])
-            dn.id_vrsta = VrstaObiska.objects.get(id=vrstaObiska.data['vrstaObiska'], tip=TipObiska.objects.get(id=tipObiska.data['tip']))
+            dn.id_vrsta = VrstaObiska.objects.get(naziv=vrstaObiska.data['vrstaObiska'], tip=TipObiska.objects.get(tip=tipObiska.data['tip']))
             dn.vrsta_storitve=VrstaStoritve.objects.get(naziv="obisk") #zakaj se uporablja to polje?
             dn.status_dn=StatusDn.objects.get(naziv="aktiven")
 
             dn.save()
+
+            #SHRANI OSKRBO PACIENTA
+            for pacient in izberiPacientaFormSet:
+                print(pacient.cleaned_data.get('ime'))
+                pacientSplit = str(pacient.cleaned_data.get('ime')).split(":")
+
+                os = Oskrba(
+                    id_dn=dn,
+                    id_pacient = Pacient.objects.get(st_kartice=pacientSplit[0])
+                )
+
+                os.save()
 
             #USTVARI USTREZNE OBISKE
             datum = dn.datum_prvega_obiska
@@ -151,24 +248,28 @@ def delovniNalog(request):
                     datum = datum + timedelta(days=1)
 
                 # SHRANI APLIKACIJO INJEKCIJ
-                for zdravila in zdravilaFormSet:
-                    ij = Injekcije(
-                        id_obisk=ob,
-                        id_zdravilo = Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')),
-                        st_injekcij = int(zdravila.cleaned_data.get('st_injekcij'))
-                    )
+                if zdravilaFormSet.is_valid():
+                    for zdravila in zdravilaFormSet:
+                        print(zdravila.cleaned_data.get('naziv'))
+                        print(Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')))
+                        ij = Injekcije(
+                            id_obisk=ob,
+                            id_zdravilo = Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')),
+                            st_injekcij = int(zdravila.cleaned_data.get('st_injekcij'))
+                        )
 
-                    ij.save()
+                        ij.save()
 
                 # SHRANI ODVZEM KRVI
-                for barva in barvaEpruvetFormSet:
-                    ok = OdvzemKrvi(
-                        id_obisk=ob,
-                        barva = BarvaEpruvete.objects.get(barva=barva.cleaned_data.get('barva')),
-                        st_epruvet = int(barva.cleaned_data.get('st_epruvet'))
-                    )
+                if barvaEpruvetFormSet.is_valid():
+                    for barva in barvaEpruvetFormSet:
+                        ok = OdvzemKrvi(
+                            id_obisk=ob,
+                            barva = BarvaEpruvete.objects.get(barva=barva.cleaned_data.get('barva')),
+                            st_epruvet = int(barva.cleaned_data.get('st_epruvet'))
+                        )
 
-                    ok.save()
+                        ok.save()
 
 
             return HttpResponseRedirect('/')
@@ -179,10 +280,11 @@ def delovniNalog(request):
         'osebje': osebje,
         'tipObiska': tipObiska,
         'vrstaObiska': vrstaObiska,
+        'izberiPacientaFormSet': izberiPacientaFormSet,
         'delovniNalog': delovniNalog,
         'zdravilaFormSet': zdravilaFormSet,
         'barvaEpruvetFormSet': barvaEpruvetFormSet,
-        'ime': ime,
+        'ime': ime
         }
       )
 
@@ -193,8 +295,10 @@ def index(request):
     ime = ''
     if(Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-    else:
+    elif(Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna = True)[0]
+    else:
+        ime = request.user.username
     context['ime'] = ime
     return render(request, 'patronaza/index.html', context)
 
@@ -234,7 +338,7 @@ def logout(request):
     auth_logout(request)
     return HttpResponseRedirect(reverse('login'))
 
-
+@login_required
 def change_password(request):
     context = {'passwordChangeForm': PasswordChangeForm()}
 
@@ -248,7 +352,7 @@ def change_password(request):
             if user is not None:
                 return HttpResponse("Password successfully changed")
             else:
-                return HttpResponse("Error with authentication")
+                return HttpResponseRedirect(reverse('login'))
     else:
         form = PasswordChangeForm()
 
@@ -256,22 +360,35 @@ def change_password(request):
     return render(request, 'patronaza/change_password.html', context)
 
 def registracija(request):
-    context = {'uporabniskiRacunForm' : UporabniskiRacunForm(),'pacientForm' : PacientForm(),'regex' : False, 'match' : False}
+    context = {'uporabniskiRacunForm' : UporabniskiRacunForm(),'pacientForm' : PacientForm(),'regex' : False, 'match' : False, 'telefon':False,'date':False}
     if request.method == 'POST':
         uform = UporabniskiRacunForm(request.POST)
         pform = PacientForm(request.POST)
-        print(uform.errors,pform.errors)
         if uform.is_valid() and pform.is_valid():
+            if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists()):
+                context['kartica'] = True
+                return render(request, 'patronaza/registracija.html', context)
+            elif (User.objects.filter(email=uform.cleaned_data['email']).exists()):
+                context['email'] = True
+                return render(request, 'patronaza/registracija.html', context)
+            if(not pform.date_valid()):
+                context['uporabniskiRacunForm'] = uform
+                context['pacientForm'] = pform
+                context['date'] = True
+                return render(request, 'patronaza/registracija.html', context)
+            if(not pform.telefon_regex()):
+                context['uporabniskiRacunForm'] = uform
+                context['pacientForm'] = pform
+                context['telefon'] = True
+                return render(request,'patronaza/registracija.html',context)
             if(not uform.password_regex()):
                 context['uporabniskiRacunForm'] = uform
                 context['pacientForm'] = pform
-                context['kontaktForm'] = KontaktForm(prefix='kontakt')
                 context['regex'] = True
                 return render(request, 'patronaza/registracija.html', context)
             if(not uform.password_match()):
                 context['uporabniskiRacunForm'] = uform
                 context['pacientForm'] = pform
-                context['kontaktForm'] = KontaktForm(prefix='kontakt')
                 context['match'] = True
                 return render(request, 'patronaza/registracija.html', context)
             u = User.objects.create_user(username=uform.cleaned_data['email'], password=uform.cleaned_data['password'], email=uform.cleaned_data['email'],
@@ -281,7 +398,7 @@ def registracija(request):
             instance = pform.save(commit=False)
             instance.id_racuna = u
             instance.lastnik_racuna = True
-            instance.id_okolis = Okolis.objects.get(pk=1)
+            instance.id_okolis = Okolis.objects.get(šifra=str(instance.id_posta.st_poste))
             instance.save()
 
             g = Group.objects.get(name='Pacient')
@@ -294,6 +411,8 @@ def registracija(request):
             sendString = "http://localhost:8000/patronaza/aktivacija/" + ciphertext + "/" + str(date)+"*"+str(time)
             posli_email(sendString,str(u.email))
             return HttpResponseRedirect(reverse('kontakt',kwargs={'id':instance.id}))
+        else:
+            print("Napaka")
     return render(request, 'patronaza/registracija.html', context)
 
 def kontakt(request,id):
@@ -318,22 +437,34 @@ def pregled_skrbnistev(request):
     result = Pacient.objects.filter(id_racuna=ur).filter(lastnik_racuna = False)
     pacijenti = []
     for r in result:
+        r.datum_rojstva = r.datum_rojstva.strftime('%d.%m.%Y')
         pacijenti.append(SkrbnistvoForm(instance=r))
     context['pacijenti'] = pacijenti
     return render(request, 'patronaza/pregled.html', context)
 
 @login_required
 def dodaj_skrbnistvo(request):
-    context = {'skrbnistvoForm': SkrbnistvoForm()}
+    context = {'skrbnistvoForm': SkrbnistvoForm(),'date':False, 'telefon':False}
     ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     context['ime'] = ime
     if(request.method == 'POST'):
         sform = SkrbnistvoForm(request.POST)
         if sform.is_valid():
+            if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists()):
+                context['kartica'] = True
+                return render(request, 'patronaza/registracija.html', context)
+            if(not sform.telefon_regex()):
+                context['telefon'] = True
+                context['skrbnistvoForm'] = sform
+                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
+            if(not sform.date_valid()):
+                context['date'] = True
+                context['skrbnistvoForm'] = sform
+                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
             instance = sform.save(commit=False)
             instance.id_racuna = request.user
             instance.lastnik_racuna = False
-            instance.id_okolis = Okolis.objects.get(pk=1)
+            instance.id_okolis = Okolis.objects.get(šifra=str(instance.id_posta.st_poste))
             instance.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
     return render(request, 'patronaza/dodajSkrbnistvo.html', context)
@@ -363,13 +494,19 @@ def aktivacija(request,ur_id,date):
 @login_required
 def izpisi_delavne_naloge(request):
     context={'ime':''}
+    oseba = None
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-    else:
+        oseba = Osebje.objects.get(id_racuna=request.user)
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    else:
+        ime = request.user.username
     context['ime'] = ime
+    context['oseba'] = oseba
     obiski = VrstaObiska.objects.all()
-    dn_list = DelovniNalog.objects.all()
+    dn_list = Oskrba.objects.all()
+    dodeljeno = DodeljenoOsebje.objects.all()
     context['obiski'] = obiski
     if request.method == 'POST':
         izdajatelj = request.POST.get('izdajatelj',False)
@@ -379,19 +516,24 @@ def izpisi_delavne_naloge(request):
         od = request.POST.get('od',False)
         do = request.POST.get('do',False)
         vrsta = request.POST.get('vrsta',False)
-        print([izdajatelj,sestra,nadomestnaSestra,pacient,od,do,vrsta])
-        '''
-        if(request.POST.get('izdajatelj',False)):
-            osebje = Osebje.objects.get(šifra=request.POST.get('izdajatelj',False))
-            dn_list = dn_list.filter(id_osebje=osebje)
-        if(request.POST.get('izdajatelj',False)):
-            osebje = Osebje.objects.get(šifra = request.POST.get('sestra', False))
-            dn_list = dn_list.filter(id_osebje=osebje)
-        if(request.POST.get('nadomestnaSestra',False)):
-            osebje = Osebje.objects.get(šifra=request.POST.get('nadomestnaSestra',False))
-            dn_list = dn_list.filter(id_osebje=osebje)
-            '''
-    order = request.GET.get('order', '-id_osebje')
+        if(izdajatelj):
+            dn_list = dn_list.filter(id_dn__id_osebje__šifra=izdajatelj)
+        if(pacient):
+            dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
+        if(sestra):
+            dodeljeno = dodeljeno.filter(id_osebja__šifra=sestra)
+        if(nadomestnaSestra):
+            dodeljeno = dodeljeno.filter(id_osebja__šifra=nadomestnaSestra)
+        if(od and do):
+            dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od,do))
+        if(vrsta):
+            dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
+    hash = {}
+    for d in dn_list:
+        if(dodeljeno.filter(je_zadolzena=1).filter(id_obisk__id_dn=d.id_dn).exists()):
+            hash[d] = [dodeljeno.filter(je_zadolzena=1).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja]
+        elif(dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn).exists()):
+            hash[d] = [dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,'/']
 
     paginator = Paginator(dn_list, 10)
     page = request.GET.get('page')
@@ -402,6 +544,7 @@ def izpisi_delavne_naloge(request):
     except EmptyPage:
         delovniNalog = paginator.page(paginator.num_pages)
     context['delavniNalogi'] = delovniNalog
+    context['hash'] = hash
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
 @login_required
 def delovni_nalog_podrobnosti(request,id):
@@ -409,8 +552,44 @@ def delovni_nalog_podrobnosti(request,id):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-    else:
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    else:
+        ime = request.user.username
     context['ime'] = ime
     dn = DelovniNalog.objects.get(pk=id)
     return render(request, 'patronaza/test.html', context)
+
+@login_required
+def osebjeAdd(request):
+    context = {}
+    ime = request.user.username
+    context['ime'] = ime
+    if request.method == 'POST':
+        uForm = UporabniskiForm(request.POST, request.FILES)
+        oForm = OsebjeForm(request.POST, request.FILES)
+
+        if uForm.is_valid() and oForm.is_valid():
+            if (not uForm.password_regex()):
+                context['regex'] = True
+                context['uForm'] = uForm
+                context['oForm'] = oForm
+                return render(request, "patronaza/osebjeAdd.html", context)
+
+            u = User.objects.create_user(username=uForm.cleaned_data['email'], email=uForm.cleaned_data['email'],
+                                         password=uForm.cleaned_data['password'], is_active=True)
+            u.save()
+            o = oForm.save(commit=False)
+            o.id_racuna = u
+            o.izbrisan = 0
+            o.save()
+            uForm.cleaned_data['groups'].user_set.add(u)
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        uForm = UporabniskiForm()
+        oForm = OsebjeForm()
+
+    context['uForm'] = uForm
+    context['oForm'] = oForm
+
+    return render(request, "patronaza/osebjeAdd.html", context)

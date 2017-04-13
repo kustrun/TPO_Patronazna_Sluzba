@@ -35,8 +35,11 @@
                 {% if request.user.groups.all.0.name == 'Zdravnik' or request.user.groups.all.0.name == 'Vodja patronaže' %}
                 <li><a href="{% url 'delovniNalog' %}">Dodaj delovni nalog</a></li>
                 {% endif %}
-                {% if request.user.groups.all.0.name != 'Pacient' %}
+                {% if request.user.groups.all.0.name != 'Pacient' and not request.user.is_superuser %}
                 <li><a href="{% url 'izpisi_delavne_naloge' %}">Delavni nalogi</a> </li>
+                {% endif %}
+                {% if user.is_superuser %}
+                <li><a href="{% url 'osebjeAdd' %}">Dodaj osebje</a> </li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -75,9 +78,6 @@
 
     <div class="pushBot"></div>
     <footer>
-        <div class = "containerFooter">
-            Copyright
-        </div>
 
     </footer>
 </body>

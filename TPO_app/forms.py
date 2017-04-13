@@ -1,27 +1,20 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 from .models import *
 from .fields import *
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 import re
 from .validators.DelovniNalogValidators import *
-
-class LoginForm(forms.Form):
-        username = forms.CharField(label='',max_length=48)
-        password = forms.CharField(label='',max_length=48, widget=forms.PasswordInput())
-
+from django.utils.translation import ugettext_lazy as _
+from datetime import datetime,date
 
 class UporabniskiRacunForm(forms.ModelForm):
     password = forms.CharField(label='Geslo',widget=forms.PasswordInput(),min_length=8)
     password2 = forms.CharField(label='Ponovno geslo',widget=forms.PasswordInput())
-
+    email = forms.EmailField(label='Email',required=True)
     class Meta:
         model = User
         fields = ['email','password']
-        labels = {
-            "email": "Email"
-        }
 
     def password_regex(self):
         password = self.cleaned_data.get('password')
@@ -45,18 +38,35 @@ class PacientForm(forms.ModelForm):
     CHOICES = [('moski', 'Moški'), ('zenska', 'Ženska')]
     spol = forms.CharField(widget=forms.Select(choices=CHOICES))
     telefon = forms.CharField(required=True)
+    datum_rojstva = forms.DateField(input_formats=['%d.%m.%Y'])
     class Meta:
         model = Pacient
         fields = ['ime','priimek','datum_rojstva','naslov','id_posta','st_kartice','telefon','spol']
         labels = {
             "id_posta": "Posta"
         }
+    def telefon_regex(self):
+        telefon = self.cleaned_data.get('telefon')
+        regex = r'([0-9]+)$'
+        if re.match(regex,telefon):
+            return True
+        return False
+    def date_valid(self):
+        date = self.cleaned_data.get('datum_rojstva')
+
+        if(date <= datetime.now().date()):
+            return True
+        else:
+            return False
+
+
 
 
 class SkrbnistvoForm(forms.ModelForm):
     CHOICES = [('moski', 'Moški'), ('zenska', 'Ženska')]
     spol = forms.CharField(widget=forms.Select(choices=CHOICES))
-    telefon = forms.CharField(required=True)
+    telefon = forms.CharField(required=False)
+    datum_rojstva = forms.DateField(input_formats=['%d.%m.%Y'])
     class Meta:
         model = Pacient
         fields = ['ime','priimek','datum_rojstva','naslov','id_posta','st_kartice','telefon','spol','razmerje_ur']
@@ -64,11 +74,26 @@ class SkrbnistvoForm(forms.ModelForm):
             "id_posta": "Posta",
             "razmerje_ur":"Sorodstveno razmerje"
         }
+    def date_valid(self):
+        date = self.cleaned_data.get('datum_rojstva')
+
+        if(date <= datetime.now().date()):
+            return True
+        else:
+            return False
+    def telefon_regex(self):
+        telefon = self.cleaned_data.get('telefon')
+        regex = r'([0-9]*)$'
+        if re.match(regex,telefon):
+            return True
+        return False
+
 
 class KontaktForm(forms.ModelForm):
     class Meta:
         model = KontaktnaOseba
         exclude = ['pacient']
+
 
 
 
@@ -82,18 +107,43 @@ class DelovniNalogOsebjeForm(forms.ModelForm):
         fields = ['sifra', 'ime', 'priimek']
 
 class DelovniNalogTipObiskaForm(forms.ModelForm):
-    tip = TipObiskaModelChoiceField(TipObiska.objects.all(), widget=forms.RadioSelect, empty_label=None)
+    tipObiskaDB = TipObiska.objects.all()
+
+    TIP_OBISKA = []
+    for t in tipObiskaDB:
+        TIP_OBISKA.append((t.tip, t.tip))
+
+    tip = forms.ChoiceField(choices=TIP_OBISKA, widget=forms.RadioSelect)
 
     class Meta:
         model = TipObiska
         fields = ['tip']
 
 class DelovniNalogVrstaObiskaForm(forms.ModelForm):
-    vrstaObiska = VrstaObiskaModelChoiceField(VrstaObiska.objects.all(), widget=forms.RadioSelect, empty_label=None)
+    vrstaObiskaDB = VrstaObiska.objects.all()
+
+    VRSTA_OBISKA = []
+    for v in vrstaObiskaDB:
+        VRSTA_OBISKA.append((v.naziv, v.naziv))
+
+    vrstaObiska = forms.ChoiceField(choices=VRSTA_OBISKA, widget=forms.RadioSelect)
 
     class Meta:
         model = VrstaObiska
         fields = ['vrstaObiska']
+
+class DelovniNalogPacientForm(forms.ModelForm):
+    pacientDB = Pacient.objects.all()
+
+    PACIENTI = []
+    for p in pacientDB:
+        PACIENTI.append((p.st_kartice + ": " + p.ime + " " + p.priimek, p.st_kartice + ": " + p.ime + " " + p.priimek))
+
+    ime = forms.CharField(widget=forms.Select(choices=PACIENTI))
+
+    class Meta:
+        model = Pacient
+        fields = ['ime']
 
 class DelovniNalogForm(forms.ModelForm):
     TIP_PRVEGA_OBISKA = [('obvezen', 'obvezen'), ('okviren', 'okviren')]
@@ -107,17 +157,6 @@ class DelovniNalogForm(forms.ModelForm):
     class Meta:
         model = DelovniNalog
         fields = ['datum_prvega_obiska', 'tip_prvega_obiska', 'st_obiskov', 'cas_med_dvema', 'casovno_obdobje']
-
-
-#FORMSETS
-'''
-class DelovniNalogInjekcijeForm(forms.ModelForm):
-    st_injekcij = forms.IntegerField(label='Število injekcij')
-
-    class Meta:
-        model = Injekcije
-        fields = ['st_injekcij']
-'''
 
 class DelovniNalogZdravilaForm(forms.ModelForm):
     zdravilaDB = Zdravila.objects.all()
@@ -176,3 +215,43 @@ class PasswordChangeForm(forms.Form):
             raise forms.ValidationError("Your passwords do not match")
 
         return cleaned_data
+
+class OsebjeForm(forms.ModelForm):
+    class Meta:
+        model=Osebje
+        fields=['ime', 'priimek', 'šifra','telefon', 'id_zd', 'okolis']
+        labels = {
+            'id_zd': _('Izvajalec zdravstvene dejavnosti'),
+        }
+
+class UporabniskiForm(forms.ModelForm):
+    groups = forms.ModelChoiceField(queryset=Group.objects.exclude(name="Pacient"), required=True)
+    email=forms.EmailField(required=True)
+    ponovno_geslo=forms.CharField(max_length=128,widget=forms.PasswordInput())
+    password=forms.CharField(label="Geslo", widget=forms.PasswordInput(), min_length=8)
+
+    class Meta:
+        model=User
+        fields=[ 'groups', 'email','password']
+        labels = {
+            'groups': _('Vloga'),
+            'email': _('Email'),
+            'password': _('Geslo'),
+        }
+
+    def clean(self):
+        cleaned_data = super(UporabniskiForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("ponovno_geslo")
+
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "Gesli se ne ujemata!"
+            )
+    def password_regex(self):
+        password=self.cleaned_data.get("password")
+        regex = r'^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]+$'
+
+        if(re.match(regex,password)):
+            return True
+        return False

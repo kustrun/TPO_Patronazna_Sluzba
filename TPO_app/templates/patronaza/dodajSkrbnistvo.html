@@ -5,6 +5,15 @@
     <form method="POST">
         {% csrf_token %}
         {{ skrbnistvoForm.as_p }}
+        {% if date %}
+        <p>Datum ne more biti v prihodnosti</p>
+        {% endif %}
+        {% if telefon %}
+        <p>Ne veljavna številka</p>
+        {% endif %}
+        {% if kartica %}
+        <p>Kartica že obstaja</p>
+        {% endif %}
         <input type="submit" value="Dodaj">
     </form>
 {% endblock %}

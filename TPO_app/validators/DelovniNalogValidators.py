@@ -12,5 +12,3 @@ def dateGreaterThanToday(value):
             _('%(userDate)s je v preteklosti.'),
             params={'userDate': userDate.strftime('%d.%m.%Y')},
         )
-
-

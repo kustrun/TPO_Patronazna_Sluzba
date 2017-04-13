@@ -105,6 +105,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Custom authentication backend for email authentication
+
+AUTHENTICATION_BACKENDS = ['TPO_app.auth.EmailBackend']
+
+
+# Login restriction parameters
+
+MAX_LOGIN_ATTEMPTS = 3
+
+LOGIN_LOCKUP_TIME = 1 #lockup duration in hours
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

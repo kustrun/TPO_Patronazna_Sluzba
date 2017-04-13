@@ -9,6 +9,10 @@ $(document).ready(function(){
         prefix: 'barva',
         formCssClass: 'dynamic-barva'
     });
+    $('#izberiPacientaFormSet tbody tr').formset({
+        prefix: 'izberiPacienta',
+        formCssClass: 'dynamic-izberiPacienta'
+    });
 
 
     //DATE CALTULATION
@@ -94,6 +98,51 @@ $(document).ready(function(){
 
         calculateDate(true);
 
+    });
+
+    $('.dynamic-izberiPacienta-add .add-row').css("display", "none");
+    $('.dynamic-izberiPacienta .delete-row').css("display", "none");
+
+
+    if($('input[name=vrstaObiska]:checked').val() == "aplikacija injekcij") {
+       $('#aplikacijaInjekcij').css("display", "");
+        $('#odvzemKrvi').css("display", "none");
+
+   } else if($('input[name=vrstaObiska]:checked').val() == "odvzem krvi") {
+       $('#aplikacijaInjekcij').css("display", "none");
+       $('#odvzemKrvi').css("display", "");
+
+   } else {
+       $('#aplikacijaInjekcij').css("display", "none");
+       $('#odvzemKrvi').css("display", "none");
+   }
+
+    $('input[name=vrstaObiska]').on('change', function() {
+       if($('input[name=vrstaObiska]:checked').val() == "obisk otročnice in novorojenčka") {
+           $('.dynamic-izberiPacienta-add .add-row').click();
+
+           $('.dynamic-izberiPacienta-add .add-row').css("display", "none");
+           $('.dynamic-izberiPacienta .delete-row').css("display", "none");
+
+       } else if ($('#izberiPacientaFormSet .dynamic-izberiPacienta').length == 2) {
+           $('.dynamic-izberiPacienta .delete-row')[1].click();
+
+           $('.dynamic-izberiPacienta-add .add-row').css("display", "none");
+           $('.dynamic-izberiPacienta .delete-row').css("display", "none");
+       }
+
+       if($('input[name=vrstaObiska]:checked').val() == "aplikacija injekcij") {
+           $('#aplikacijaInjekcij').css("display", "");
+            $('#odvzemKrvi').css("display", "none");
+
+       } else if($('input[name=vrstaObiska]:checked').val() == "odvzem krvi") {
+           $('#aplikacijaInjekcij').css("display", "none");
+           $('#odvzemKrvi').css("display", "");
+
+       } else {
+           $('#aplikacijaInjekcij').css("display", "none");
+           $('#odvzemKrvi').css("display", "none");
+       }
     });
 
 });

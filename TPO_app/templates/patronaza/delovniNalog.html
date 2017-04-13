@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-	<h1>Delovni nalog FORM</h1>
+<h1>Delovni nalog FORM</h1>
 
 	<form method="POST" action="#">
 		{% csrf_token %}
@@ -49,6 +49,32 @@
 
 		</div>
 
+		<div id="pacient" class="skupina">
+			<h3>4 - PACIENT</h3>
+
+			{{ izberiPacientaFormSet.management_form }}
+
+			{% if izberiPacientaFormSet.non_form_errors %}
+				{% for error in izberiPacientaFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="izberiPacientaFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for izberiPacientaForm in izberiPacientaFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ izberiPacientaForm.ime.id_for_label }}">Pacient:</label>
+						   {{ izberiPacientaForm.ime }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		  </div>
+
 		<div id="veljavnostNaloga" class="skupina">
 		  <h3>5 - VELJAVNOST NALOGA</h3>
 
@@ -86,7 +112,7 @@
 		</div>
 
 		<div id="aplikacijaInjekcij" class="skupina">
-			<h3>7 - APLIKACIJA INJEKCIJ</h3>
+			<h3>6 - APLIKACIJA INJEKCIJ</h3>
 
 			{{ zdravilaFormSet.management_form }}
 
@@ -115,7 +141,7 @@
 		</div>
 
 		<div id="odvzemKrvi" class="skupina">
-			<h3>7 - ODVZEM KRVI</h3>
+			<h3>6 - ODVZEM KRVI</h3>
 
 			{{ barvaEpruvetFormSet.management_form }}
 
@@ -147,4 +173,5 @@
 
 		<input class="shrani" type="submit" name="shrani" value="Shrani" />
 	</form>
+
 {% endblock %}
