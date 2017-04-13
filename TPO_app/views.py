@@ -537,15 +537,8 @@ def izpisi_delavne_naloge(request):
         elif(dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn).exists()):
             hash[d] = [dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,'/']
 
-    paginator = Paginator(dn_list, 10)
-    page = request.GET.get('page')
-    try:
-        delovniNalog = paginator.page(page)
-    except PageNotAnInteger:
-        delovniNalog = paginator.page(1)
-    except EmptyPage:
-        delovniNalog = paginator.page(paginator.num_pages)
-    context['delavniNalogi'] = delovniNalog
+    
+    context['delavniNalogi'] = dn_list
     context['hash'] = hash
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
 @login_required
