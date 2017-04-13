@@ -6,7 +6,7 @@ from .models import *
 from .fields import *
 from django.contrib.auth.models import User,Group
 import re
-from .validators.DelovniNalogValidators import *
+from .DelovniNalogValidators import *
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime,date
 
