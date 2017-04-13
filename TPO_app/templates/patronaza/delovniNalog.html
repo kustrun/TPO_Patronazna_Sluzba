@@ -7,13 +7,12 @@
 	<form method="POST" action="#">
 		{% csrf_token %}
 
-
 		<div id="zdravnik" class="skupina">
 		  	<h3>1 - OSEBJE</h3>
 
 			<div class="fieldWrapper">
-				<label for="{{ osebje.sifra.id_for_label }}">sifra:</label>
-				{{ osebje.sifra }}
+				<label for="{{ osebje.sifraVnos.id_for_label }}">Šifra:</label>
+				{{ osebje.sifraVnos }}
 			</div>
 
 			<div class="fieldWrapper">

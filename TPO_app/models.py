@@ -172,7 +172,6 @@ class DodeljenoOsebje(models.Model):
     id_osebja = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_osebja')
     id_obisk = models.ForeignKey('Obisk', models.DO_NOTHING, db_column='id_obisk')
     je_zadolzena = models.IntegerField()
-    id = models.IntegerField(primary_key=True)
 
     class Meta:
         managed = False

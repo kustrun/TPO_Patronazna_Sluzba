@@ -100,13 +100,13 @@ class KontaktForm(forms.ModelForm):
 
 
 class DelovniNalogOsebjeForm(forms.ModelForm):
-    sifra = forms.CharField(max_length=64)
+    sifraVnos = forms.CharField(max_length=64)
     ime = forms.CharField(max_length=64)
     priimek = forms.CharField(max_length=64)
 
     class Meta:
         model = Osebje
-        fields = ['sifra', 'ime', 'priimek']
+        fields = ['ime', 'priimek']
 
 class DelovniNalogTipObiskaForm(forms.ModelForm):
     tipObiskaDB = TipObiska.objects.all()

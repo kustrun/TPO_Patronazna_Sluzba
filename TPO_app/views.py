@@ -107,7 +107,7 @@ def delovniNalog(request, delovniNalogId=0):
     else:
         ime = request.user.username
     osebje = DelovniNalogOsebjeForm()
-    osebje.fields["sifra"].initial = 12345
+    osebje.fields["sifraVnos"].initial = 12345
     osebje.fields["ime"].initial = 'Domen'
     osebje.fields["priimek"].initial = 'Balantič'
 
@@ -136,7 +136,7 @@ def delovniNalog(request, delovniNalogId=0):
         odvzemKrviDB = OdvzemKrvi.objects.filter(id_obisk=obiskDB)
         pacientiDB = Oskrba.objects.filter(id_dn=delovniNalogDB)
 
-        osebje.fields["sifra"].initial = osebjeDB.sifra
+        osebje.fields["sifraVnos"].initial = osebjeDB.sifra
         osebje.fields["ime"].initial = osebjeDB.ime
         osebje.fields["priimek"].initial = osebjeDB.priimek
 
@@ -155,7 +155,8 @@ def delovniNalog(request, delovniNalogId=0):
         izberiPacientaFormSet = IzberiPacientaFormSet(prefix='izberiPacienta')
 
         for i in range(0, pacientiLen):
-            izberiPacientaFormSet[i].fields["ime"].initial = pacientiDB[i].id_pacient.st_kartice + ": " + pacientiDB[i].id_pacient.ime + " " + pacientiDB[i].id_pacient.priimek
+            izberiPacientaFormSet[i].fields["ime"].initial = pacientiDB[i].id_pacient.st_kartice + ": " + pacientiDB[
+                i].id_pacient.ime + " " + pacientiDB[i].id_pacient.priimek
 
         injekcijeLen = len(injekcijeDB)
         ZdravilaFormSet = formset_factory(DelovniNalogZdravilaForm, formset=BaseZdravilaFormSet, extra=injekcijeLen)
@@ -166,15 +167,13 @@ def delovniNalog(request, delovniNalogId=0):
             zdravilaFormSet[i].fields["st_injekcij"].initial = injekcijeDB[i].st_injekcij
 
         odvzemKrviLen = len(odvzemKrviDB)
-        BarvaEpruvetFormSet = formset_factory(DelovniNalogBarvaEpruveteForm, formset=BaseBarvaEpruvetFormSet, extra=odvzemKrviLen)
+        BarvaEpruvetFormSet = formset_factory(DelovniNalogBarvaEpruveteForm, formset=BaseBarvaEpruvetFormSet,
+                                              extra=odvzemKrviLen)
         barvaEpruvetFormSet = BarvaEpruvetFormSet(prefix='barva')
 
         for i in range(0, odvzemKrviLen):
             barvaEpruvetFormSet[i].fields["barva"].initial = odvzemKrviDB[i].barva.barva
             barvaEpruvetFormSet[i].fields["st_epruvet"].initial = odvzemKrviDB[i].st_epruvet
-
-
-
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -184,34 +183,61 @@ def delovniNalog(request, delovniNalogId=0):
         vrstaObiska = DelovniNalogVrstaObiskaForm(request.POST)
         delovniNalog = DelovniNalogForm(request.POST)
         izberiPacientaFormSet = IzberiPacientaFormSet(request.POST, prefix='izberiPacienta')
-        zdravilaFormSet =  ZdravilaFormSet(request.POST, prefix='zdravila')
+        zdravilaFormSet = ZdravilaFormSet(request.POST, prefix='zdravila')
         barvaEpruvetFormSet = BarvaEpruvetFormSet(request.POST, prefix='barva')
 
         # check whether it's valid:
         if osebje.is_valid() and tipObiska.is_valid() and vrstaObiska.is_valid() and delovniNalog.is_valid() and izberiPacientaFormSet.is_valid():
 
-            #SHRANI DELOVNI NALOG
+            # SHRANI DELOVNI NALOG
             dn = delovniNalog.save(commit=False)
-            dn.id_osebje = Osebje.objects.get(sifra=osebje.data['sifra'], ime=osebje.data['ime'], priimek=osebje.data['priimek'])
-            dn.id_vrsta = VrstaObiska.objects.get(naziv=vrstaObiska.data['vrstaObiska'], tip=TipObiska.objects.get(tip=tipObiska.data['tip']))
-            dn.vrsta_storitve=VrstaStoritve.objects.get(naziv="obisk") #zakaj se uporablja to polje?
-            dn.status_dn=StatusDn.objects.get(naziv="aktiven")
+            dn.id_osebje = Osebje.objects.get(sifra=osebje.data['sifraVnos'], ime=osebje.data['ime'],
+                                              priimek=osebje.data['priimek'])
+            dn.id_vrsta = VrstaObiska.objects.get(naziv=vrstaObiska.data['vrstaObiska'],
+                                                  tip=TipObiska.objects.get(tip=tipObiska.data['tip']))
+            dn.vrsta_storitve = VrstaStoritve.objects.get(naziv="obisk")  # zakaj se uporablja to polje?
+            dn.status_dn = StatusDn.objects.get(naziv="aktiven")
 
             dn.save()
 
-            #SHRANI OSKRBO PACIENTA
+            # SHRANI OSKRBO PACIENTA
+            pacientovOkolis = None
             for pacient in izberiPacientaFormSet:
-                print(pacient.cleaned_data.get('ime'))
                 pacientSplit = str(pacient.cleaned_data.get('ime')).split(":")
+
+                trenutniPacient = Pacient.objects.get(st_kartice=pacientSplit[0])
+                pacientovOkolis = trenutniPacient.id_okolis
 
                 os = Oskrba(
                     id_dn=dn,
-                    id_pacient = Pacient.objects.get(st_kartice=pacientSplit[0])
+                    id_pacient=trenutniPacient
                 )
 
                 os.save()
 
-            #USTVARI USTREZNE OBISKE
+            '''print([x.user for x in (AuthUserGroups.objects.filter(group=AuthGroup.objects.get(name='Patronažna sestra')))])
+
+            vsePatronazneSestre = Osebje.objects.filter(id_racuna2__in=[x.user for x in (
+            AuthUserGroups.objects.filter(group=AuthGroup.objects.get(name='Patronažna sestra')))],
+                                                        okolis=pacientovOkolis)
+
+            print(vsePatronazneSestre)
+
+            min = 10000
+            izbranaPS = None
+            for patronaznaSestra in vsePatronazneSestre:
+                obiski = DodeljenoOsebje.objects.filter(id_osebja=patronaznaSestra,
+                                                        id_obisk__in=[x for x in (Obisk.objects.filter(
+                                                            id_dn__in=[y for y in DelovniNalog.objects.filter(
+                                                                status_dn=StatusDn.objects.get(naziv="aktiven"))]))],
+                                                        je_zadolzena=0)
+
+                if (int(len(obiski)) < min):
+                    min = len(obiski)
+                    izbranaPS = patronaznaSestra
+            '''
+
+            # USTVARI USTREZNE OBISKE
             datum = dn.datum_prvega_obiska
             if datum.weekday() == 5:
                 datum = datum + timedelta(days=2)
@@ -220,28 +246,30 @@ def delovniNalog(request, delovniNalogId=0):
 
             for i in range(0, dn.st_obiskov):
                 ob = Obisk(id_dn=dn,
-                           zaporedna_st_obiska=(i+1),
+                           zaporedna_st_obiska=(i + 1),
                            status_obiska=StatusObiska.objects.get(naziv="aktiven"),
-                           #status obiska popravi na obvezen, neobvezen
+                           # status obiska popravi na obvezen, neobvezen
                            datum_obiska=datum,
                            predviden_datum=datum,
-                           podrobnosti_obiska= ("%d. obisk" % (i+1)),
+                           podrobnosti_obiska=("%d. obisk" % (i + 1)),
                            izbran_datum=datum,
                            cena=0.00)
 
                 ob.save()
 
-                #obisk dodeli medicinski sestri
-                #TO DO: medicinsko sestro izberi na podlagi okrožja
+                # obisk dodeli medicinski sestri
+                # TO DO: medicinsko sestro izberi na podlagi okrožja
                 do = DodeljenoOsebje(
                     id_obisk=ob,
-                    id_osebja=Osebje.objects.get(id=2),
+                    id_osebja=Osebje.objects.get(id=15),
                     je_zadolzena=0
                 )
 
+                print(Osebje.objects.get(id=15))
+
                 do.save()
 
-                #povecaj datum za naslednji obisk
+                # povecaj datum za naslednji obisk
                 datum = datum + timedelta(days=(int(dn.cas_med_dvema) + 1))
 
                 if datum.weekday() == 5:
@@ -252,12 +280,10 @@ def delovniNalog(request, delovniNalogId=0):
                 # SHRANI APLIKACIJO INJEKCIJ
                 if zdravilaFormSet.is_valid():
                     for zdravila in zdravilaFormSet:
-                        print(zdravila.cleaned_data.get('naziv'))
-                        print(Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')))
                         ij = Injekcije(
                             id_obisk=ob,
-                            id_zdravilo = Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')),
-                            st_injekcij = int(zdravila.cleaned_data.get('st_injekcij'))
+                            id_zdravilo=Zdravila.objects.get(naziv=zdravila.cleaned_data.get('naziv')),
+                            st_injekcij=int(zdravila.cleaned_data.get('st_injekcij'))
                         )
 
                         ij.save()
@@ -267,16 +293,13 @@ def delovniNalog(request, delovniNalogId=0):
                     for barva in barvaEpruvetFormSet:
                         ok = OdvzemKrvi(
                             id_obisk=ob,
-                            barva = BarvaEpruvete.objects.get(barva=barva.cleaned_data.get('barva')),
-                            st_epruvet = int(barva.cleaned_data.get('st_epruvet'))
+                            barva=BarvaEpruvete.objects.get(barva=barva.cleaned_data.get('barva')),
+                            st_epruvet=int(barva.cleaned_data.get('st_epruvet'))
                         )
 
                         ok.save()
 
-
-            return HttpResponseRedirect('/')
-
-
+            return HttpResponseRedirect('/patronaza/domov')
 
     return render(request, 'patronaza/delovniNalog.html', {
         'osebje': osebje,
@@ -286,9 +309,7 @@ def delovniNalog(request, delovniNalogId=0):
         'delovniNalog': delovniNalog,
         'zdravilaFormSet': zdravilaFormSet,
         'barvaEpruvetFormSet': barvaEpruvetFormSet,
-        'ime': ime
-        }
-      )
+    })
 
 
 @login_required

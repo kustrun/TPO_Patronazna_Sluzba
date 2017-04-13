@@ -66,7 +66,7 @@
                     <th>{{ v }}</th>
                     {% endfor %}
                     <th>{{ o.id_pacient }}</th>
-                    <th><a href="{% url 'delovni_nalog_podrobnosti' id=o.id_dn.id %}">Podrobnosti</a></th>
+                    <th><a href="{% url 'delovniNalogPodrobno' delovniNalogId=o.id_dn.id %}">Podrobnosti</a></th>
                 </tr>
             {% endfor %}
             </tbody>
