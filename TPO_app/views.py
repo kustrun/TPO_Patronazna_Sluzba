@@ -301,7 +301,7 @@ def index(request):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna = True)[0]
     else:
         ime = request.user.username
-    context['ime'] = ime
+    context['ime'] = unicode(ime)
     return render(request, 'patronaza/index.html', context)
 
 
