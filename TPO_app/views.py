@@ -107,9 +107,9 @@ def delovniNalog(request, delovniNalogId=0):
     else:
         ime = request.user.username
     osebje = DelovniNalogOsebjeForm()
-    osebje.fields["sifraVnos"].initial = 12345
-    osebje.fields["ime"].initial = 'Domen'
-    osebje.fields["priimek"].initial = 'Balantič'
+    osebje.fields["sifraVnos"].initial = ime.sifra
+    osebje.fields["ime"].initial = ime.ime
+    osebje.fields["priimek"].initial = ime.priimek
 
     tipObiska = DelovniNalogTipObiskaForm()
     vrstaObiska = DelovniNalogVrstaObiskaForm()
@@ -309,6 +309,7 @@ def delovniNalog(request, delovniNalogId=0):
         'delovniNalog': delovniNalog,
         'zdravilaFormSet': zdravilaFormSet,
         'barvaEpruvetFormSet': barvaEpruvetFormSet,
+        'ime': ime
     })
 
 
