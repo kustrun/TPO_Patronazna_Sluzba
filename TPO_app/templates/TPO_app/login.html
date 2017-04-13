@@ -1,16 +1,25 @@
 {% extends "TPO_app/base.html" %}
 
 {% block content %}
-<div>
-	<form method='POST' action='#'>
+<div class="centered form-panel">
+	<h1 class="centered-item centered-text">Prijava</h1>
+	<form class="centered-item" method='POST' action='#'>
 		{% csrf_token %}
 		{{ loginForm.as_table }}
-		<input type="submit" value="Login" />
+		<div class="login-btn-panel">
+			<input class="btn-submit" type="submit" value="Prijavi se" />
+			<div>
+				<a class="undecorated-text" href="{% url 'index' %}" style="margin-right:15px;">Registracija</a>
+				<a class="undecorated-text" href="{% url 'change_password' %}">Pozabljeno geslo</a>
+			</div>
+		</div>
 	</form>
-	<div class="error_message">
-		<p>
-			{{ errorMessage|linebreaksbr }}
+	{% if message|length > 0 %}
+	<div class="error-message centered-item centered-text">
+		<p class="no-margin">
+			{{ message|linebreaksbr }}
 		</p>
 	</div>
+	{% endif %}
 </div>
 {% endblock %}
