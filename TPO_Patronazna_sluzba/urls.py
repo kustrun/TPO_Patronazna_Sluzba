@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """TPO_Patronazna_sluzba URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
