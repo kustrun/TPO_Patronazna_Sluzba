@@ -20,10 +20,10 @@
 				</div>
 			</div>
 		</form>
-		{% if message|length > 0 %}
+		{% if errorMessage|length > 0 %}
 		<div class="error-message centered-item centered-text">
 			<p class="no-margin">
-				{{ message|linebreaksbr }}
+				{{ errorMessage|linebreaksbr }}
 			</p>
 		</div>
 		{% endif %}
