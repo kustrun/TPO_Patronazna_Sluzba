@@ -261,7 +261,7 @@ def delovniNalog(request, delovniNalogId=0):
                 # TO DO: medicinsko sestro izberi na podlagi okrožja
                 do = DodeljenoOsebje(
                     id_obisk=ob,
-                    id_osebja=Osebje.objects.get(id=15),
+                    id_osebja=Osebje.objects.get(sifra=ime.sifra),
                     je_zadolzena=0
                 )
 
