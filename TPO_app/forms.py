@@ -200,7 +200,7 @@ class PasswordChangeForm(forms.Form):
                                    validators=[
                                        RegexValidator(
                                            regex='^(?=.*\d+)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,}$',
-                                           message='Password must contain at least one numeric and one letter character',
+                                           message='Geslo mora obvezno vsebovati vsaj eno številko in eno črko',
                                        ),
                                    ])
     re_password = forms.CharField(label=_('Password (again)'), max_length=128, widget=forms.PasswordInput,
@@ -212,9 +212,9 @@ class PasswordChangeForm(forms.Form):
         password2 = self.cleaned_data.get('re_password')
 
         if not password2:
-            raise forms.ValidationError("You must confirm your password")
+            raise forms.ValidationError("Potrdi geslo!!")
         if password1 != password2:
-            raise forms.ValidationError("Your passwords do not match")
+            raise forms.ValidationError("Gesli se ne ujemata")
 
         return cleaned_data
 

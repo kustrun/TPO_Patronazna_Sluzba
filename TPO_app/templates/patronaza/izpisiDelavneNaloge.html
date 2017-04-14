@@ -13,11 +13,11 @@
             </li>
             <li class="list-group-item">
                 <label>Patronažna sestra</label>
-                <input type="text" name="sestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ osebje.sifra }} {% endif %}>
+                <input type="text" name="sestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ oseba.sifra }} {% endif %}>
             </li>
             <li class="list-group-item">
                 <label>Nadomestna sestra</label>
-                <input type="text" name="nadomestnaSestra" value="{% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ osebje.sifra }} {% endif %}">
+                <input type="text" name="nadomestnaSestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ oseba.sifra }} {% endif %}>
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>

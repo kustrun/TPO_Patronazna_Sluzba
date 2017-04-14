@@ -364,24 +364,42 @@ def logout(request):
 
 @login_required
 def change_password(request):
-    context = {'passwordChangeForm': PasswordChangeForm()}
-
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.POST)
-        user = request.user
-        if user is not None and form.is_valid() and user.is_authenticated():
-            user.set_password(form.cleaned_data['new_password'])
-            user.save()
-            user = EmailBackend().authenticate(username=user.email, password=user.password)
-            if user is not None:
-                return HttpResponse("Password successfully changed")
-            else:
-                return HttpResponseRedirect(reverse('login'))
-    else:
-        form = PasswordChangeForm()
-
-    context['passwordChangeForm'] = form
-    return render(request, 'patronaza/change_password.html', context)
+	context = {'passwordChangeForm':PasswordChangeForm(), 'message':"", 'error':False}
+	error = False
+	message = ""
+	
+	if request.method=='POST':
+		form = PasswordChangeForm(request.POST)
+		user = request.user
+		old_password = user.password
+		if user is not None and form.is_valid() and user.is_authenticated():
+			user.set_password(form.cleaned_data['new_password'])
+			user.save()
+			auth_user = EmailBackend().authenticate(username=user.email, password=form.cleaned_data['new_password'])
+			if auth_user is not None:
+				auth_login(request, user)
+				message = "Geslo uspesno spremenjeno!"
+			else:
+				user.set_password(old_password)
+				user.save()
+				error = True
+				message = "Napaka pri spremembi gesla. Vase geslo ni spremenjeno!"
+	else:
+		form = PasswordChangeForm()
+		
+	context['message'] = message
+	context['error'] = error
+	context['passwordChangeForm'] = form
+	
+	for field, errors in form.errors.items():
+		if not error:
+			context['message'] = ""
+			context['error'] = True
+		for error in errors:
+			context['message'] += error
+	
+	print(form.errors.items())
+	return render(request, 'patronaza/change_password.html', context)
 
 def registracija(request):
     context = {'uporabniskiRacunForm' : UporabniskiRacunForm(),'pacientForm' : PacientForm(),'regex' : False, 'match' : False, 'telefon':False,'date':False}
@@ -530,11 +548,6 @@ def izpisi_delavne_naloge(request):
     context['oseba'] = oseba
     obiski = VrstaObiska.objects.all()
     dn_list = Oskrba.objects.all()
-    if(request.user.groups.all()[0].name == 'Patronažna sestra'):
-        obiski = obiski.filter(id_osebja=oseba)
-    elif(request.user.groups.all()[0].name != 'Patronažna sestra'):
-        dn_list = dn_list.filter(id_dn__id_osebje=oseba)
-        print(oseba)
     dodeljeno = DodeljenoOsebje.objects.all()
     context['obiski'] = obiski
     if request.method == 'POST':
