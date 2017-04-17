@@ -46,10 +46,10 @@ class BlackListBackend(object):
 			return ip_user
 	
 	def get_ip_lockup_time_remaining(self, ip_user):
-		return ((ip_user.datum_zaklepanja + timedelta(hours=settings.LOGIN_LOCKUP_TIME)) - datetime.now()).total_seconds()
+		return ((ip_user.datum_zaklepanja + timedelta(hours=settings.LOGIN_LOCKUP_TIME)) - datetime.utcnow()).total_seconds()
 	
 	def get_ip_lockup_time(self, ip_user):
-		return (datetime.now() - ip_user.datum_zaklepanja).total_seconds()
+		return (datetime.utcnow() - ip_user.datum_zaklepanja).total_seconds()
 	
 	def failed_login(self, ip):
 		ip_user = self.add_get_ip_user(ip=ip)
