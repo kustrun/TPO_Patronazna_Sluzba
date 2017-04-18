@@ -342,12 +342,12 @@ def login(request):
                     BlackListBackend().add_ip_to_user(user=user, ip=ip)
                     return HttpResponseRedirect(reverse('index'))
                 else:
-                    error = "Napacen email ali geslo"
+                    error = "Napačen email ali geslo"
                     ip_user = BlackListBackend().failed_login(ip=ip)
                     form = LoginForm()
         else:
             form = LoginForm()
-            error = "Blokirani ste zaradi 3x zapored napacno vnesenih podatkov\nPreostali cas: " + BlackListBackend().lockup_to_string(
+            error = "Blokirani ste zaradi " + str(BlackListBackend().get_max_login_attempts()) + "x zapored napačno vnešenih podatkov\nPreostali čas: " + BlackListBackend().lockup_to_string(
                 ip=ip)
     else:
         form = LoginForm()

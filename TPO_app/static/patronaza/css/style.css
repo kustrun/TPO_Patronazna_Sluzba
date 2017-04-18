@@ -9,8 +9,6 @@ body {
 
 .centered {
 	margin: 0 auto;
-    width: 50%;
-    padding: 10px;
 }
 
 .centered-item {
@@ -69,6 +67,7 @@ body {
 }
 
 .form-panel {
+	width: 100%;
 	margin-top: 10vh;
 	justify-content: center;
 	max-width: 420px;
@@ -78,6 +77,10 @@ body {
 	color: dimgray;
 	border: 1px solid dimgray;
 	font-size: 18px;
+}
+
+.form-panel > h1 {
+	font-weight: bold;
 }
 
 .form-panel form {
@@ -91,4 +94,13 @@ body {
 	height: 25px;
 	margin-bottom: 20px;
 	font-size: 16px;
+	border-radius: 2px;
+	border: 1px solid darkgray;
+}
+
+.form-panel form > label {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
 }

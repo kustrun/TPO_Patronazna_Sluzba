@@ -101,8 +101,8 @@ class BarvaEpruvete(models.Model):
 class CrnaLista(models.Model):
     ip = models.TextField()  # This field type is a guess.
     poiskusi = models.IntegerField()
-    datum_zaklepanja = models.DateField()
-    id_ur = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='id_ur')
+    datum_zaklepanja = models.DateTimeField()
+    id_ur = models.ForeignKey(User, models.DO_NOTHING, db_column='id_ur')
 
     class Meta:
         managed = False
