@@ -44,6 +44,9 @@ class BlackListBackend(object):
 			return ip_user
 		else:
 			return ip_user
+		
+	def get_max_login_attempts(self):
+		return settings.MAX_LOGIN_ATTEMPTS
 	
 	def get_ip_lockup_time_remaining(self, ip_user):
 		return ((ip_user.datum_zaklepanja + timedelta(hours=settings.LOGIN_LOCKUP_TIME)) - datetime.utcnow()).total_seconds()
