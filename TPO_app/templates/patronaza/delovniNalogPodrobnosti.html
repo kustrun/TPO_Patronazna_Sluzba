@@ -163,38 +163,66 @@
 
 		</div>
 
-		<div id="odvzemKrvi" class="skupina">
-			<h3>6 - ODVZEM KRVI</h3>
 
-			{{ barvaEpruvetFormSet.management_form }}
+        <div id="obiski" class="skupina">
+			<h3>7 - NAČRTI OBISKOV</h3>
 
-			{% if barvaEpruvetFormSet.non_form_errors %}
-				{% for error in barvaEpruvetFormSet.non_form_errors %}
-					{{ error|escape }}
-				{% endfor %}
-			{% endif %}
-
-			<table id="barvaEpruvetFormSet" border="0" cellpadding="0">
+            <table id="obiskiTabela">
 				<tbody>
-					{% for barvaForm in barvaEpruvetFormSet %}
-					<tr>
-					   <td>
-						   <label for="{{ barvaForm.barva.id_for_label }}">Barva:</label>
-							{{ barvaForm.barva }}
 
-							<label for="{{ barvaForm.st_epruvet.id_for_label }}">Število epruvet:</label>
-							{{ barvaForm.st_epruvet }}
-					   </td>
-					</tr>
-					{% endfor %}
+                    <tr>
+                        <th style="width: 7%">Šifra</th>
+                        <th style="width: 15%">Medicinska sestra</th>
+                        <th style="width: 15%">Zadolžena/Nadomestna</th>
+
+                        <th style="width: 7%">Številka</th>
+                        <th style="width: 10%">Predvideni datum</th>
+                        <th style="width: 8%">Datum</th>
+                        <th style="width: 8%">Status</th>
+                        <th>Podrobnosti</th>
+                        <th style="width: 5%"></th>
+                    </tr>
+
+                    {% for dodeljenoOsebje in dodeljenoOsebjeDB %}
+
+                    <tr>
+                        <td style="width: 7%">{{ dodeljenoOsebje.id_osebja.sifra }}</td>
+                        <td style="width: 15%">{{ dodeljenoOsebje.id_osebja.ime }} {{ dodeljenoOsebje.id_osebja.priimek }}</td>
+
+                        {% if dodeljenoOsebje.je_zadolzena == 0 %}
+                            <td style="width: 15%">Zadolžena</td>
+                        {% else %}
+                            <td style="width: 15%">Nadomestna</td>
+                        {% endif %}
+
+                        <td style="width: 7%">{{ dodeljenoOsebje.id_obisk.zaporedna_st_obiska }}</td>
+                        <td style="width: 10%">{{ dodeljenoOsebje.id_obisk.predviden_datum | date:"d.m.Y" }}</td>
+
+                        {% if dodeljenoOsebje.id_obisk.status_obiska.naziv == "opravljen" %}
+                            <td style="width: 8%">{{ dodeljenoOsebje.id_obisk.datum_obiska | date:"d.m.Y" }}</td>
+                        {% else %}
+                            <td style="width: 8%">/</td>
+                        {% endif %}
+
+                        <td style="width: 8%">{{ dodeljenoOsebje.id_obisk.status_obiska.naziv }}</td>
+
+
+                        {% if dodeljenoOsebje.id_obisk.status_obiska.naziv == "opravljen" %}
+                            <td>{{ dodeljenoOsebje.id_obisk.podrobnosti_obiska | slice:":40" }}...</td>
+                        {% else %}
+                            <td>/</td>
+                        {% endif %}
+
+                        <td style="width: 5%"><a href="">več...</a></td>
+
+                    </tr>
+                    {% endfor %}
+
 				</tbody>
 			</table>
 
 		</div>
 
-
-
-		<input class="shrani" type="submit" name="shrani" value="Shrani" />
 	</form>
 
 {% endblock %}

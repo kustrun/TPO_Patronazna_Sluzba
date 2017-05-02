@@ -100,15 +100,60 @@ $(document).ready(function(){
 
     });
 
+
+
+    //TIP OBISKA ADDITONAL OPTIONS
+    if(typeof $('input[name=tip]:checked').val() != 'undefined' && $('input[name=tip]:checked').val().search("kurativni") >= 0) {
+       $('input[name=vrstaObiska]').each(function(i,item) {
+            if($(this).val().search("kurativni") < 0) {
+                $(this).parent().closest('div').css("display", "none");
+            } else {
+                $(this).parent().closest('div').css("display", "");
+            }
+       });
+
+    } else if(typeof $('input[name=tip]:checked').val() != 'undefined') {
+        $('input[name=vrstaObiska]').each(function(i,item) {
+            if($(this).val().search("preventivni") < 0) {
+                $(this).parent().closest('div').css("display", "none");
+            } else {
+                $(this).parent().closest('div').css("display", "");
+            }
+        });
+    }
+
+    $('input[name=tip]').on('change', function() {
+        if($('input[name=tip]:checked').val().search("kurativni") >= 0) {
+            $('input[name=vrstaObiska]').each(function(i,item) {
+                if($(this).val().search("kurativni") < 0) {
+                    $(this).parent().closest('div').css("display", "none");
+                } else {
+                    $(this).parent().closest('div').css("display", "");
+                }
+            });
+
+        } else {
+            $('input[name=vrstaObiska]').each(function(i,item) {
+                if($(this).val().search("preventivni") < 0) {
+                    $(this).parent().closest('div').css("display", "none");
+                } else {
+                    $(this).parent().closest('div').css("display", "");
+                }
+            });
+        }
+    });
+
+
+
+    //VRSTA OBISKA ADDITIONAL OPTIONS
     $('.dynamic-izberiPacienta-add .add-row').css("display", "none");
     $('.dynamic-izberiPacienta .delete-row').css("display", "none");
 
-
-    if($('input[name=vrstaObiska]:checked').val() == "aplikacija injekcij") {
+    if(typeof $('input[name=vrstaObiska]:checked').val() != 'undefined' && $('input[name=vrstaObiska]:checked').val().search("aplikacija injekcij") >= 0) {
        $('#aplikacijaInjekcij').css("display", "");
         $('#odvzemKrvi').css("display", "none");
 
-   } else if($('input[name=vrstaObiska]:checked').val() == "odvzem krvi") {
+   } else if(typeof $('input[name=vrstaObiska]:checked').val() != 'undefined' && $('input[name=vrstaObiska]:checked').val().search("odvzem krvi") >= 0) {
        $('#aplikacijaInjekcij').css("display", "none");
        $('#odvzemKrvi').css("display", "");
 
@@ -118,11 +163,26 @@ $(document).ready(function(){
    }
 
     $('input[name=vrstaObiska]').on('change', function() {
-       if($('input[name=vrstaObiska]:checked').val() == "obisk otročnice in novorojenčka") {
+       if($('input[name=vrstaObiska]:checked').val().search("obisk otročnice in novorojenčka") >= 0) {
            $('.dynamic-izberiPacienta-add .add-row').click();
 
            $('.dynamic-izberiPacienta-add .add-row').css("display", "none");
            $('.dynamic-izberiPacienta .delete-row').css("display", "none");
+
+           //Change children
+           var split = $('#id_izberiPacienta-0-ime').val().split("&");
+
+           $('#id_izberiPacienta-1-ime').val('');
+
+           $('#id_izberiPacienta-1-ime > option').each(function() {
+               var splitChild = this.value.split("&");
+
+               if(!(this.value.search("False") >= 0 && splitChild[1] == split[1])) {
+                   $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "none");
+               } else if (this.value.search("False") >= 0 && splitChild[1] == split[1]) {
+                   $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "");
+               }
+           });
 
        } else if ($('#izberiPacientaFormSet .dynamic-izberiPacienta').length == 2) {
            $('.dynamic-izberiPacienta .delete-row')[1].click();
@@ -131,11 +191,11 @@ $(document).ready(function(){
            $('.dynamic-izberiPacienta .delete-row').css("display", "none");
        }
 
-       if($('input[name=vrstaObiska]:checked').val() == "aplikacija injekcij") {
+       if($('input[name=vrstaObiska]:checked').val().search("aplikacija injekcij") >= 0) {
            $('#aplikacijaInjekcij').css("display", "");
             $('#odvzemKrvi').css("display", "none");
 
-       } else if($('input[name=vrstaObiska]:checked').val() == "odvzem krvi") {
+       } else if($('input[name=vrstaObiska]:checked').val().search("odvzem krvi") >= 0) {
            $('#aplikacijaInjekcij').css("display", "none");
            $('#odvzemKrvi').css("display", "");
 
@@ -143,6 +203,41 @@ $(document).ready(function(){
            $('#aplikacijaInjekcij').css("display", "none");
            $('#odvzemKrvi').css("display", "none");
        }
+    });
+
+    //PACIENT
+    $('#id_izberiPacienta-0-ime > option').each(function() {
+        if(this.value.search("False") >= 0) {
+            $('#id_izberiPacienta-0-ime option[value="' + this.value + '"]').remove();
+        }
+    });
+
+    var split = $('#id_izberiPacienta-0-ime').val().split("&");
+
+    $('#id_izberiPacienta-1-ime > option').each(function() {
+        var splitChild = this.value.split("&");
+
+        if(!(this.value.search("False") >= 0 && splitChild[1] == split[1])) {
+            $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "none");
+        } else if (this.value.search("False") >= 0 && splitChild[1] == split[1]) {
+            $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "");
+        }
+    });
+
+    $('#id_izberiPacienta-0-ime').on('change', function() {
+        var split = $('#id_izberiPacienta-0-ime').val().split("&");
+
+        $('#id_izberiPacienta-1-ime').val('');
+
+        $('#id_izberiPacienta-1-ime > option').each(function() {
+            var splitChild = this.value.split("&");
+
+            if(!(this.value.search("False") >= 0 && splitChild[1] == split[1])) {
+                $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "none");
+            } else if (this.value.search("False") >= 0 && splitChild[1] == split[1]) {
+                $('#id_izberiPacienta-1-ime option[value="' + this.value + '"]').css("display", "");
+            }
+        });
     });
 
 });

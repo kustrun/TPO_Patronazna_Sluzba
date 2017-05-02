@@ -104,3 +104,19 @@ label:not(:last-child) {
   margin-left: 5vw;
   width: 7vw;
 }
+
+/* OBISKI */
+#obiski {
+  width: 100%;
+}
+
+#obiskiTabela {
+  width: 100%;
+}
+
+#obiskiTabela tr {
+  border-bottom: 1px solid black;
+}
+
+
+

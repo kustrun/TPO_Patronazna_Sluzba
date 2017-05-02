@@ -126,7 +126,7 @@ class DelovniNalogVrstaObiskaForm(forms.ModelForm):
 
     VRSTA_OBISKA = []
     for v in vrstaObiskaDB:
-        VRSTA_OBISKA.append((v.naziv, v.naziv))
+        VRSTA_OBISKA.append((v.naziv + "_" + v.tip.tip, v.naziv))
 
     vrstaObiska = forms.ChoiceField(choices=VRSTA_OBISKA, widget=forms.RadioSelect)
 
@@ -139,7 +139,7 @@ class DelovniNalogPacientForm(forms.ModelForm):
 
     PACIENTI = []
     for p in pacientDB:
-        PACIENTI.append((p.st_kartice + ": " + p.ime + " " + p.priimek, p.st_kartice + ": " + p.ime + " " + p.priimek))
+        PACIENTI.append((p.st_kartice + ": " + p.ime + " " + p.priimek + "_" + str(p.lastnik_racuna) + "&" + str(p.id_racuna_id), p.st_kartice + ": " + p.ime + " " + p.priimek))
 
     ime = forms.CharField(widget=forms.Select(choices=PACIENTI))
 
@@ -173,6 +173,20 @@ class DelovniNalogZdravilaForm(forms.ModelForm):
     class Meta:
         model = Zdravila
         fields = ['naziv']
+
+class DelovniNalogBarvaEpruveteForm(forms.ModelForm):
+    barvaDB = BarvaEpruvete.objects.all()
+
+    BARVA_EPRUVETE = []
+    for b in barvaDB:
+        BARVA_EPRUVETE.append((b.barva, b.barva))
+
+    barva = forms.CharField(max_length=20, widget=forms.Select(choices=BARVA_EPRUVETE))
+    st_epruvet = forms.IntegerField(label='Število epruvet')
+
+    class Meta:
+        model = BarvaEpruvete
+        fields = ['barva']
 
 class DelovniNalogBarvaEpruveteForm(forms.ModelForm):
     barvaDB = BarvaEpruvete.objects.all()

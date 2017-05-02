@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^pregled_skrbnistev/$', views.pregled_skrbnistev, name='pregled_skrbnistev'),
     url(r'^dodaj_skrbnistvo/$', views.dodaj_skrbnistvo, name='dodaj_skrbnistvo'),
     url(r'^delovniNalogi/$', views.izpisi_delavne_naloge, name='izpisi_delavne_naloge'),
-    url(r'^delovniNalog/(?P<delovniNalogId>[0-9]+)/$', views.delovniNalog, name='delovniNalogPodrobno'),
+    url(r'^delovniNalog/(?P<delovniNalogId>[0-9]+)/$', views.delovniNalogPodrobnosti, name='delovniNalogPodrobno'),
     url(r'^delovniNalog/$', views.delovniNalog, name='delovniNalog'),
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
 ]
