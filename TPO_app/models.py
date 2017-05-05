@@ -123,7 +123,6 @@ class DelovniNalog(models.Model):
         managed = False
         db_table = 'delovni_nalog'
 
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -171,7 +170,7 @@ class DjangoSession(models.Model):
 class DodeljenoOsebje(models.Model):
     id_osebja = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_osebja')
     id_obisk = models.ForeignKey('Obisk', models.DO_NOTHING, db_column='id_obisk')
-    je_zadolzena = models.IntegerField()
+    id_nadomestna = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_nadomestna',related_name='id_nadomestna',blank=True, null=True)
 
     class Meta:
         managed = False
@@ -199,7 +198,7 @@ class IzvajalecZd(models.Model):
         db_table = 'izvajalec_zd'
 
     def __str__(self):
-        return self.sifra
+        return self.sifra + ' ' + self.naziv
 
 
 class KontaktnaOseba(models.Model):
@@ -300,7 +299,6 @@ class Osebje(models.Model):
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'osebje'
@@ -363,7 +361,7 @@ class Posta(models.Model):
         db_table = 'posta'
 
     def __str__(self):
-        return str(self.st_poste)
+        return str(self.st_poste) + ' ' + self.naziv
 
 
 class SorodstvenaVez(models.Model):

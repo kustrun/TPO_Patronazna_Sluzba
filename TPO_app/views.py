@@ -102,6 +102,7 @@ def delovniNalog(request):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     else:
@@ -259,13 +260,14 @@ def delovniNalog(request):
         'delovniNalog': delovniNalog,
         'zdravilaFormSet': zdravilaFormSet,
         'barvaEpruvetFormSet': barvaEpruvetFormSet,
-        'ime': ime
+        'ime': name
     })
 
 def delovniNalogPodrobnosti(request, delovniNalogId):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     else:
@@ -344,7 +346,7 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
         'zdravilaFormSet': zdravilaFormSet,
         'barvaEpruvetFormSet': barvaEpruvetFormSet,
         'dodeljenoOsebjeDB': dodeljenoOsebjeDB,
-        'ime': ime
+        'ime': name
     })
 
 @login_required
@@ -352,14 +354,13 @@ def index(request):
     context = {}
     ime = ''
     if(Osebje.objects.filter(id_racuna=request.user).exists()):
-        ime = Osebje.objects.get(id_racuna=request.user)
+        ime = str(request.user.groups.all()[0].name) + ' ' +  str(Osebje.objects.get(id_racuna=request.user))
     elif(Pacient.objects.filter(id_racuna=request.user).exists()):
-        ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna = True)[0]
+        ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna = True)[0])
     else:
         ime = request.user.username
     context['ime'] = ime
     return render(request, 'patronaza/index.html', context)
-
 
 def login(request):
     context = {'loginForm': LoginForm(), 'errorMessage': ""}
@@ -390,7 +391,6 @@ def login(request):
     context['loginForm'] = form
     context['errorMessage'] = error
     return render(request, 'patronaza/login.html', context)
-
 
 def logout(request):
     auth_logout(request)
@@ -484,7 +484,9 @@ def registracija(request):
             ciphertext = hashids.encode(u.id)
             time = datetime.datetime.now().time()
             date = datetime.datetime.now().date()
-            sendString = "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ciphertext + "/" + str(date)+"*"+str(time)
+            sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
+                         "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                         "https://patronaza.herokuapp.com/patronaza/aktivacija/" + u.id + "/" + str(date) + "*" + str(time)
             posli_email(sendString,str(u.email))
             return HttpResponseRedirect(reverse('kontakt',kwargs={'id':instance.id}))
         else:
@@ -507,7 +509,7 @@ def kontakt(request,id):
 @login_required
 def pregled_skrbnistev(request):
     context = {'pacijenti' : SkrbnistvoForm()}
-    ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     context['ime'] = ime
     ur = request.user
     result = Pacient.objects.filter(id_racuna=ur).filter(lastnik_racuna = False)
@@ -521,7 +523,7 @@ def pregled_skrbnistev(request):
 @login_required
 def dodaj_skrbnistvo(request):
     context = {'skrbnistvoForm': SkrbnistvoForm(),'date':False, 'telefon':False}
-    ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     context['ime'] = ime
     if(request.method == 'POST'):
         sform = SkrbnistvoForm(request.POST)
@@ -553,7 +555,9 @@ def aktivacija(request,ur_id,date):
     if request.method == 'POST':
         time = datetime.datetime.now().time()
         date = datetime.datetime.now().date()
-        sendString = "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
+        sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
+                     "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                     "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
         posli_email(sendString, str('testko.test2@gmail.com'))
         return HttpResponseRedirect(reverse('login'))
     (d,t) = date.split("*")
@@ -567,54 +571,82 @@ def aktivacija(request,ur_id,date):
         return render(request, 'patronaza/aktivacija.html', context)
     context['potekla'] = True
     return render(request, 'patronaza/aktivacija.html', context)
+
+
 @login_required
 def izpisi_delavne_naloge(request):
-    context={'ime':''}
+    context = {'ime': ''}
     oseba = None
+    ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
-        ime = Osebje.objects.get(id_racuna=request.user)
+        ime = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
         oseba = Osebje.objects.get(id_racuna=request.user)
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
-        ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+        ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     else:
         ime = request.user.username
+    #a = Oskrba.objects.dn_list(oseba.id,request.user.groups.all()[0].name)
+
+    #for o in a:
+    #    print(o.id_dn.id_osebje,o.pacient_ime)
     context['ime'] = ime
     context['oseba'] = oseba
     obiski = VrstaObiska.objects.all()
+    zdravniki = None
+    sestre = None
     dn_list = Oskrba.objects.all()
     dodeljeno = DodeljenoOsebje.objects.all()
+    if (request.user.groups.all()[0].name == 'Patronažna sestra'):
+        dodeljeno = dodeljeno.filter(id_osebja=oseba)
+        #dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
+        zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+    elif (request.user.groups.all()[0].name == 'Zdravnik'):
+        dn_list = dn_list.filter(id_dn__id_osebje=oseba)
+        sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
+    else:
+        zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+        sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     context['obiski'] = obiski
+    context['zdravniki'] = zdravniki
+    context['sestre'] = sestre
     if request.method == 'POST':
-        izdajatelj = request.POST.get('izdajatelj',False)
+        izdajatelj = request.POST.get('izdajatelj', False)
         sestra = request.POST.get('sestra', False)
-        nadomestnaSestra = request.POST.get('nadomestnaSestra',False)
-        pacient = request.POST.get('pacient',False)
-        od = request.POST.get('od',False)
-        do = request.POST.get('do',False)
-        vrsta = request.POST.get('vrsta',False)
-        if(izdajatelj):
+        nadomestnaSestra = request.POST.get('nadomestnaSestra', False)
+        pacient = request.POST.get('pacient', False)
+        od = request.POST.get('od', False)
+        do = request.POST.get('do', False)
+        vrsta = request.POST.get('vrsta', False)
+        if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
-        if(pacient):
+        if (pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
-        if(sestra):
-            dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra).filter(je_zadolzena=0)
-        if(nadomestnaSestra):
+        if (sestra):
+            medicinska = Osebje.objects.filter(sifra=sestra)[0]
+            okolis = Okolis.objects.filter(id=medicinska.okolis.id)
+            dn_list = dn_list.filter(id_pacient__id_okolis__in=okolis)
+        if (nadomestnaSestra):
             dodeljeno = dodeljeno.filter(id_osebja__sifra=nadomestnaSestra).filter(je_zadolzena=1)
-        if(od and do):
-            dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od,do))
-        if(vrsta):
+        if (od and do):
+            dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
+        if (vrsta):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
-    hash = {}
-    for d in dn_list:
-        if(dodeljeno.filter(je_zadolzena=1).filter(id_obisk__id_dn=d.id_dn).exists()):
-            hash[d] = [dodeljeno.filter(je_zadolzena=1).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja]
-        elif(dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn).exists()):
-            hash[d] = [dodeljeno.filter(je_zadolzena=0).filter(id_obisk__id_dn=d.id_dn)[0].id_osebja,'/']
 
+    paginator = Paginator(dn_list, 15)  # Show 10 contacts per page
 
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     context['delavniNalogi'] = dn_list
-    context['hash'] = hash
+    context['paginator'] = contacts
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
+
 @login_required
 def delovni_nalog_podrobnosti(request,id):
     context={}
