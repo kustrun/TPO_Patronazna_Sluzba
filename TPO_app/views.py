@@ -572,7 +572,7 @@ def aktivacija(request,ur_id,date):
     context['potekla'] = True
     return render(request, 'patronaza/aktivacija.html', context)
 
-
+#TODO naredi filtre za medicinsko sestro??
 @login_required
 def izpisi_delavne_naloge(request):
     context = {'ime': ''}
@@ -595,10 +595,8 @@ def izpisi_delavne_naloge(request):
     zdravniki = None
     sestre = None
     dn_list = Oskrba.objects.all()
-    dodeljeno = DodeljenoOsebje.objects.all()
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
-        dodeljeno = dodeljeno.filter(id_osebja=oseba)
-        #dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
+        dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
         dn_list = dn_list.filter(id_dn__id_osebje=oseba)
@@ -626,7 +624,9 @@ def izpisi_delavne_naloge(request):
             okolis = Okolis.objects.filter(id=medicinska.okolis.id)
             dn_list = dn_list.filter(id_pacient__id_okolis__in=okolis)
         if (nadomestnaSestra):
-            dodeljeno = dodeljeno.filter(id_osebja__sifra=nadomestnaSestra).filter(je_zadolzena=1)
+            medicinska = Osebje.objects.filter(sifra=nadomestnaSestra)[0]
+            okolis = Okolis.objects.filter(id=medicinska.okolis.id)
+            dn_list = dn_list.filter(id_pacient__id_okolis__in=okolis)
         if (od and do):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
         if (vrsta):
@@ -646,6 +646,30 @@ def izpisi_delavne_naloge(request):
     context['delavniNalogi'] = dn_list
     context['paginator'] = contacts
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
+
+@login_required
+def nadomescanje(request):
+    context={'datum': False, 'vecji' :False}
+    osebje = Osebje.objects.get(id_racuna=request.user)
+    ime = "Patronažna sestra " + str(osebje)
+    context['ime'] = ime
+    sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
+    context['sestre'] = sestre
+    if request.method == 'POST':
+        sestra1 = Osebje.objects.get(sifra = request.POST.get('sestra'))
+        sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
+        od = request.POST.get('od')
+        do = request.POST.get('do')
+        if(datetime.datetime.strptime(od,'%Y-%m-%d').date() < datetime.datetime.now().date() or datetime.datetime.strptime(do,'%Y-%m-%d').date() < datetime.datetime.now().date()):
+            context['datum'] = True
+            return render(request, 'patronaza/nadomescanja.html', context)
+        if(od > do):
+            context['vecji'] = True
+            return render(request, 'patronaza/nadomescanja.html', context)
+        dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
+            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
+        return HttpResponseRedirect('/patronaza/domov')
+    return render(request, 'patronaza/nadomescanja.html', context)
 
 @login_required
 def delovni_nalog_podrobnosti(request,id):

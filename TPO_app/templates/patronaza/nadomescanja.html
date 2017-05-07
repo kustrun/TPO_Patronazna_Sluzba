@@ -1,0 +1,41 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <ul class="list-group" id="list">
+        <li class="list-group-item">
+            <label>Patronažna sestra</label>
+            <select name = "sestra" id="sestra" required>
+                <option value="">---------</option>
+                {% for sestra in sestre %}
+                    <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                {% endfor %}
+            </select>
+        </li>
+        <li class="list-group-item">
+            <label>nadomestna patronažna sestra</label>
+            <select name = "nadomestnaSestra" id="nadomestnaSestra" required>
+                <option value="">---------</option>
+                {% for sestra in sestre %}
+                    <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                {% endfor %}
+            </select>
+        </li>
+        <li class="list-group-item">
+            <label>Od</label>
+            <input type="date" name="od" id="od" required>
+        </li>
+        <li class="list-group-item">
+            <label>Do</label>
+            <input type="date" name="do" id="do" required>
+        </li>
+        {% if datum %}
+            <li class="list-group-item">Datum ne sme biti v preteklosti</li>
+        {% elif vecji %}
+            <li class="list-group-item">Začetni datum mora biti manjši ali enak končnemu</li>
+        {% endif %}
+    </ul>
+    <input type="submit" value="Dodeli">
+</form>
+{% endblock %}

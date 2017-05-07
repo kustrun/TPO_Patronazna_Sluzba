@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^delovniNalogi/', views.izpisi_delavne_naloge, name='izpisi_delavne_naloge'),
     url(r'^delovniNalog/(?P<delovniNalogId>[0-9]+)/$', views.delovniNalogPodrobnosti, name='delovniNalogPodrobno'),
     url(r'^delovniNalog/$', views.delovniNalog, name='delovniNalog'),
+    url(r'^nadomescanje/$',views.nadomescanje,name='nadomescanje'),
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
 ]

@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{% static 'patronaza/js/delovniNalog.js' %}"></script>
+    <script src="{% static 'patronaza/js/nadomescanje.js' %}"></script>
 	<script src="{% static 'patronaza/js/jquery.formset.js' %}"></script>
 </head>
 <body>
@@ -38,6 +39,9 @@
                 {% endif %}
                 {% if request.user.groups.all.0.name != 'Pacient' and not request.user.is_superuser %}
                 <li><a href="{% url 'izpisi_delavne_naloge' %}">Delavni nalogi</a> </li>
+                {% endif %}
+                {% if request.user.groups.all.0.name == 'Vodja patronaže' %}
+                <li><a href="{% url 'nadomescanje' %}">Nadomeščanje</a></li>
                 {% endif %}
                 {% if user.is_superuser %}
                 <li><a href="{% url 'osebjeAdd' %}">Dodaj osebje</a> </li>
