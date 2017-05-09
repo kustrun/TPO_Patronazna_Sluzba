@@ -163,6 +163,35 @@
 
 		</div>
 
+		<div id="odvzemKrvi" class="skupina">
+			<h3>6 - ODVZEM KRVI</h3>
+
+			{{ barvaEpruvetFormSet.management_form }}
+
+			{% if barvaEpruvetFormSet.non_form_errors %}
+				{% for error in barvaEpruvetFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="barvaEpruvetFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for barvaForm in barvaEpruvetFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ barvaForm.barva.id_for_label }}">Barva:</label>
+							{{ barvaForm.barva }}
+
+							<label for="{{ barvaForm.st_epruvet.id_for_label }}">Število epruvet:</label>
+							{{ barvaForm.st_epruvet }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+
 
         <div id="obiski" class="skupina">
 			<h3>7 - NAČRTI OBISKOV</h3>
@@ -189,7 +218,7 @@
                         <td style="width: 7%">{{ dodeljenoOsebje.id_osebja.sifra }}</td>
                         <td style="width: 15%">{{ dodeljenoOsebje.id_osebja.ime }} {{ dodeljenoOsebje.id_osebja.priimek }}</td>
 
-                        {% if dodeljenoOsebje.je_zadolzena == 0 %}
+                        {% if dodeljenoOsebje.id_nadomestna == NULL %}
                             <td style="width: 15%">Zadolžena</td>
                         {% else %}
                             <td style="width: 15%">Nadomestna</td>
