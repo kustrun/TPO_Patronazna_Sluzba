@@ -47,7 +47,7 @@ class BasePacientaFormSet(BaseFormSet):
                 if duplicates:
                     raise forms.ValidationError(
                         'Podvojena vnosa pacienta: %(pacient)s.',
-                        params={'pacient': pacient},
+                        params={'pacient': pacient.split("_")[0]},
                     )
 
 class BaseZdravilaFormSet(BaseFormSet):
@@ -184,7 +184,7 @@ def delovniNalog(request):
                                                                 status_dn=StatusDn.objects.get(naziv="aktiven"))
                                                             ]))
                                                         ],
-                                                        je_zadolzena=0)
+                                                        id_nadomestna=None)
 
                 if (int(len(obiski)) < min):
                     min = len(obiski)
@@ -215,7 +215,7 @@ def delovniNalog(request):
                 do = DodeljenoOsebje(
                     id_obisk=ob,
                     id_osebja=izbranaPS,
-                    je_zadolzena=0
+                    id_nadomestna=None
                 )
 
                 do.save()
@@ -263,6 +263,7 @@ def delovniNalog(request):
         'ime': name
     })
 
+@login_required
 def delovniNalogPodrobnosti(request, delovniNalogId):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
@@ -336,6 +337,31 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
     for i in range(0, odvzemKrviLen):
         barvaEpruvetFormSet[i].fields["barva"].initial = odvzemKrviDB[i].barva.barva
         barvaEpruvetFormSet[i].fields["st_epruvet"].initial = odvzemKrviDB[i].st_epruvet
+
+    return render(request, 'patronaza/delovniNalogPodrobnosti.html', {
+        'osebje': osebje,
+        'tipObiska': tipObiska,
+        'vrstaObiska': vrstaObiska,
+        'izberiPacientaFormSet': izberiPacientaFormSet,
+        'delovniNalog': delovniNalog,
+        'zdravilaFormSet': zdravilaFormSet,
+        'barvaEpruvetFormSet': barvaEpruvetFormSet,
+        'dodeljenoOsebjeDB': dodeljenoOsebjeDB,
+        'ime': name
+    })
+
+@login_required
+def meritvePodrobnosti(request, obiskId):
+    ime = ''
+    if (Osebje.objects.filter(id_racuna=request.user).exists()):
+        ime = Osebje.objects.get(id_racuna=request.user)
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
+        ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    else:
+        ime = request.user.username
+
+    print(obiskId)
 
     return render(request, 'patronaza/delovniNalogPodrobnosti.html', {
         'osebje': osebje,
