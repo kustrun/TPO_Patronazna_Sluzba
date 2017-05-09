@@ -9,7 +9,7 @@
             <select name = "sestra" id="sestra" required>
                 <option value="">---------</option>
                 {% for sestra in sestre %}
-                    <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                    <option value="{{ sestra.sifra }}" {% if sestra1 and sestra.sifra == sestra1.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                 {% endfor %}
             </select>
         </li>
@@ -18,17 +18,17 @@
             <select name = "nadomestnaSestra" id="nadomestnaSestra" required>
                 <option value="">---------</option>
                 {% for sestra in sestre %}
-                    <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                    <option value="{{ sestra.sifra }}" {% if sestra2 and sestra.sifra == sestra2.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                 {% endfor %}
             </select>
         </li>
         <li class="list-group-item">
             <label>Od</label>
-            <input type="date" name="od" id="od" required>
+            <input type="date" name="od" id="od" {% if datumOd %}value="{{ datumOd }}"{% endif %}  required>
         </li>
         <li class="list-group-item">
             <label>Do</label>
-            <input type="date" name="do" id="do" required>
+            <input type="date" name="do" id="do" {% if datumDo %}value="{{ datumDo }}"{% endif %} required>
         </li>
         {% if datum %}
             <li class="list-group-item">Datum ne sme biti v preteklosti</li>

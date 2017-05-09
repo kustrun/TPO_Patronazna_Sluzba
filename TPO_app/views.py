@@ -675,7 +675,7 @@ def izpisi_delavne_naloge(request):
 
 @login_required
 def nadomescanje(request):
-    context={'datum': False, 'vecji' :False}
+    context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False}
     osebje = Osebje.objects.get(id_racuna=request.user)
     ime = "Patronažna sestra " + str(osebje)
     context['ime'] = ime
@@ -686,6 +686,10 @@ def nadomescanje(request):
         sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
         od = request.POST.get('od')
         do = request.POST.get('do')
+        context['sestra1'] = sestra1
+        context['sestra2'] = sestra2
+        context['datumOd'] = od
+        context['datumDo'] = do
         if(datetime.datetime.strptime(od,'%Y-%m-%d').date() < datetime.datetime.now().date() or datetime.datetime.strptime(do,'%Y-%m-%d').date() < datetime.datetime.now().date()):
             context['datum'] = True
             return render(request, 'patronaza/nadomescanja.html', context)
