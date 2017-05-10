@@ -15,7 +15,7 @@
                 <select name = "izdajatelj">
                     <option value="">---------</option>
                     {% for zdravnik in zdravniki %}
-                        <option value="{{ zdravnik.sifra }}">{{ zdravnik.sifra }} {{ zdravnik }}</option>
+                        <option value="{{ zdravnik.sifra }}" {% if zdravnik.sifra == izdajatelj %}selected{% endif %}>{{ zdravnik.sifra }} {{ zdravnik }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -28,7 +28,7 @@
                 <select name = "sestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}" {% if sestra.sifra == sestraSifra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -41,14 +41,14 @@
                 <select name = "nadomestnaSestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}"{% if sestra.sifra == nadomestnaSestra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>
-                <input type="text" name="pacient">
+                <input type="text" name="pacient" value="{% if pacient %}{{ pacient }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Od</label>
@@ -63,13 +63,13 @@
                 <select name = "vrsta">
                     <option value="">---------</option>
                     {% for obisk in obiski %}
-                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                        <option value="{{ obisk.id }}" {% if obisk.id == vrsta %}selected{% endif %}>{{ obisk.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
 
         </ul>
-            <input type="submit" value="Filtriraj">
+            <input type="submit" value="Filtriraj" class="btn btn-info btn-lg">
         </form>
     </div>
     <div class="col-sm-9">
@@ -81,18 +81,20 @@
                     <th>Medicinska sestra</th>
                     <th>Nadomestna sestra</th>
                     <th>Pacient</th>
+                    <th>Datum prvega obiska</th>
                     <th>Podrobnosti</th>
                 </tr>
             </thead>
             <tbody>
-                {% for nalog in paginator %}
+                {% for p in paginator %}
                     <tr>
-                        <th>{{ nalog.id_dn.id_osebje }}</th>
-                        <th>{{ nalog.id_dn.id_vrsta }}</th>
-                        <th>/</th>
-                        <th>/</th>
-                        <th>{{ nalog.id_pacient }}</th>
-                        <th><a href="{% url 'delovniNalogPodrobno' delovniNalogId=nalog.id_dn.id %}">Podrobnosti</a></th>
+                        <th>{{ p.1.0.id_dn.id_osebje }}</th>
+                        <th>{{ p.1.0.id_dn.id_vrsta }}</th>
+                        <th>{{ p.1.1.0 }}</th>
+                        <th>{{ p.1.1.1 }}</th>
+                        <th>{{ p.1.0.id_pacient }}</th>
+                        <th>{{ p.1.0.id_dn.datum_prvega_obiska | date:"d.m.Y" }}</th>
+                        <th><a href="{% url 'delovniNalogPodrobno' delovniNalogId=p.0 %}">Podrobnosti</a></th>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -2,6 +2,7 @@
 
 from django.shortcuts import render
 from django import forms
+from itertools import chain
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
@@ -598,7 +599,7 @@ def aktivacija(request,ur_id,date):
     context['potekla'] = True
     return render(request, 'patronaza/aktivacija.html', context)
 
-#TODO naredi filtre za medicinsko sestro??
+#TODO naredi filtre za nadomestno medicinsko sestro??
 @login_required
 def izpisi_delavne_naloge(request):
     context = {'ime': ''}
@@ -611,18 +612,16 @@ def izpisi_delavne_naloge(request):
         ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     else:
         ime = request.user.username
-    #a = Oskrba.objects.dn_list(oseba.id,request.user.groups.all()[0].name)
-
-    #for o in a:
-    #    print(o.id_dn.id_osebje,o.pacient_ime)
     context['ime'] = ime
     context['oseba'] = oseba
     obiski = VrstaObiska.objects.all()
     zdravniki = None
     sestre = None
-    dn_list = Oskrba.objects.all()
+    dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
+    dodeljeno = DodeljenoOsebje.objects.all()
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
         dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
+        dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
         zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
         dn_list = dn_list.filter(id_dn__id_osebje=oseba)
@@ -641,25 +640,40 @@ def izpisi_delavne_naloge(request):
         od = request.POST.get('od', False)
         do = request.POST.get('do', False)
         vrsta = request.POST.get('vrsta', False)
+        context['izdajatelj'] = izdajatelj
+        context['sestraSifra'] = sestra
+        context['nadomestnaSestra'] = nadomestnaSestra
+        context['pacient'] = pacient
+        context['vrsta'] = vrsta
         if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if (pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
         if (sestra):
-            medicinska = Osebje.objects.filter(sifra=sestra)[0]
-            okolis = Okolis.objects.filter(id=medicinska.okolis.id)
-            dn_list = dn_list.filter(id_pacient__id_okolis__in=okolis)
+            medicinska = Osebje.objects.get(sifra=sestra)
+            dodeljeno = dodeljeno.filter(id_osebja=medicinska)
+            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
+        # to spodaj je narobe
         if (nadomestnaSestra):
-            medicinska = Osebje.objects.filter(sifra=nadomestnaSestra)[0]
-            okolis = Okolis.objects.filter(id=medicinska.okolis.id)
-            dn_list = dn_list.filter(id_pacient__id_okolis__in=okolis)
+            medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
+            dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
+            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
         if (od and do):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
         if (vrsta):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
-
+    result = {}
+    for d in dn_list:
+        result.setdefault(d.id_dn.id,[]).append(d)
+        zadolzenaSestra = None
+        nadomestnaSestra = '/'
+        for p in dodeljeno.filter(id_obisk__id_dn=d.id_dn):
+            if zadolzenaSestra == None and p.id_osebja != None:
+                zadolzenaSestra = p.id_osebja
+            if nadomestnaSestra == '/' and p.id_nadomestna != None:
+                nadomestnaSestra = p.id_nadomestna
+        result[d.id_dn.id].append([zadolzenaSestra,nadomestnaSestra])
     paginator = Paginator(dn_list, 15)  # Show 10 contacts per page
-
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -670,7 +684,8 @@ def izpisi_delavne_naloge(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
     context['delavniNalogi'] = dn_list
-    context['paginator'] = contacts
+    context['result'] = result
+    context['paginator'] = result.items()
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
 
 @login_required
@@ -698,6 +713,8 @@ def nadomescanje(request):
             return render(request, 'patronaza/nadomescanja.html', context)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
             .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
+        dodeljeno2 = DodeljenoOsebje.objects.filter(id_osebja=sestra2,id_nadomestna=sestra2)\
+            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=None)
         return HttpResponseRedirect('/patronaza/domov')
     return render(request, 'patronaza/nadomescanja.html', context)
 
