@@ -2,8 +2,6 @@ $(document).ready(function(){
 
     var result = new Array();
     $('tr').each(function(i,item) {
-        console.log($(this).attr('aktivnost'));
-
         if( (typeof $(this).attr('aktivnost') != 'undefined') && ($(this).attr('aktivnost') != '') && ($(this).attr('aktivnost') != ' ') ) {
             if(result.indexOf($(this).attr('aktivnost')) == -1){
                 result.push(($(this).attr('aktivnost')));

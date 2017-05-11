@@ -275,6 +275,7 @@ $(document).ready(function(){
         }
     });
 
+
     var split;
     if( typeof $('#id_izberiPacienta-0-ime').val() != 'undefined') {
         split = $('#id_izberiPacienta-0-ime').val().split("&");
