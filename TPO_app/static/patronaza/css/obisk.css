@@ -31,7 +31,7 @@
   width: 100%;
 }
 
-#obiskPodrobnosti th, td {
+#obiskPodrobnosti th, #obiskPodrobnosti td {
   width: 33%;
   padding-left: 10px;
   border: 1px solid black;
