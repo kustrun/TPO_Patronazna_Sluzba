@@ -16,9 +16,10 @@ urlpatterns = [
     url(r'^pregled_skrbnistev/$', views.pregled_skrbnistev, name='pregled_skrbnistev'),
     url(r'^dodaj_skrbnistvo/$', views.dodaj_skrbnistvo, name='dodaj_skrbnistvo'),
     url(r'^delovniNalogi/', views.izpisi_delavne_naloge, name='izpisi_delavne_naloge'),
-    #url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
-    url(r'^delovniNalog/(?P<delovniNalogId>[0-9]+)/$', views.delovniNalogPodrobnosti, name='delovniNalogPodrobno'),
+    url(r'^delovniNalogPodrobno/(?P<delovniNalogId>[0-9]+)/$', views.delovniNalogPodrobnosti, name='delovniNalogPodrobno'),
     url(r'^delovniNalog/$', views.delovniNalog, name='delovniNalog'),
     url(r'^nadomescanje/$',views.nadomescanje,name='nadomescanje'),
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
+    #url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
+    url(r'^obiskPodrobno/(?P<obiskId>[0-9]+)$', views.obiskPodrobnosti, name='obiskPodrobno'),
 ]

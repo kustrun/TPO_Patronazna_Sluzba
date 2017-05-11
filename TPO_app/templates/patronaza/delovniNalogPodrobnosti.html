@@ -242,7 +242,7 @@
                             <td>/</td>
                         {% endif %}
 
-                        <td style="width: 5%"><a href="">več...</a></td>
+                        <td style="width: 5%"><a href="{% url 'obiskPodrobno' obiskId=dodeljenoOsebje.id_obisk.id %}">več</a></td>
 
                     </tr>
                     {% endfor %}
