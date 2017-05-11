@@ -39,6 +39,7 @@
                 {% endif %}
                 {% if request.user.groups.all.0.name != 'Pacient' and not request.user.is_superuser %}
                 <li><a href="{% url 'izpisi_delavne_naloge' %}">Delavni nalogi</a> </li>
+                <!--<li><a href="{# url 'izpisi_obiske' #}">Obiski</a> </li>-->
                 {% endif %}
                 {% if request.user.groups.all.0.name == 'Vodja patronaže' %}
                 <li><a href="{% url 'nadomescanje' %}">Nadomeščanje</a></li>

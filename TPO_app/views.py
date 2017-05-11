@@ -16,6 +16,7 @@ from django.core.mail import send_mail
 from hashids import Hashids
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
+import re
 from datetime import timedelta
 from .auth import EmailBackend, BlackListBackend
 
@@ -512,8 +513,8 @@ def registracija(request):
             time = datetime.datetime.now().time()
             date = datetime.datetime.now().date()
             sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
-                         "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
-                         "https://patronaza.herokuapp.com/patronaza/aktivacija/" + u.id + "/" + str(date) + "*" + str(time)
+                         " aplikacije Patronažna služba. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                         "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ciphertext + "/" + str(date) + "*" + str(time)
             posli_email(sendString,str(u.email))
             return HttpResponseRedirect(reverse('kontakt',kwargs={'id':instance.id}))
         else:
@@ -578,13 +579,14 @@ def aktivacija(request,ur_id,date):
     context = {'potekla':False}
     hashids = Hashids(salt="salt1234")
     id = hashids.decode(ur_id)
+    print(id)
     ur = User.objects.get(pk=int(id[0]))
     if request.method == 'POST':
         time = datetime.datetime.now().time()
         date = datetime.datetime.now().date()
         sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
-                     "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
-                     "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
+                     " aplikacije Patronažna služba. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                     "https://patronaza.herokuapp.com/patronaza/aktivacija/" + hashids.encode(ur.id) + "/" + str(date) + "*" + str(time)
         posli_email(sendString, str('testko.test2@gmail.com'))
         return HttpResponseRedirect(reverse('login'))
     (d,t) = date.split("*")
@@ -620,8 +622,12 @@ def izpisi_delavne_naloge(request):
     dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
     dodeljeno = DodeljenoOsebje.objects.all()
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
-        dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
+        dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                          ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                      'AND (dodeljeno.id_osebja='+str(oseba.id)+'OR dodeljeno.id_nadomestna='+str(oseba.id)+')' )
+
+        dn_list = dn_list.filter(id_dn__in=dn)
         zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
         dn_list = dn_list.filter(id_dn__id_osebje=oseba)
@@ -639,29 +645,58 @@ def izpisi_delavne_naloge(request):
         pacient = request.POST.get('pacient', False)
         od = request.POST.get('od', False)
         do = request.POST.get('do', False)
+        error = False
+        if(od and do):
+            try:
+                datetime.datetime.strptime(od, '%d.%m.%Y')
+                datetime.datetime.strptime(do, '%d.%m.%Y')
+            except:
+                error = "Nepravilen format datuma. Pravilen format d.m.Y"
+                pass
+            if(not error):
+                od = datetime.datetime.strptime(datetime.datetime.strptime(od,'%d.%m.%Y').strftime('%Y-%m-%d'),'%Y-%m-%d').date()
+                do = datetime.datetime.strptime(datetime.datetime.strptime(do,'%d.%m.%Y').strftime('%Y-%m-%d'),'%Y-%m-%d').date()
+        elif((od and not do) or (not od and do)):
+            error = "Izpolni oba datuma."
         vrsta = request.POST.get('vrsta', False)
         context['izdajatelj'] = izdajatelj
         context['sestraSifra'] = sestra
         context['nadomestnaSestra'] = nadomestnaSestra
         context['pacient'] = pacient
         context['vrsta'] = vrsta
+        context['odDatum'] = od
+        context['doDatum'] = do
         if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if (pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
-        if (sestra):
+
+        if(sestra and nadomestnaSestra and sestra==nadomestnaSestra):
             medicinska = Osebje.objects.get(sifra=sestra)
-            dodeljeno = dodeljeno.filter(id_osebja=medicinska)
-            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
-        # to spodaj je narobe
-        if (nadomestnaSestra):
-            medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
-            dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
-            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
-        if (od and do):
+            dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                          ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                          'AND (dodeljeno.id_osebja=' + str(
+                medicinska.id) + 'OR dodeljeno.id_nadomestna=' + str(medicinska.id) + ')')
+
+            dn_list = dn_list.filter(id_dn__in=dn)
+        else:
+            if (sestra):
+                medicinska = Osebje.objects.get(sifra=sestra)
+                dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra)
+                dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
+            # to spodaj je narobe
+            if (nadomestnaSestra):
+                medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
+                dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
+                dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                              ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                          'AND (dodeljeno.id_nadomestna='+str(medicinska.id)+')' )
+                dn_list = dn_list.filter(id_dn__in=dn)
+        if (od and do and not error):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
         if (vrsta):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
+        context['error'] = error
     result = {}
     for d in dn_list:
         result.setdefault(d.id_dn.id,[]).append(d)
@@ -689,6 +724,122 @@ def izpisi_delavne_naloge(request):
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
 
 @login_required
+def izpisi_obiske(request):
+    context = {'ime': ''}
+    oseba = None
+    ime = ''
+    if (Osebje.objects.filter(id_racuna=request.user).exists()):
+        ime = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+        oseba = Osebje.objects.get(id_racuna=request.user)
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
+        ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
+    else:
+        ime = request.user.username
+    context['ime'] = ime
+    context['oseba'] = oseba
+    obiski = VrstaObiska.objects.all()
+    statusi = StatusObiska.objects.all()
+    zdravniki = None
+    sestre = None
+    dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
+    dodeljeno = DodeljenoOsebje.objects.all()
+
+    if (request.user.groups.all()[0].name == 'Patronažna sestra'):
+        dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
+        dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
+        zdravniki = Osebje.objects.filter(
+            Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+    elif (request.user.groups.all()[0].name == 'Zdravnik'):
+        dn_list = dn_list.filter(id_dn__id_osebje=oseba)
+        sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
+    else:
+        zdravniki = Osebje.objects.filter(
+            Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+        sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
+    context['obiski'] = obiski
+    context['statusi'] = statusi
+    context['zdravniki'] = zdravniki
+    context['sestre'] = sestre
+
+    if request.method == 'POST':
+        izdajatelj = request.POST.get('izdajatelj', False)
+        sestra = request.POST.get('sestra', False)
+        nadomestnaSestra = request.POST.get('nadomestnaSestra', False)
+        pacient = request.POST.get('pacient', False)
+        od = request.POST.get('od', False)
+        do = request.POST.get('do', False)
+        vrsta = request.POST.get('vrsta', False)
+        status = request.POST.get('status', False)
+        context['izdajatelj'] = izdajatelj
+        context['sestraSifra'] = sestra
+        context['nadomestnaSestra'] = nadomestnaSestra
+        context['pacient'] = pacient
+        context['vrsta'] = vrsta
+        context['status'] = status
+        if (izdajatelj):
+            dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
+        if (pacient):
+            dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
+        if (sestra):
+            medicinska = Osebje.objects.get(sifra=sestra)
+            dodeljeno = dodeljeno.filter(id_osebja=medicinska)
+            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
+        # to spodaj je narobe
+        if (nadomestnaSestra):
+            medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
+            dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
+            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
+        if (od and do):
+            dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
+        if (vrsta):
+            dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
+        if (status):
+            dn_list = dn_list.filter(id_dn__status_dn__naziv=status)
+
+    obiski_list = []
+    pacient_list = []
+    sestra_list = []
+    nadomestnaSestra_list = []
+
+    for dn in dn_list:
+        o = Obisk.objects.filter(id_dn=dn.id_dn)
+        obiski_list = list(chain(obiski_list, o))
+        p = dn.id_pacient
+        for ob in o:
+            pacient_list.append(p)
+
+        # medicinske sestre
+        zadolzenaSestra = None
+        nadomestnaSestra = '/'
+        for s in dodeljeno.filter(id_obisk__id_dn=dn.id_dn):
+            if zadolzenaSestra == None and s.id_osebja != None:
+                zadolzenaSestra = s.id_osebja
+            if nadomestnaSestra == '/' and s.id_nadomestna != None:
+                nadomestnaSestra = s.id_nadomestna
+
+        for ob in o:
+            sestra_list.append(zadolzenaSestra)
+            nadomestnaSestra_list.append(nadomestnaSestra)
+
+    paginator = Paginator(obiski_list, 15)  # Show 10 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    context['obiski_list'] = obiski_list
+    context['sestra_list'] = sestra_list
+    context['nadomestnaSestra_list'] = nadomestnaSestra_list
+    context['pacient_list'] = pacient_list
+    context['loop_times'] = range(len(pacient_list))
+    context['paginator'] = contacts
+    return render(request, 'patronaza/izpisiObiske.html', context)
+
+@login_required
 def nadomescanje(request):
     context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False}
     osebje = Osebje.objects.get(id_racuna=request.user)
@@ -701,11 +852,25 @@ def nadomescanje(request):
         sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
         od = request.POST.get('od')
         do = request.POST.get('do')
+        error = False
         context['sestra1'] = sestra1
         context['sestra2'] = sestra2
         context['datumOd'] = od
         context['datumDo'] = do
-        if(datetime.datetime.strptime(od,'%Y-%m-%d').date() < datetime.datetime.now().date() or datetime.datetime.strptime(do,'%Y-%m-%d').date() < datetime.datetime.now().date()):
+        context['error'] = error
+        try:
+            datetime.datetime.strptime(od, '%d.%m.%Y')
+            datetime.datetime.strptime(do, '%d.%m.%Y')
+        except:
+            error = "Nepravilen format datuma. Pravilen format d.m.Y"
+            context['error'] = error
+            return render(request, 'patronaza/nadomescanja.html', context)
+        if (not error):
+            od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                            '%Y-%m-%d').date()
+            do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                            '%Y-%m-%d').date()
+        if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
             context['datum'] = True
             return render(request, 'patronaza/nadomescanja.html', context)
         if(od > do):
