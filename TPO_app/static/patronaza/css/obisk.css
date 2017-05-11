@@ -27,11 +27,11 @@
   color: black;
 }
 
-table {
+#obiskPodrobnosti table {
   width: 100%;
 }
 
-th, td {
+#obiskPodrobnosti th, td {
   width: 33%;
   padding-left: 10px;
   border: 1px solid black;
