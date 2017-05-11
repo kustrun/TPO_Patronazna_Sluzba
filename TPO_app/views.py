@@ -16,6 +16,7 @@ from django.core.mail import send_mail
 from hashids import Hashids
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
+import re
 from datetime import timedelta
 from .auth import EmailBackend, BlackListBackend
 
@@ -620,8 +621,12 @@ def izpisi_delavne_naloge(request):
     dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
     dodeljeno = DodeljenoOsebje.objects.all()
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
-        dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
+        dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                          ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                      'AND (dodeljeno.id_osebja='+str(oseba.id)+'OR dodeljeno.id_nadomestna='+str(oseba.id)+')' )
+
+        dn_list = dn_list.filter(id_dn__in=dn)
         zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
         dn_list = dn_list.filter(id_dn__id_osebje=oseba)
@@ -639,29 +644,58 @@ def izpisi_delavne_naloge(request):
         pacient = request.POST.get('pacient', False)
         od = request.POST.get('od', False)
         do = request.POST.get('do', False)
+        error = False
+        if(od and do):
+            try:
+                datetime.datetime.strptime(od, '%d.%m.%Y')
+                datetime.datetime.strptime(do, '%d.%m.%Y')
+            except:
+                error = "Nepravilen format datuma. Pravilen format d.m.Y"
+                pass
+            if(not error):
+                od = datetime.datetime.strptime(datetime.datetime.strptime(od,'%d.%m.%Y').strftime('%Y-%m-%d'),'%Y-%m-%d').date()
+                do = datetime.datetime.strptime(datetime.datetime.strptime(do,'%d.%m.%Y').strftime('%Y-%m-%d'),'%Y-%m-%d').date()
+        elif((od and not do) or (not od and do)):
+            error = "Izpolni oba datuma."
         vrsta = request.POST.get('vrsta', False)
         context['izdajatelj'] = izdajatelj
         context['sestraSifra'] = sestra
         context['nadomestnaSestra'] = nadomestnaSestra
         context['pacient'] = pacient
         context['vrsta'] = vrsta
+        context['odDatum'] = od
+        context['doDatum'] = do
         if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if (pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
-        if (sestra):
+
+        if(sestra and nadomestnaSestra and sestra==nadomestnaSestra):
             medicinska = Osebje.objects.get(sifra=sestra)
-            dodeljeno = dodeljeno.filter(id_osebja=medicinska)
-            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
-        # to spodaj je narobe
-        if (nadomestnaSestra):
-            medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
-            dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
-            dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
-        if (od and do):
+            dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                          ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                          'AND (dodeljeno.id_osebja=' + str(
+                medicinska.id) + 'OR dodeljeno.id_nadomestna=' + str(medicinska.id) + ')')
+
+            dn_list = dn_list.filter(id_dn__in=dn)
+        else:
+            if (sestra):
+                medicinska = Osebje.objects.get(sifra=sestra)
+                dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra)
+                dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
+            # to spodaj je narobe
+            if (nadomestnaSestra):
+                medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
+                dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
+                dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
+                                              ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
+                                          'AND (dodeljeno.id_nadomestna='+str(medicinska.id)+')' )
+                dn_list = dn_list.filter(id_dn__in=dn)
+        if (od and do and not error):
             dn_list = dn_list.filter(id_dn__datum_prvega_obiska__range=(od, do))
         if (vrsta):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
+        context['error'] = error
     result = {}
     for d in dn_list:
         result.setdefault(d.id_dn.id,[]).append(d)
