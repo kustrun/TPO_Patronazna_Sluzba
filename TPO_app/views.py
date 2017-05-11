@@ -513,8 +513,8 @@ def registracija(request):
             time = datetime.datetime.now().time()
             date = datetime.datetime.now().date()
             sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
-                         "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
-                         "https://patronaza.herokuapp.com/patronaza/aktivacija/" + u.id + "/" + str(date) + "*" + str(time)
+                         " aplikacije Patronažna služba. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                         "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ciphertext + "/" + str(date) + "*" + str(time)
             posli_email(sendString,str(u.email))
             return HttpResponseRedirect(reverse('kontakt',kwargs={'id':instance.id}))
         else:
@@ -579,13 +579,14 @@ def aktivacija(request,ur_id,date):
     context = {'potekla':False}
     hashids = Hashids(salt="salt1234")
     id = hashids.decode(ur_id)
+    print(id)
     ur = User.objects.get(pk=int(id[0]))
     if request.method == 'POST':
         time = datetime.datetime.now().time()
         date = datetime.datetime.now().date()
         sendString = "Pozdravljeni \n Ustvarili ste si račun za uporabo naše" \
-                     "aplikacije. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
-                     "https://patronaza.herokuapp.com/patronaza/aktivacija/" + ur_id + "/" + str(date) + "*" + str(time)
+                     " aplikacije Patronažna služba. Da se boste lahko prijavili prosimo odprite spodnjo povezavo\n" \
+                     "https://patronaza.herokuapp.com/patronaza/aktivacija/" + hashids.encode(ur.id) + "/" + str(date) + "*" + str(time)
         posli_email(sendString, str('testko.test2@gmail.com'))
         return HttpResponseRedirect(reverse('login'))
     (d,t) = date.split("*")
