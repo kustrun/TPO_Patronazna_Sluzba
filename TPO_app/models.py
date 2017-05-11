@@ -262,6 +262,7 @@ class Obisk(models.Model):
     podrobnosti_obiska = models.TextField(blank=True, null=True)
     izbran_datum = models.DateField(blank=True, null=True)
     cena = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    obvezen = models.IntegerField()
 
     class Meta:
         managed = False

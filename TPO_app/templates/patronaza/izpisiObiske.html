@@ -1,0 +1,124 @@
+{% extends "./base.html" %}
+{% load static %}
+{% load index %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-3">
+        <h2>Filtri</h2>
+        <form method="POST">
+            {% csrf_token %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>Odgovorni</label>
+                {% if request.user.groups.all.0.name == 'Zdravnik' %}
+                <input type="text" name="izdajatelj" value = "{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "izdajatelj">
+                    <option value="">---------</option>
+                    {% for zdravnik in zdravniki %}
+                        <option value="{{ zdravnik.sifra }}">{{ zdravnik.sifra }} {{ zdravnik }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <label>Patronažna sestra</label>
+                {% if request.user.groups.all.0.name == 'Patronažna sestra' %}
+                <input type="text" name="sestra" value = "{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "sestra">
+                    <option value="">---------</option>
+                    {% for sestra in sestre %}
+                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <label>Nadomestna sestra</label>
+                {% if request.user.groups.all.0.name == 'Patronažna sestra' %}
+                <input type="text" name="nadomestnaSestra" value="{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "nadomestnaSestra">
+                    <option value="">---------</option>
+                    {% for sestra in sestre %}
+                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <label>Pacient</label>
+                <input type="text" name="pacient">
+            </li>
+            <li class="list-group-item">
+                <label>Od</label>
+                <input type="date" name="od">
+            </li>
+            <li class="list-group-item">
+                <label>Do</label>
+                <input type="date" name="do">
+            </li>
+            <li class="list-group-item">
+                <label>Vrsta</label>
+                <select name = "vrsta">
+                    <option value="">---------</option>
+                    {% for obisk in obiski %}
+                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li class="list-group-item">
+                <label>Status</label>
+                <select name = "status">
+                    <option value="">---------</option>
+                    {% for s in statusi %}
+                        <option value="{{ s.naziv }}">{{ s.naziv }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+        </ul>
+            <input type="submit" value="Filtriraj">
+        </form>
+    </div>
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Odgovorni</th>
+                    <th>Vrsta obiska</th>
+                    <th>Medicinska sestra</th>
+                    <th>Nadomestna sestra</th>
+                    <th>Pacient</th>
+                    <th>Status</th>
+                    <th>Podrobnosti</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in loop_times %}
+                    <tr>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_osebje }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_vrsta }}{% endwith %}</th>
+                        <th>{% with index_result=sestra_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=nadomestnaSestra_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=pacient_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.status_dn.naziv }}{% endwith %}</th>
+                        <th><a href="#">Podrobnosti</a></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <ul class="pagination">
+        {% if paginator.has_previous %}
+        <li><a href="?page={{ paginator.previous_page_number }}">«</a></li>
+        {% endif %}
+        <li><a class="active" href="&">{{ paginator.number }}</a></li>
+        {% if paginator.has_next %}
+        <li><a href="?page={{ paginator.next_page_number }}">»</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
