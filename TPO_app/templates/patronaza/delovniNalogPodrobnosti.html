@@ -242,7 +242,11 @@
                             <td>/</td>
                         {% endif %}
 
-                        <td style="width: 5%"><a href="{% url 'obiskPodrobno' obiskId=dodeljenoOsebje.id_obisk.id %}">več</a></td>
+                        <td style="width: 5%">
+							{% if dodeljenoOsebje.id_obisk.status_obiska.naziv == "opravljen" %}
+								<a href="{% url 'obiskPodrobno' obiskId=dodeljenoOsebje.id_obisk.id %}">več</a>
+							{% endif %}
+						</td>
 
                     </tr>
                     {% endfor %}
