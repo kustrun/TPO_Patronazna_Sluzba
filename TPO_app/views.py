@@ -722,7 +722,6 @@ def izpisi_delavne_naloge(request):
     context['paginator'] = result.items()
     return render(request, 'patronaza/izpisiDelavneNaloge.html', context)
 
-
 @login_required
 def izpisi_obiske(request):
     context = {'ime': ''}
@@ -852,11 +851,25 @@ def nadomescanje(request):
         sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
         od = request.POST.get('od')
         do = request.POST.get('do')
+        error = False
         context['sestra1'] = sestra1
         context['sestra2'] = sestra2
         context['datumOd'] = od
         context['datumDo'] = do
-        if(datetime.datetime.strptime(od,'%Y-%m-%d').date() < datetime.datetime.now().date() or datetime.datetime.strptime(do,'%Y-%m-%d').date() < datetime.datetime.now().date()):
+        context['error'] = error
+        try:
+            datetime.datetime.strptime(od, '%d.%m.%Y')
+            datetime.datetime.strptime(do, '%d.%m.%Y')
+        except:
+            error = "Nepravilen format datuma. Pravilen format d.m.Y"
+            context['error'] = error
+            return render(request, 'patronaza/nadomescanja.html', context)
+        if (not error):
+            od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                            '%Y-%m-%d').date()
+            do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                            '%Y-%m-%d').date()
+        if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
             context['datum'] = True
             return render(request, 'patronaza/nadomescanja.html', context)
         if(od > do):

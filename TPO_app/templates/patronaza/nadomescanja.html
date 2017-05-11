@@ -24,16 +24,18 @@
         </li>
         <li class="list-group-item">
             <label>Od</label>
-            <input type="date" name="od" id="od" {% if datumOd %}value="{{ datumOd }}"{% endif %}  required>
+            <input type="text" name="od" id="od" {% if datumOd %}value="{{ datumOd }}"{% endif %}  required>
         </li>
         <li class="list-group-item">
             <label>Do</label>
-            <input type="date" name="do" id="do" {% if datumDo %}value="{{ datumDo }}"{% endif %} required>
+            <input type="text" name="do" id="do" {% if datumDo %}value="{{ datumDo }}"{% endif %} required>
         </li>
         {% if datum %}
             <li class="list-group-item">Datum ne sme biti v preteklosti</li>
         {% elif vecji %}
             <li class="list-group-item">Začetni datum mora biti manjši ali enak končnemu</li>
+        {% elif error %}
+            <li class="list-group-item">Nepravilen format datuma. Pravilen je d.m.Y</li>
         {% endif %}
     </ul>
     <input type="submit" value="Dodeli" class="btn btn-info btn-lg">
