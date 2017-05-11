@@ -8,20 +8,47 @@
             {% csrf_token %}
         <ul class="list-group">
             <li class="list-group-item">
-                <label>Izdajatelj</label>
-                <input type="text" name="izdajatelj">
+                <label>Odgovorni</label>
+                {% if request.user.groups.all.0.name == 'Zdravnik' %}
+                <input type="text" name="izdajatelj" value = "{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "izdajatelj">
+                    <option value="">---------</option>
+                    {% for zdravnik in zdravniki %}
+                        <option value="{{ zdravnik.sifra }}" {% if zdravnik.sifra == izdajatelj %}selected{% endif %}>{{ zdravnik.sifra }} {{ zdravnik }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Patronažna sestra</label>
-                <input type="text" name="sestra">
+                {% if request.user.groups.all.0.name == 'Patronažna sestra' %}
+                <input type="text" name="sestra" value = "{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "sestra">
+                    <option value="">---------</option>
+                    {% for sestra in sestre %}
+                        <option value="{{ sestra.sifra }}" {% if sestra.sifra == sestraSifra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Nadomestna sestra</label>
-                <input type="text" name="nadomestnaSestra">
+                {% if request.user.groups.all.0.name == 'Patronažna sestra' %}
+                <input type="text" name="nadomestnaSestra" value="{{ oseba.ime }} {{ oseba.priimek }}" disabled>
+                {% else %}
+                <select name = "nadomestnaSestra">
+                    <option value="">---------</option>
+                    {% for sestra in sestre %}
+                        <option value="{{ sestra.sifra }}"{% if sestra.sifra == nadomestnaSestra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>
-                <input type="text" name="pacient">
+                <input type="text" name="pacient" value="{% if pacient %}{{ pacient }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Od</label>
@@ -36,50 +63,52 @@
                 <select name = "vrsta">
                     <option value="">---------</option>
                     {% for obisk in obiski %}
-                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                        <option value="{{ obisk.id }}" {% if obisk.id == vrsta %}selected{% endif %}>{{ obisk.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
 
         </ul>
-            <input type="submit" value="Filtriraj">
+            <input type="submit" value="Filtriraj" class="btn btn-info btn-lg">
         </form>
     </div>
     <div class="col-sm-9">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th><a href="?order=id_osebje.priimek">Izdajatelj</a></th>
-                    <th><a href="?order=id_vrsta">Vrsta obiska</a></th>
-                    <th><a href="?order=vrsta_storitve">Medicinska sestra</a></th>
-                    <th><a href="?order=vrsta_storitve">Nadomestna sestra</a></th>
-                    <th><a href="?order=vrsta_storitve">Pacient</a></th>
+                    <th>Odgovorni</th>
+                    <th>Vrsta obiska</th>
+                    <th>Medicinska sestra</th>
+                    <th>Nadomestna sestra</th>
+                    <th>Pacient</th>
+                    <th>Datum prvega obiska</th>
                     <th>Podrobnosti</th>
                 </tr>
             </thead>
             <tbody>
-            {% for d in delavniNalogi %}
-                <tr>
-                    <th>{{ d.id_osebje }}</th>
-                    <th>{{ d.id_vrsta }}</th>
-                    <th>sestra</th>
-                    <th>sestra</th>
-                    <th>pacient</th>
-                    <th><a href="{% url 'delovni_nalog_podrobnosti' id=d.id %}">Podrobnosti</a></th>
-                </tr>
-            {% endfor %}
+                {% for p in paginator %}
+                    <tr>
+                        <th>{{ p.1.0.id_dn.id_osebje }}</th>
+                        <th>{{ p.1.0.id_dn.id_vrsta }}</th>
+                        <th>{{ p.1.1.0 }}</th>
+                        <th>{{ p.1.1.1 }}</th>
+                        <th>{{ p.1.0.id_pacient }}</th>
+                        <th>{{ p.1.0.id_dn.datum_prvega_obiska | date:"d.m.Y" }}</th>
+                        <th><a href="{% url 'delovniNalogPodrobno' delovniNalogId=p.0 %}">Podrobnosti</a></th>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
 <div>
     <ul class="pagination">
-        {% if delavniNalogi.has_previous %}
-        <li><a href="?page={{ delavniNalogi.previous_page_number }}">«</a></li>
+        {% if paginator.has_previous %}
+        <li><a href="?page={{ paginator.previous_page_number }}">«</a></li>
         {% endif %}
-        <li><a class="active" href="&">{{ delavniNalogi.number }}</a></li>
-        {% if delavniNalogi.has_next %}
-        <li><a href="?page={{ delavniNalogi.next_page_number }}">»</a></li>
+        <li><a class="active" href="&">{{ paginator.number }}</a></li>
+        {% if paginator.has_next %}
+        <li><a href="?page={{ paginator.next_page_number }}">»</a></li>
         {% endif %}
     </ul>
 </div>

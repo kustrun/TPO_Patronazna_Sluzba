@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -99,8 +101,8 @@ class BarvaEpruvete(models.Model):
 class CrnaLista(models.Model):
     ip = models.TextField()  # This field type is a guess.
     poiskusi = models.IntegerField()
-    datum_zaklepanja = models.DateField()
-    id_ur = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='id_ur')
+    datum_zaklepanja = models.DateTimeField()
+    id_ur = models.ForeignKey(User, models.DO_NOTHING, db_column='id_ur')
 
     class Meta:
         managed = False
@@ -120,7 +122,6 @@ class DelovniNalog(models.Model):
     class Meta:
         managed = False
         db_table = 'delovni_nalog'
-
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
@@ -169,8 +170,7 @@ class DjangoSession(models.Model):
 class DodeljenoOsebje(models.Model):
     id_osebja = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_osebja')
     id_obisk = models.ForeignKey('Obisk', models.DO_NOTHING, db_column='id_obisk')
-    je_zadolzena = models.IntegerField()
-    id = models.IntegerField(primary_key=True)
+    id_nadomestna = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_nadomestna',related_name='id_nadomestna',blank=True, null=True)
 
     class Meta:
         managed = False
@@ -188,7 +188,7 @@ class Injekcije(models.Model):
 
 
 class IzvajalecZd(models.Model):
-    šifra = models.CharField(unique=True, max_length=5)
+    sifra = models.CharField(unique=True, max_length=5)
     naziv = models.CharField(max_length=64)
     naslov = models.CharField(max_length=64)
     posta = models.ForeignKey('Posta', models.DO_NOTHING, db_column='posta', blank=True, null=True)
@@ -198,7 +198,7 @@ class IzvajalecZd(models.Model):
         db_table = 'izvajalec_zd'
 
     def __str__(self):
-        return self.šifra
+        return self.sifra + ' ' + self.naziv
 
 
 class KontaktnaOseba(models.Model):
@@ -279,7 +279,7 @@ class OdvzemKrvi(models.Model):
 
 
 class Okolis(models.Model):
-    šifra = models.CharField(max_length=32)
+    sifra = models.CharField(max_length=32)
     naziv = models.CharField(max_length=64)
 
     class Meta:
@@ -287,22 +287,24 @@ class Okolis(models.Model):
         db_table = 'okolis'
 
     def __str__(self):
-        return self.šifra
+        return self.sifra
 
 
 class Osebje(models.Model):
     id_racuna = models.OneToOneField(User, models.DO_NOTHING, db_column='id_racuna')
-    šifra = models.CharField(unique=True, max_length=5)
+    sifra = models.CharField(unique=True, max_length=5)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
-    telefon = models.CharField(max_length=32)
+    telefon = models.CharField(max_length=32, blank=True, null=True)
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'osebje'
+
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
 
 
 class Oskrba(models.Model):
@@ -326,6 +328,7 @@ class OstaliPodatki(models.Model):
         db_table = 'ostali_podatki'
 
 
+
 class Pacient(models.Model):
     id_racuna = models.ForeignKey(User, models.DO_NOTHING, db_column='id_racuna')
     st_kartice = models.CharField(max_length=32)
@@ -345,6 +348,9 @@ class Pacient(models.Model):
         managed = False
         db_table = 'pacient'
 
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
+
 
 class Posta(models.Model):
     st_poste = models.IntegerField(primary_key=True)
@@ -355,7 +361,7 @@ class Posta(models.Model):
         db_table = 'posta'
 
     def __str__(self):
-        return str(self.st_poste)
+        return str(self.st_poste) + ' ' + self.naziv
 
 
 class SorodstvenaVez(models.Model):
@@ -408,6 +414,9 @@ class VrstaObiska(models.Model):
         managed = False
         db_table = 'vrsta_obiska'
 
+    def __str__(self):
+        return self.naziv
+
 
 class VrstaPodatka(models.Model):
     naziv = models.CharField(max_length=64)
@@ -426,6 +435,9 @@ class VrstaStoritve(models.Model):
     class Meta:
         managed = False
         db_table = 'vrsta_storitve'
+
+    def __str__(self):
+        return self.naziv
 
 
 class Zdravila(models.Model):

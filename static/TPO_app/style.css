@@ -1,0 +1,261 @@
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+
+.prijava {
+	float: right;
+	clear:right;
+	height: 100%;
+	width: 40%;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+
+}
+/*aside, .zapisi{
+	float: left;
+}*/
+aside {
+	width: 25%;
+	clear: both;
+	margin-top: 10px;
+	padding: 10px;
+}
+aside input {
+	width: 100%;
+}
+.zapisi {
+	width: 75%;
+}
+
+.centered-content {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#main {
+	display: flex;
+	min-height:100vh;
+	background-color: white;
+	padding: 20px;
+}
+footer {
+	clear: both;
+	font-size: 70%;
+	color: rgb(191, 191, 191);
+	background: fixed;
+	background-color: rgb(77, 77, 77);
+	bottom:0px;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	
+}
+
+#login_form {
+	width: 100%;
+}
+#login_form fieldset {
+	width: 50%;
+	display: flex;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+}
+#login_form label,
+aside form input {
+	margin: 0.1em;
+}
+header {
+	background-color: rgb(77, 184, 255);
+	position: relative;
+}
+nav {
+	background-color: rgb(0, 107, 179);
+	text-align: center;
+}
+header button {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top: 0;
+	background-color: rgb(0, 107, 179);
+	border-color: rgb(0, 77, 128);
+	color: white;
+}
+body {
+	margin: 0;
+	background-color:rgb(230, 230, 230);
+}
+header img {
+	width: 100px;
+	height: 100px;
+}
+header img:hover {
+	transform: scale(1.25);	
+	transition: transform .25s ease;
+}
+
+nav ul {
+	margin:0px;
+	display: inline-flex;
+	position: relative;
+	list-style: none;
+}
+
+
+nav ul li:hover{
+	color:rgb(0, 107, 179);
+	background-color: white;
+	cursor: pointer;
+}
+nav ul li {
+	text-decoration: none;
+	color:white;
+	background-color: rgb(0, 107, 179);
+	padding: 10px 30px 10px 30px;
+}
+#popup {
+	display: none;
+}
+#popup:target {
+	display: block;
+	position: absolute;
+	background-color:white;
+	width: 600px;
+	height: 400px;
+	left: 50%;
+	top: 50%;
+	margin-left: -300px;
+	margin-top: -200px;
+	box-sizing:border-box;
+	border: 5px solid rgb(0, 107, 179);
+    flex-flow: row;
+}
+#popup p{
+	background-color: rgb(0, 107, 179);
+    padding: 16px 16px 16px 16px;
+    margin: 0;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+}
+#popup form {
+	text-align: center;
+	margin-top: 50px;
+}
+#popup div{
+	margin: 5px;
+}
+.zapisi table,
+.vozila table,
+.comments table{
+	width: 100%;
+	border-spacing: 0;
+}
+.zapisi img,
+.vozila img {
+	width: 200px;
+	height: 120px;
+}
+.comments img {
+	width: 90px;
+	height: 90px;
+}
+.zapisi img:hover,
+.vozila img:hover{
+	transform: scale(1.1);	
+	transition: transform .25s ease;
+}
+.zapisi caption,
+.vozila caption,
+.graf_porabe h2,
+.comments caption{
+	padding: 10px;
+	letter-spacing: 2px;
+	word-spacing: 10px;
+	font-size: 24px;
+	font-weight: 900; 
+	text-shadow: 2px 2px 5px grey;
+}
+.zapisi tbody td,
+.vozila tbody td,
+.comments tbody td {
+	padding:10px;
+}
+.zapisi tbody tr:nth-child(odd),
+.vozila tbody tr:nth-child(odd),
+.comments tbody tr:nth-child(odd) {
+	background: rgb(179, 179, 179);
+}
+
+.zapisi tbody tr:nth-child(even),
+.vozila tbody tr:nth-child(even),
+.comments tbody tr:nth-child(even) {
+	background: white
+}
+#paging  {
+	display: inline-block;
+}
+#paging li {
+	display: inline;
+}
+#glavna {
+	width: 300px;
+}
+.izdelek,
+.profil {
+	width: 95%;
+	margin: 20px;
+}
+.izdelek_podatki,
+.profil_podatki {
+	display: flex;
+}
+.izdelek h1,
+.profil h1 {
+	letter-spacing: 2px;
+	word-spacing: 10px;
+	font-size: 24px;
+	font-weight: 900; 
+	text-shadow: 2px 2px 5px grey;
+}
+#izd1 {
+	width: 40%;
+}
+
+#izd2 {
+	width: 50%;
+}
+
+#izd3 {
+	width: 10%;
+}
+#map {
+	height: 500px;
+	width: 100%;
+	margin: 20px;
+}
+aside form {
+	margin: 5px;
+}
+#main button,
+#main input[type="submit"] {	
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background-color: rgb(0, 107, 179);
+	border-color: rgb(0, 77, 128);
+	color: white;
+}
+.consump_calc fieldset {
+	height: auto;
+}
+#graf {
+	border:1px solid #000000;
+	width: 600px;
+	height: 300px;
+}

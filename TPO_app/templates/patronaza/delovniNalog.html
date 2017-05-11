@@ -2,18 +2,17 @@
 {% load static %}
 {% block content %}
 
-	<h1>Delovni nalog FORM</h1>
+<h1>Delovni nalog FORM</h1>
 
 	<form method="POST" action="#">
 		{% csrf_token %}
-
 
 		<div id="zdravnik" class="skupina">
 		  	<h3>1 - OSEBJE</h3>
 
 			<div class="fieldWrapper">
-				<label for="{{ osebje.sifra.id_for_label }}">Šifra:</label>
-				{{ osebje.sifra }}
+				<label for="{{ osebje.sifraVnos.id_for_label }}">Šifra:</label>
+				{{ osebje.sifraVnos }}
 			</div>
 
 			<div class="fieldWrapper">
@@ -30,24 +29,74 @@
 		<div id="vrstaObiska" class="skupina">
 			<h3>2 - TIP OBISKA</h3>
 
-			{% for tip in tipObiska.tip %}
-				<div class="fieldWrapper">
-					{{ tip }}
-				</div>
-			{% endfor %}
+			{% if request.user.groups.all.0.name == 'Zdravnik' %}
+				{% for tip in tipObiska.tip %}
+					<div class="fieldWrapper">
+						{{ tip }}
+					</div>
+				{% endfor %}
+			{% endif %}
+
+			{% if request.user.groups.all.0.name == 'Vodja patronaže' %}
+				{% for tip in tipObiska.tip %}
+					{% if tip.choice_value == 'preventivni' %}
+						<div class="fieldWrapper">
+							{{ tip }}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 
 		</div>
 
 		<div id="vrstaStoritve" class="skupina">
 			<h3>3 - VRSTA OBISKA</h3>
 
-			{% for vrsta in vrstaObiska.vrstaObiska %}
-				<div class="fieldWrapper">
-					{{ vrsta }}
-				</div>
-			{% endfor %}
+			{% if request.user.groups.all.0.name == 'Zdravnik' %}
+				{% for vrsta in vrstaObiska.vrstaObiska %}
+					<div class="fieldWrapper">
+						{{ vrsta }}
+					</div>
+				{% endfor %}
+			{% endif %}
+
+			{% if request.user.groups.all.0.name == 'Vodja patronaže' %}
+				{% for vrsta in vrstaObiska.vrstaObiska %}
+					{% if 'preventivni' in vrsta.choice_value %}
+						<div class="fieldWrapper">
+							{{ vrsta }}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 
 		</div>
+
+		<div id="pacient" class="skupina">
+			<h3>4 - PACIENT</h3>
+
+			{{ izberiPacientaFormSet.management_form }}
+
+			{% if izberiPacientaFormSet.non_form_errors %}
+				{% for error in izberiPacientaFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="izberiPacientaFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for izberiPacientaForm in izberiPacientaFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ izberiPacientaForm.ime.id_for_label }}">Pacient:</label>
+						   {{ izberiPacientaForm.ime }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		  </div>
 
 		<div id="veljavnostNaloga" class="skupina">
 		  <h3>5 - VELJAVNOST NALOGA</h3>
@@ -86,7 +135,7 @@
 		</div>
 
 		<div id="aplikacijaInjekcij" class="skupina">
-			<h3>7 - APLIKACIJA INJEKCIJ</h3>
+			<h3>6 - APLIKACIJA INJEKCIJ</h3>
 
 			{{ zdravilaFormSet.management_form }}
 
@@ -115,7 +164,7 @@
 		</div>
 
 		<div id="odvzemKrvi" class="skupina">
-			<h3>7 - ODVZEM KRVI</h3>
+			<h3>6 - ODVZEM KRVI</h3>
 
 			{{ barvaEpruvetFormSet.management_form }}
 
@@ -147,4 +196,5 @@
 
 		<input class="shrani" type="submit" name="shrani" value="Shrani" />
 	</form>
+
 {% endblock %}

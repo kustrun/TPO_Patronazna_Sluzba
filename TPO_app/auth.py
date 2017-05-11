@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 from .models import CrnaLista
 
@@ -24,10 +27,7 @@ class EmailBackend(object):
 		except UserModel.DoesNotExist:
 			return None
 		
-class BlackListBackend(object):
-	MAX_ATTEMPTS = 3
-	LOCKUP_TIME = 1 #number of lockup hours
-	
+class BlackListBackend(object):	
 	def add_ip_to_user(self, ip, user):
 		try:
 			ip_user = CrnaLista.objects.get(ip=ip, id_ur=user)
@@ -46,17 +46,20 @@ class BlackListBackend(object):
 			return ip_user
 		else:
 			return ip_user
+
+	def get_max_login_attempts(self):
+		return settings.MAX_LOGIN_ATTEMPTS
 	
 	def get_ip_lockup_time_remaining(self, ip_user):
-		return ((ip_user.datum_zaklepanja + timedelta(hours=self.LOCKUP_TIME)) - datetime.now()).total_seconds()
+		return ((ip_user.datum_zaklepanja + timedelta(hours=settings.LOGIN_LOCKUP_TIME)) - datetime.utcnow()).total_seconds()
 	
 	def get_ip_lockup_time(self, ip_user):
-		return (datetime.now() - ip_user.datum_zaklepanja).total_seconds()
+		return (datetime.utcnow() - ip_user.datum_zaklepanja).total_seconds()
 	
 	def failed_login(self, ip):
 		ip_user = self.add_get_ip_user(ip=ip)
 		
-		if (self.get_ip_lockup_time(ip_user)/3600) >= self.LOCKUP_TIME:
+		if (self.get_ip_lockup_time(ip_user)/3600) >= settings.LOGIN_LOCKUP_TIME:
 			ip_user.poiskusi = 0
 		
 		ip_user.poiskusi += 1
@@ -65,7 +68,7 @@ class BlackListBackend(object):
 		
 	def login_allowed(self, ip):
 		ip_user = self.add_get_ip_user(ip=ip)
-		return (self.get_ip_lockup_time(ip_user)/3600) >= self.LOCKUP_TIME or ip_user.poiskusi <= self.MAX_ATTEMPTS
+		return (self.get_ip_lockup_time(ip_user)/3600) >= settings.LOGIN_LOCKUP_TIME or ip_user.poiskusi < settings.MAX_LOGIN_ATTEMPTS
 	
 	def reset_all(self):
 		for ip_user in CrnaLista.objects.all():
