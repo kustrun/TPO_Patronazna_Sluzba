@@ -1,0 +1,15 @@
+{% extends "./base_register.html" %}
+{% load static %}
+{% block content %}
+{% if potekla %}
+<p>Vaša povezava za aktivacijo računa je potekla</p>
+<p>Ali jo želite poslati ponovno?</p>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Pošlji">
+</form>
+{% else %}
+<p>Vaš račun je bil uspešno aktiviran</p>
+<a href="{% url 'login' %}">Prijavite se na tej povezavi.</a>
+{% endif %}
+{% endblock %}

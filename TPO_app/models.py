@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -97,10 +99,10 @@ class BarvaEpruvete(models.Model):
 
 
 class CrnaLista(models.Model):
-    ip = models.CharField(max_length=45)
+    ip = models.TextField()  # This field type is a guess.
     poiskusi = models.IntegerField()
     datum_zaklepanja = models.DateTimeField()
-    id_ur = models.ForeignKey(User, models.DO_NOTHING, db_column='id_ur', null=True)
+    id_ur = models.ForeignKey(User, models.DO_NOTHING, db_column='id_ur')
 
     class Meta:
         managed = False
@@ -169,8 +171,7 @@ class DjangoSession(models.Model):
 class DodeljenoOsebje(models.Model):
     id_osebja = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_osebja')
     id_obisk = models.ForeignKey('Obisk', models.DO_NOTHING, db_column='id_obisk')
-    je_zadolzena = models.IntegerField()
-    id = models.IntegerField(primary_key=True)
+    id_nadomestna = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_nadomestna', related_name='id_nadomestna', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -244,7 +245,6 @@ class MaterialDn(models.Model):
         db_table = 'material_dn'
 
 
-
 class NamenObiska(models.Model):
     naziv = models.CharField(max_length=64, blank=True, null=True)
     id_vrsta = models.ForeignKey('VrstaObiska', models.DO_NOTHING, db_column='id_vrsta')
@@ -263,6 +263,7 @@ class Obisk(models.Model):
     podrobnosti_obiska = models.TextField(blank=True, null=True)
     izbran_datum = models.DateField(blank=True, null=True)
     cena = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    obvezen = models.IntegerField()
 
     class Meta:
         managed = False
@@ -296,7 +297,7 @@ class Osebje(models.Model):
     sifra = models.CharField(unique=True, max_length=5)
     ime = models.CharField(max_length=64)
     priimek = models.CharField(max_length=64)
-    telefon = models.CharField(max_length=32)
+    telefon = models.CharField(max_length=32, blank=True, null=True)
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)
@@ -304,6 +305,9 @@ class Osebje(models.Model):
     class Meta:
         managed = False
         db_table = 'osebje'
+
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
 
 
 class Oskrba(models.Model):
@@ -325,7 +329,8 @@ class OstaliPodatki(models.Model):
     class Meta:
         managed = False
         db_table = 'ostali_podatki'
-		
+
+
 
 class Pacient(models.Model):
     id_racuna = models.ForeignKey(User, models.DO_NOTHING, db_column='id_racuna')
@@ -345,6 +350,9 @@ class Pacient(models.Model):
     class Meta:
         managed = False
         db_table = 'pacient'
+
+    def __str__(self):
+        return self.ime + ' ' + self.priimek
 
 
 class Posta(models.Model):
@@ -409,6 +417,9 @@ class VrstaObiska(models.Model):
         managed = False
         db_table = 'vrsta_obiska'
 
+    def __str__(self):
+        return self.naziv
+
 
 class VrstaPodatka(models.Model):
     naziv = models.CharField(max_length=64)
@@ -427,6 +438,9 @@ class VrstaStoritve(models.Model):
     class Meta:
         managed = False
         db_table = 'vrsta_storitve'
+
+    def __str__(self):
+        return self.naziv
 
 
 class Zdravila(models.Model):

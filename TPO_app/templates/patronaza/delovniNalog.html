@@ -1,0 +1,176 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>Delovni nalog FORM</h1>
+
+	<form method="POST" action="#">
+		{% csrf_token %}
+
+		<div id="zdravnik" class="skupina">
+		  	<h3>1 - OSEBJE</h3>
+
+			<div class="fieldWrapper">
+				<label for="{{ osebje.sifraVnos.id_for_label }}">Šifra:</label>
+				{{ osebje.sifraVnos }}
+			</div>
+
+			<div class="fieldWrapper">
+				<label for="{{ osebje.ime.id_for_label }}">Ime:</label>
+				{{ osebje.ime }}
+			</div>
+
+			<div class="fieldWrapper">
+				<label for="{{ osebje.priimek.id_for_label }}">Priimek:</label>
+				{{ osebje.priimek }}
+			</div>
+		</div>
+
+		<div id="vrstaObiska" class="skupina">
+			<h3>2 - TIP OBISKA</h3>
+
+			{% for tip in tipObiska.tip %}
+				<div class="fieldWrapper">
+					{{ tip }}
+				</div>
+			{% endfor %}
+
+		</div>
+
+		<div id="vrstaStoritve" class="skupina">
+			<h3>3 - VRSTA OBISKA</h3>
+
+			{% for vrsta in vrstaObiska.vrstaObiska %}
+				<div class="fieldWrapper">
+					{{ vrsta }}
+				</div>
+			{% endfor %}
+
+		</div>
+
+		<div id="pacient" class="skupina">
+			<h3>4 - PACIENT</h3>
+
+			{{ izberiPacientaFormSet.management_form }}
+
+			{% if izberiPacientaFormSet.non_form_errors %}
+				{% for error in izberiPacientaFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="izberiPacientaFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for izberiPacientaForm in izberiPacientaFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ izberiPacientaForm.ime.id_for_label }}">Pacient:</label>
+						   {{ izberiPacientaForm.ime }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		  </div>
+
+		<div id="veljavnostNaloga" class="skupina">
+		  <h3>5 - VELJAVNOST NALOGA</h3>
+
+				<div class="fieldWrapper">
+					<label for="{{ delovniNalog.datum_prvega_obiska.id_for_label }}">Datum prvega obiska:</label>
+					{{ delovniNalog.datum_prvega_obiska }}
+
+					{{ delovniNalog.datum_prvega_obiska.errors }}
+				</div>
+
+				<div class="fieldWrapper">
+					<label for="{{ delovniNalog.tip_prvega_obiska.id_for_label }}">Tip prvega obiska:</label>
+					{% for tipPrvegaObiska in delovniNalog.tip_prvega_obiska %}
+						<div id="tipPrvegaObiska" class="fieldWrapper">
+							{{ tipPrvegaObiska }}
+						</div>
+					{% endfor %}
+				</div>
+
+				<div class="fieldWrapper">
+					<label for="{{ delovniNalog.st_obiskov.id_for_label }}">Število obiskov:</label>
+					{{ delovniNalog.st_obiskov }}
+				</div>
+
+				<div class="fieldWrapper">
+					<label for="{{ delovniNalog.cas_med_dvema.id_for_label }}">Čas med dvema zaporednima obiskoma:</label>
+					{{ delovniNalog.cas_med_dvema }}
+				</div>
+
+				<div class="fieldWrapper">
+					<label for="{{ delovniNalog.casovno_obdobje.id_for_label }}">Časovno obdobje za izvedbo obiskov:</label>
+					{{ delovniNalog.casovno_obdobje }}
+				</div>
+
+		</div>
+
+		<div id="aplikacijaInjekcij" class="skupina">
+			<h3>6 - APLIKACIJA INJEKCIJ</h3>
+
+			{{ zdravilaFormSet.management_form }}
+
+			{% if zdravilaFormSet.non_form_errors %}
+				{% for error in zdravilaFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="zdravilaFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for zdravilaForm in zdravilaFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ zdravilaForm.naziv.id_for_label }}">Zdravilo:</label>
+							{{ zdravilaForm.naziv }}
+
+						   <label for="{{ zdravilaForm.st_injekcij.id_for_label }}">Število injekcij:</label>
+							{{ zdravilaForm.st_injekcij }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+
+		<div id="odvzemKrvi" class="skupina">
+			<h3>6 - ODVZEM KRVI</h3>
+
+			{{ barvaEpruvetFormSet.management_form }}
+
+			{% if barvaEpruvetFormSet.non_form_errors %}
+				{% for error in barvaEpruvetFormSet.non_form_errors %}
+					{{ error|escape }}
+				{% endfor %}
+			{% endif %}
+
+			<table id="barvaEpruvetFormSet" border="0" cellpadding="0">
+				<tbody>
+					{% for barvaForm in barvaEpruvetFormSet %}
+					<tr>
+					   <td>
+						   <label for="{{ barvaForm.barva.id_for_label }}">Barva:</label>
+							{{ barvaForm.barva }}
+
+							<label for="{{ barvaForm.st_epruvet.id_for_label }}">Število epruvet:</label>
+							{{ barvaForm.st_epruvet }}
+					   </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+
+
+
+		<input class="shrani" type="submit" name="shrani" value="Shrani" />
+	</form>
+
+{% endblock %}

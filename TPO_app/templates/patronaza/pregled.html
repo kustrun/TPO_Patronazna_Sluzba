@@ -1,0 +1,9 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+{% for p in pacijenti %}
+    <h4>Oseba</h4>
+    {{ p.as_p }}
+{% endfor %}
+<a class="btn btn-info" role="button" href="{% url 'dodaj_skrbnistvo' %}">Dodaj skrbništvo</a>
+{% endblock %}

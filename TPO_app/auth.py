@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import Permission
@@ -44,7 +46,7 @@ class BlackListBackend(object):
 			return ip_user
 		else:
 			return ip_user
-		
+
 	def get_max_login_attempts(self):
 		return settings.MAX_LOGIN_ATTEMPTS
 	
@@ -66,7 +68,7 @@ class BlackListBackend(object):
 		
 	def login_allowed(self, ip):
 		ip_user = self.add_get_ip_user(ip=ip)
-		return (self.get_ip_lockup_time(ip_user)/3600) >= settings.LOGIN_LOCKUP_TIME or ip_user.poiskusi <= settings.MAX_LOGIN_ATTEMPTS
+		return (self.get_ip_lockup_time(ip_user)/3600) >= settings.LOGIN_LOCKUP_TIME or ip_user.poiskusi < settings.MAX_LOGIN_ATTEMPTS
 	
 	def reset_all(self):
 		for ip_user in CrnaLista.objects.all():

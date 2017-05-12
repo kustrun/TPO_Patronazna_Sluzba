@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for TPO_Patronazna_sluzba project.
 
@@ -25,7 +27,7 @@ SECRET_KEY = '4r$o856tc-pe3hw%9_gdecp4sc%fv5g3qv@-z5%waf&of@g@jg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'patronaza.herokuapp.com']
 
 
 # Application definition
@@ -116,7 +118,6 @@ MAX_LOGIN_ATTEMPTS = 3
 
 LOGIN_LOCKUP_TIME = 1 #lockup duration in hours
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -130,8 +131,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+
+
+#Email konfiguration
+

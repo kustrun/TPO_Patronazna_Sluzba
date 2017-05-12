@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """TPO_Patronazna_sluzba URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,5 +20,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('TPO_app.urls')),
+    url(r'^patronaza/', include('TPO_app.urls')),
 ]

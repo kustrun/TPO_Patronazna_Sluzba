@@ -1,0 +1,12 @@
+.containerFooter {
+    width: auto;
+    max-width: 680px;
+    padding: 0 15px;
+    text-align : center;
+}
+
+.pushBot{
+	display : flex;
+	margin : auto;
+	flex-grow : 1;
+}

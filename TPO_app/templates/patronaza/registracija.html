@@ -1,0 +1,35 @@
+{% extends "./base_register.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div>
+        <h2>Registracija</h2>
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            {{ pacientForm.as_p }}
+            {{ uporabniskiRacunForm.as_p }}
+            <p>{{ pacientForm.datum_rojstva.errors }}</p>
+            {% if match %}
+            <p>Gesli se ne ujemata.</p>
+            {% elif regex %}
+            <p>Geslo mora vsebovati vsaj en numerični in en črkovni znak.</p>
+            {% endif %}
+            {% if telefon %}
+            <p>Neveljavna telefonska</p>
+            {% endif %}
+            {% if date %}
+            <p>Ne moreš se roditi v prihodnosti</p>
+            {% endif %}
+            {% if email %}
+            <p>Email že obstaja</p>
+            {% endif %}
+            {% if kartica %}
+            <p>Številka kartice že obstaja</p>
+            {% endif %}
+            {{ pacientForm.datum_rojstva.errors }}
+            <input id="send" type="submit" value="Registriraj"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

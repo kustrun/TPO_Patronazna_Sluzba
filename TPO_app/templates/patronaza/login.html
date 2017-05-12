@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Patronažna služba</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="{% static 'patronaza/css/style.css' %}">
+  </head>
+
+  <body>
+	<div class="centered form-panel login-panel">
+		<h1 class="centered-item centered-text">Prijava</h1>
+		<form class="centered-item" method='POST' action='#'>
+			{% csrf_token %}
+			{{ loginForm.as_table }}
+			<div class="login-btn-panel">
+				<input class="btn-submit" type="submit" value="Prijavi se" />
+				<div>
+					<a class="undecorated-text" href="{% url 'registracija' %}" style="margin-right:15px;">Registracija</a>
+				</div>
+			</div>
+		</form>
+		{% if errorMessage|length > 0 %}
+		<div class="error-message centered-item centered-text">
+			<p class="no-margin">
+				{{ errorMessage|linebreaksbr }}
+			</p>
+		</div>
+		{% endif %}
+	</div>
+  </body>
+</html>

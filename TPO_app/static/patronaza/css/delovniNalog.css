@@ -1,0 +1,106 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+label {
+  display: inline-block;
+  width: 5vw;
+  margin-left: 2vh;
+}
+
+label:first-letter {
+  text-transform: capitalize;
+}
+
+label:not(:last-child) {
+  padding-bottom: 1.2vh;
+}
+
+/* OBLIKUJ DELOVNI NALOG */
+#delovniNalog {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bababa;
+  padding-top: 10px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-left: 40px;
+  clear: all;
+}
+
+#delovniNalog h2 {
+  font-size: 2em;
+}
+
+/* OBLIKUJ POSAMEZNE SKUPINE PODATKOV */
+.skupina {
+  margin-top: 20px;
+  background-color: #e2f1e1;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 1vh;
+  font-size: 14px;
+  width: auto;
+}
+
+.skupina h3 {
+  font-size: 18px;
+  position: relative;
+  top: -9px;
+}
+
+.skupina input, .skupina select {
+  background-color: #d4eacd;
+  border: none;
+  font-size: 14px;
+  height: 25px;
+  padding-left: 7px;
+}
+
+.skupina input:not([type=radio]), .skupina select {
+  width: 15vw;
+}
+
+/* VRSTA OBISKA in VRSTA STORITVE */
+#vrstaObiska input, #vrstaStoritve input {
+  width: 5vw;
+}
+
+#vrstaObiska label, #vrstaStoritve label {
+  width: 65vw;
+}
+
+#vrstaObiska label:not(:last-child), #vrstaStoritve label:not(:last-child) {
+  padding-bottom: 0.3vh;
+}
+
+/* PACIENT in PACIENTA */
+#pacient label, #pacienta label {
+  width: 6vw;
+}
+
+#pacient .radio, #pacienta .radio {
+  margin-left: 8vw;
+}
+
+/* VELJAVNOST NALOGA */
+#veljavnostNaloga label {
+  width: 25vw;
+}
+
+#veljavnostNaloga .radio {
+  margin-left: 12vw;
+}
+
+#veljavnostNaloga #tipPrvegaObiska {
+  margin-left: 26vw;
+}
+
+/* APLIKACIJA INJEKCIJ */
+#aplikacijaInjekcij label:last-of-type,  #odvzemKrvi label:last-of-type{
+  margin-left: 5vw;
+  width: 7vw;
+}

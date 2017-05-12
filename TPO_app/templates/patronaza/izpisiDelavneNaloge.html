@@ -1,0 +1,87 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-3">
+        <h2>Filtri</h2>
+        <form method="POST">
+            {% csrf_token %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label>Izdajatelj</label>
+                <input type="text" name="izdajatelj" value = {% if request.user.groups.all.0.name == 'Zdravnik' or request.user.groups.all.0.name == 'Vodja patronaže' %}{{ oseba.sifra }} {% endif %} >
+            </li>
+            <li class="list-group-item">
+                <label>Patronažna sestra</label>
+                <input type="text" name="sestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ oseba.sifra }} {% endif %}>
+            </li>
+            <li class="list-group-item">
+                <label>Nadomestna sestra</label>
+                <input type="text" name="nadomestnaSestra" value={% if request.user.groups.all.0.name == 'Patronažna sestra' %} {{ oseba.sifra }} {% endif %}>
+            </li>
+            <li class="list-group-item">
+                <label>Pacient</label>
+                <input type="text" name="pacient">
+            </li>
+            <li class="list-group-item">
+                <label>Od</label>
+                <input type="date" name="od">
+            </li>
+            <li class="list-group-item">
+                <label>Do</label>
+                <input type="date" name="do">
+            </li>
+            <li class="list-group-item">
+                <label>Vrsta</label>
+                <select name = "vrsta">
+                    <option value="">---------</option>
+                    {% for obisk in obiski %}
+                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+
+        </ul>
+            <input type="submit" value="Filtriraj">
+        </form>
+    </div>
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Izdajatelj</th>
+                    <th>Vrsta obiska</th>
+                    <th>Medicinska sestra</th>
+                    <th>Nadomestna sestra</th>
+                    <th>Pacient</th>
+                    <th>Podrobnosti</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for o,values in hash.items %}
+                <tr>
+                    <th>{{ o.id_dn.id_osebje }}</th>
+                    <th>{{ o.id_dn.id_vrsta }}</th>
+                    {% for v in values %}
+                    <th>{{ v }}</th>
+                    {% endfor %}
+                    <th>{{ o.id_pacient }}</th>
+                    <th><a href="{% url 'delovniNalogPodrobno' delovniNalogId=o.id_dn.id %}">Podrobnosti</a></th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <ul class="pagination">
+        {% if delavniNalogi.has_previous %}
+        <li><a href="?page={{ delavniNalogi.previous_page_number }}">«</a></li>
+        {% endif %}
+        <li><a class="active" href="&">{{ delavniNalogi.number }}</a></li>
+        {% if delavniNalogi.has_next %}
+        <li><a href="?page={{ delavniNalogi.next_page_number }}">»</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

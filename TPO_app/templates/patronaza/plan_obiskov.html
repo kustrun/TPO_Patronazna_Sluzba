@@ -1,0 +1,172 @@
+{% extends "patronaza/base.html" %}
+{% load static i18n %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="{% static 'patronaza/css/planiranje-obiskov.css' %}" />
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="{% static 'patronaza/js/datepicker-sl.js' %}"></script>
+<script>
+	var izbrani_obiski = []
+	
+	$(document).ready(function(){
+		$('#seznam_izbranih').children('li.izbran_obisk').each(function(izbran) {
+			var obisk = {
+				id: $(this).find('.id-obiska').text(),
+				naziv: $(this).find('.id-obiska').next().text(),
+				id_url: $(this).find('a').attr('href')
+			}
+			
+			izbrani_obiski.push(obisk)
+		})
+		
+		$.ajax({
+			type: 'POST',
+			data: {'izbrani[]': JSON.stringify(izbrani_obiski), 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()},
+			dataType: 'json',
+			success: function(data) {
+			}
+		});
+		
+		$("#datepicker").datepicker({ dateFormat: 'dd.mm.yy', 
+									minDate: 0,
+									changeMonth: true,
+									changeYear: true,
+									showOn: "button",
+									buttonImage: "{% static 'patronaza/images/calendar.ico' %}",
+									buttonText: "Izberi datum plana obiskov",
+									showOtherMonths: true,
+									selectOtherMonths: true,
+									onSelect: function () {
+										var datum = $(this).datepicker('getDate'),
+										dan  = datum.getDate(),  
+										mesec = datum.getMonth() + 1,              
+										leto =  datum.getFullYear();
+										window.location.href = "{% url 'planiranje_obiskov' %}" + '?dan=' + dan + '&mesec=' + mesec + '&leto=' + leto;
+									}
+									});
+		
+		$("input:checkbox").change(function() {
+			var selected_tag = $(this).parent().next()
+			var obisk = {
+				id: selected_tag.find('.id-obiska').text(),
+				naziv: selected_tag.find('.id-obiska').next().text(),
+				id_url: selected_tag.find('a').attr('href')
+			}
+			
+			if(this.checked) {
+				if(izbrani_obiski.length == 0) {
+					$("#seznam_izbranih").html("")
+				}
+				
+				$('#seznam_izbranih').append(
+					"<li class='izbran_obisk' id='izbran-" + obisk.id + "'><span class='flex-full'>#<span class='id-obiska'>" + obisk.id + "</span> <b>" + obisk.naziv + "</b></span><span class='flex-full'><a href=\"" + obisk.id_url + "\">Preglej delovni nalog</a></span><label for='obisk-" + obisk.id + "' class='izbrisi'>x</label></li>"
+				)
+					
+				izbrani_obiski.push(obisk)
+			}else {
+				$("#izbran-" + obisk.id).remove()
+				izbrani_obiski.pop(obisk)
+				if(izbrani_obiski.length == 0) {
+					$("#seznam_izbranih").html("<li><p>Ni izbranih obiskov</p></li>")
+				}
+			}
+						
+			$.ajax({
+				type: 'POST',
+				data: {'izbrani[]': JSON.stringify(izbrani_obiski), 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()},
+				dataType: 'json',
+				success: function(data) {
+				}
+			});
+		})
+		
+		$(".izbrisi").on('click', function(e){
+			var selected_tag = $(this).parent()
+			
+			e.preventDefault()
+			var checkbox_id = $(this).attr("for")
+			console.log(checkbox_id)
+			if($("#" + checkbox_id).length)
+				$("#" + checkbox_id).trigger('click')
+		})
+	});
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="centered form-panel">
+	<h1 class="centered-text">Plan obiskov</h1>
+	<form class="centered-item" id="plan-obiskov" method='POST' action='#'>
+		{% csrf_token %}
+		<div id='datum'>
+			<label for='datepicker'>Datum:</label>
+			<input type="text" id="datepicker" value="{{ datumPrikaza.day }}.{{ datumPrikaza.month }}.{{ datumPrikaza.year }}" />
+		</div>
+		<label for="seznam_obiskov"><b>Neopravljeni obiski:</b></label>
+		<div class='seznam-wrapper'>
+			<ul class='seznam_obiskov' id="seznam_neopravljenih">
+				{% for objekt in objekti %}
+					<li>
+						<label class="obisk_checkbox_out">
+							{% if objekt in izbrani %}
+								{% if objekt in obvezni %}
+								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" disabled/>
+								{% else %}
+								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked"/>
+								{% endif %}
+							{% else %}
+								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk"/>
+							{% endif %}
+							<span class="obisk_checkbox_in"></span>
+						</label>
+						<label for="obisk-{{ objekt.id_obisk.id }}" class="obisk_data">
+							{% language 'sl' %}
+							<span class="flex-full">#<span class="id-obiska">{{ objekt.id_obisk.pk }}</span> <b>{{ objekt.id_obisk.id_dn.id_vrsta.naziv|upper }}</b></span>
+							{% if objekt.id_obisk.izbran_datum %}
+							<span class="flex-half">Izbran datum: {{ objekt.id_obisk.izbran_datum }}</span>
+							{% else %}
+							<span class="flex-half">Izbran datum: --. ---- ----</span>
+							{% endif %}
+							<span class="flex-half">Predviden datum: {{ objekt.id_obisk.predviden_datum }}</span>
+							<span class="flex-half">Zap. št. obiska: {{ objekt.id_obisk.zaporedna_st_obiska }}</span>
+							<span class="flex-half">Zdravnik: {{ objekt.id_osebja.ime }} {{ objekt.id_osebja.priimek }}</span>
+							<span class="flex-half"></span>
+							<span class="flex-half"><a href="{% url 'delovniNalogPodrobno' objekt.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+							<span class="flex-full">Podrobnosti: <br> {{ objekt.id_obisk.podrobnosti_obiska }}</span>
+							{% endlanguage %}
+						</label>
+					</li>
+				{% empty %}
+					<li>
+						<p>Ni neopravljenih obiskov</p>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<label for="seznam_obiskov"><b>Izbrani obiski:</b></label>
+		<div class='seznam-wrapper'>
+			<ul class='seznam_obiskov' id='seznam_izbranih' style="margin:0;">
+			{% for izbran in izbrani %}
+				<li class='izbran_obisk' id='izbran-{{ izbran.id_obisk.id }}'>
+					<span class="flex-full">#<span class="id-obiska">{{ izbran.id_obisk.id }}</span> <b>{{ izbran.id_obisk.id_dn.id_vrsta.naziv|upper }}</b></span>
+					<span class="flex-full"><a href="{% url 'delovniNalogPodrobno' izbran.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+					{% if obvezni and izbran in obvezni %}
+					<p class='obvezen' style="margin:0">Obvezen</p>
+					{% else %}
+					<label for='obisk-{{ izbran.id_obisk.id }}' class='izbrisi'>x</label>
+					{% endif %}
+				</li>
+			{% empty %}
+				<li>
+					<p>Ni izbranih obiskov</p>
+				</li>
+			{% endfor %}
+			</ul>
+		</div>
+		<span>
+			<input class="btn-submit" type="submit" value="Shrani" />
+		</span>
+	</form>
+</section>
+{% endblock %}
