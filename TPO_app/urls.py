@@ -20,6 +20,6 @@ urlpatterns = [
     url(r'^delovniNalog/$', views.delovniNalog, name='delovniNalog'),
     url(r'^nadomescanje/$',views.nadomescanje,name='nadomescanje'),
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
-    #url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
+    url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
     url(r'^obiskPodrobno/(?P<obiskId>[0-9]+)$', views.obiskPodrobnosti, name='obiskPodrobno'),
 ]
