@@ -419,22 +419,27 @@ def planiranje_obiskov(request):
     except:
         datum = date.today() + timedelta(days=1)
 
+
     if request.method == 'POST':
         if request.is_ajax():
             form = PlaniranjeObiskovForm()
+            obiski_query = form.fields['obiski'].queryset.filter(
+                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
             request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani[]'))
         else:
             form = PlaniranjeObiskovForm(request.POST)
+            obiski_query = form.fields['obiski'].queryset.filter(
+                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
             if form.is_valid():
                 id_list = [str(o['id']) for o in request.session['izbrani_obiski']]
                 print id_list
-                pobrisani = form.fields['obiski'].queryset.filter(id_obisk__izbran_datum=datum)
+                pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
                 for item in pobrisani:
                     item.id_obisk.izbran_datum = None
                     item.id_obisk.save()
 
                 for id in id_list:
-                    obisk = form.fields['obiski'].queryset.get(id_obisk__id=id)
+                    obisk = obiski_query.get(id_obisk__id=id)
                     obisk.id_obisk.izbran_datum = datum
                     obisk.id_obisk.save()
                     obisk.save()
@@ -442,11 +447,12 @@ def planiranje_obiskov(request):
 
     else:
         form = PlaniranjeObiskovForm()
+        obiski_query = form.fields['obiski'].queryset.filter(Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
 
-    context['izbrani'] = form.fields['obiski'].queryset.filter(id_obisk__izbran_datum=datum)
-    context['obvezni'] = form.fields['obiski'].queryset.filter(id_obisk__obvezen=0).filter(id_obisk__izbran_datum=datum)
+    context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
+    context['obvezni'] = obiski_query.filter(id_obisk__obvezen=0).filter(id_obisk__izbran_datum=datum)
     context['datumPrikaza'] = datum
-    context['objekti'] = form.fields['obiski'].queryset
+    context['objekti'] = obiski_query
     context['planObiskovForm'] = form
     return render(request, 'patronaza/plan_obiskov.html', context)
 
