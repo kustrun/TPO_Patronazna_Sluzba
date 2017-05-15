@@ -19,6 +19,8 @@ import datetime
 import re
 from datetime import timedelta
 from .auth import EmailBackend, BlackListBackend
+import json
+from collections import namedtuple
 
 def posli_email(sendString,email):
     send_mail(
@@ -960,3 +962,56 @@ def osebjeAdd(request):
     context['oForm'] = oForm
 
     return render(request, "patronaza/osebjeAdd.html", context)
+
+@login_required
+def planiranje_obiskov(request):
+    context = {'ime': request.user.username}
+
+    dan = request.GET.get("dan")
+    mesec = request.GET.get("mesec")
+    leto = request.GET.get("leto")
+
+    try:
+        datum = date(int(leto), int(mesec), int(dan))
+        if datum < date.today():
+            datum = date.today() + timedelta(days=1)
+    except:
+        datum = date.today() + timedelta(days=1)
+
+
+    if request.method == 'POST':
+        if request.is_ajax():
+            form = PlaniranjeObiskovForm()
+            obiski_query = form.fields['obiski'].queryset.filter(
+                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
+            request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani[]'))
+        else:
+            form = PlaniranjeObiskovForm(request.POST)
+            obiski_query = form.fields['obiski'].queryset.filter(
+                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
+            if form.is_valid():
+                id_list = [str(o['id']) for o in request.session['izbrani_obiski']]
+                print (id_list)
+                pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
+                for item in pobrisani:
+                    item.id_obisk.izbran_datum = None
+                    item.id_obisk.save()
+
+                for id in id_list:
+                    obisk = obiski_query.get(id_obisk__id=id)
+                    obisk.id_obisk.izbran_datum = datum
+                    obisk.id_obisk.save()
+                    obisk.save()
+                    print (obisk.id_obisk)
+
+    else:
+        form = PlaniranjeObiskovForm()
+        obiski_query = form.fields['obiski'].queryset.filter(Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
+
+    context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
+    context['obvezni'] = obiski_query.filter(id_obisk__obvezen=0).filter(id_obisk__izbran_datum=datum)
+    context['datumPrikaza'] = datum
+    context['objekti'] = obiski_query
+    context['planObiskovForm'] = form
+    return render(request, 'patronaza/plan_obiskov.html', context)
+
