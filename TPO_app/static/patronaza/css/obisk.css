@@ -19,6 +19,14 @@
 
 #obiskPodrobnosti h3 {
     font-size: 18px;
+    font-weight: 700;
+    margin-top: 25px;
+}
+
+
+#obiskPodrobnosti h4 {
+    font-size: 15px;
+    margin-top: 20px;
 }
 
 .imeVrednosti {

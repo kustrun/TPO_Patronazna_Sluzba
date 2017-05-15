@@ -307,4 +307,15 @@ $(document).ready(function(){
         });
     });
 
+
+
+    //DISABLE EDITING ON PAGE delovniNalogPodrobno
+    if(window.location.href.indexOf("delovniNalogPodrobno") > 0) {
+
+        $('.add-row').css("display", "none");
+        $('.delete-row').css("display", "none");
+        $("input").prop('disabled', true);
+        $("select").attr('disabled', true);
+
+    }
 });

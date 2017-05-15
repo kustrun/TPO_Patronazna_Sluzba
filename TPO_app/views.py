@@ -282,9 +282,6 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
         ime = request.user.username
 
     osebje = DelovniNalogOsebjeForm()
-    osebje.fields["sifraVnos"].initial = ime.sifra
-    osebje.fields["ime"].initial = ime.ime
-    osebje.fields["priimek"].initial = ime.priimek
 
     tipObiska = DelovniNalogTipObiskaForm()
     vrstaObiska = DelovniNalogVrstaObiskaForm()
@@ -309,6 +306,10 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
     injekcijeDB = Injekcije.objects.filter(id_obisk=obiskDB[0])
     odvzemKrviDB = OdvzemKrvi.objects.filter(id_obisk=obiskDB[0])
     pacientiDB = Oskrba.objects.filter(id_dn=delovniNalogDB)
+
+    osebje.fields["sifraVnos"].initial = delovniNalogDB.id_osebje.sifra
+    osebje.fields["ime"].initial = delovniNalogDB.id_osebje.ime
+    osebje.fields["priimek"].initial = delovniNalogDB.id_osebje.priimek
 
     delovniNalog.fields["datum_prvega_obiska"].initial = delovniNalogDB.datum_prvega_obiska
 
@@ -376,12 +377,14 @@ def obiskPodrobnosti(request, obiskId):
 
     obisk = Obisk.objects.get(id=obiskId)
     dodeljenoOsebje = DodeljenoOsebje.objects.get(id_obisk = obisk)
-    ostaliPodatki = OstaliPodatki.objects.filter(id_obisk = obisk)
+    ostaliPodatki = OstaliPodatki.objects.filter(id_obisk = obisk).order_by('id_podatki_aktivnosti')
+    pacienti = Oskrba.objects.filter(id_dn=obisk.id_dn)
 
     return render(request, 'patronaza/obiskPodrobnosti.html', {
         'obisk': obisk,
         'dodeljenoOsebje': dodeljenoOsebje,
         'ostaliPodatki': ostaliPodatki,
+        'pacienti': pacienti,
         'ime': name
     })
 

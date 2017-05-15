@@ -14,6 +14,15 @@
             <p> <span class="imeVrednosti">Vloga medicinske sestre:</span> <span class="value">nadomestna</span></p>
         {% endif %}
 
+        <h3>PACIENTI:</h3>
+        {% for pacient in pacienti %}
+            {% if pacient.id_pacient.razmerje_ur.naziv == 'mati' %}
+                <p><span class="imeVrednosti">Pacient:</span> <span class="value">{{ pacient.id_pacient.ime }} {{ pacient.id_pacient.priimek }}, mati</span></p>
+            {% else %}
+                <p><span class="imeVrednosti">Pacient:</span> <span class="value">{{ pacient.id_pacient.ime }} {{ pacient.id_pacient.priimek }}</span></p>
+            {% endif %}
+        {% endfor %}
+
         <h3>INFORMACIJE O OBISKU:</h3>
             <p> <span class="imeVrednosti">Pripadajoč delovni nalog:</span> <span class="value"><a href="{% url 'delovniNalogPodrobno' delovniNalogId=obisk.id_dn.id %}">{{ obisk.id_dn.id }}</a></span></p>
             <p> <span class="imeVrednosti">Zaporedna številka obiska:</span> <span class="value">{{ obisk.zaporedna_st_obiska }}. obisk</span></p>
@@ -22,32 +31,224 @@
             <p> <span class="imeVrednosti">Datum obiska:</span> <span class="value">{{ obisk.datum_obiska | date:"d.m.Y" }}</span></p>
             <p> <span class="imeVrednosti">Podrobnosti:</span> <span class="value">{{ obisk.podrobnosti_obiska }}</span></p>
 
-        <h3>OPRAVLJENE MERITVE</h3>
-        <table>
-            <tr>
-                <th>Aktivnost</th>
-                <th>Naziv podatkov</th>
-                <th>Podatki</th>
-            </tr>
+        <h3>PRIDOBLJENI PODATKI:</h3>
 
-            {% for podatek in ostaliPodatki %}
-                <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
-                    <td>
-                        {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
-                    </td>
-                    <td>
-                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
-                    </td>
-                    <td>
-                        {{ podatek.vrednost }}
-                        {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
-                            {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+        {% if ostaliPodatki.count > 0 %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'obisk nosečnice' %}
+                <h4>PODATKI NOSEČNICE:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 10 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
                         {% endif %}
-                    </td>
-                </tr>
 
-            {% endfor %}
-        </table>
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'obisk otročnice in novorojenčka' %}
+                <h4>PODATKI OTROČNICE:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 20 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+                <h4>PODATKI NOVOROJENČKA:</h4>
+                <table class="podatkiNovorojencka">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 30 %}
+                             <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'preventiva starostnika' %}
+                <h4>PODATKI STAROSTNIKA:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 40 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'aplikacija injekcij' %}
+                <h4>APLIKACIJA INJEKCIJ:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 50 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'odvzem krvi' %}
+                <h4>ODVZEM KRVI:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 60 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+            {% if obisk.id_dn.id_vrsta.naziv == 'kontrola zdravstvenega stanja' %}
+                <h4>KONTROLA ZDRAVSTVNEGA STANJA:</h4>
+                <table class="podatkiOtrocnice">
+                    <tr>
+                        <th>Aktivnost</th>
+                        <th>Naziv podatkov</th>
+                        <th>Podatki</th>
+                    </tr>
+
+                    {% for podatek in ostaliPodatki %}
+                        {% if podatek.id_podatki_aktivnosti.id_aktivnost.storitev == 70 %}
+                            <tr aktivnost="{{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}">
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_aktivnost.aktivnost }}
+                                </td>
+                                <td>
+                                    {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.naziv }}
+                                </td>
+                                <td>
+                                    {{ podatek.vrednost }}
+                                    {% if podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_podatki_aktivnosti.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% endif %}
     </div>
 
 {% endblock %}
