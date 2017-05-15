@@ -1015,3 +1015,38 @@ def planiranje_obiskov(request):
     context['planObiskovForm'] = form
     return render(request, 'patronaza/plan_obiskov.html', context)
 
+@login_required
+def posodabljane_pacienta(request):
+    context = {}
+    pacient = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    context['ime'] = "Pacient " + str(pacient)
+    pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
+    pacientForm = PacientForm(instance=pacient)
+    emailForm = UporabniskiRacunEmailForm(instance=request.user)
+    context['pacientForm'] = pacientForm
+    context['emailForm'] = emailForm
+    if request.method == 'POST':
+        pform = PacientForm(request.POST)
+        eform = UporabniskiRacunEmailForm(request.POST)
+        if pform.is_valid() and eform.is_valid():
+            if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists()):
+                context['kartica'] = True
+                return render(request, 'patronaza/posodabljanje_pacienta.html', context)
+            elif (User.objects.filter(email=eform.cleaned_data['email']).exists()):
+                context['email'] = True
+                return render(request, 'patronaza/posodabljanje_pacienta.html', context)
+            if(not pform.date_valid()):
+                context['uporabniskiRacunForm'] = pform
+                context['pacientForm'] = pform
+                context['date'] = True
+                return render(request, 'patronaza/posodabljanje_pacienta.html', context)
+            if(not pform.telefon_regex()):
+                context['uporabniskiRacunForm'] = pform
+                context['pacientForm'] = pform
+                context['telefon'] = True
+                return render(request,'patronaza/posodabljanje_pacienta.html',context)
+
+            pform.save()
+            eform.save()
+
+    return render(request, 'patronaza/posodabljanje_pacienta.html', context)

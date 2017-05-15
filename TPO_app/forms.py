@@ -65,8 +65,11 @@ class PacientForm(forms.ModelForm):
         else:
             return False
 
-
-
+class UporabniskiRacunEmailForm(forms.ModelForm):
+    email = forms.EmailField(label='Email', required=True)
+    class Meta:
+        model = User
+        fields = ['email']
 
 class SkrbnistvoForm(forms.ModelForm):
     CHOICES = [('moski', 'Moški'), ('zenska', 'Ženska')]

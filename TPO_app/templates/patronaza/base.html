@@ -78,6 +78,7 @@
                 </div>
                     <ul class="list-group">
                         <li class="list-group-item"><a href="{% url 'change_password' %}">Spremeni geslo</a></li>
+                        <li class="list-group-item"><a href="{% url 'posodabljane_pacienta' %}">Posodobi profil</a></li>
                         <li class="list-group-item">Zadnja prijava: {{ request.user.last_login|date:"d.m.Y H:i" }}</li>
                     </ul>
                 <div class="modal-footer">
