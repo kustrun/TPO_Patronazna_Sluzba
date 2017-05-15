@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
     url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
     url(r'^obiskPodrobno/(?P<obiskId>[0-9]+)$', views.obiskPodrobnosti, name='obiskPodrobno'),
+    url(r'^planiranjeObiskov/$', views.planiranje_obiskov, name='planiranje_obiskov'),
 ]

@@ -16,6 +16,8 @@
     <script src="{% static 'patronaza/js/delovniNalog.js' %}"></script>
     <script src="{% static 'patronaza/js/nadomescanje.js' %}"></script>
 	<script src="{% static 'patronaza/js/jquery.formset.js' %}"></script>
+    <script src="{% static 'patronaza/js/koledar.js' %}"></script>
+    <script src="{% static 'patronaza/js/register.js' %}"></script>
 </head>
 <body>
     <header>
@@ -46,6 +48,9 @@
                 {% if request.user.groups.all.0.name == 'Vodja patronaže' %}
                 <li><a href="{% url 'nadomescanje' %}">Nadomeščanje</a></li>
                 {% endif %}
+                {% if request.user.groups.all.0.name == 'Patronažna sestra' %}
+				<li><a href="{% url 'planiranje_obiskov' %}">Planiranje obiskov</a> </li>
+				{% endif %}
                 {% if user.is_superuser %}
                 <li><a href="{% url 'osebjeAdd' %}">Dodaj osebje</a> </li>
                 {% endif %}

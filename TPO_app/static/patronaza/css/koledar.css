@@ -1,0 +1,80 @@
+#koledar_table {
+	width: 100%;
+	min-width: 512px;
+	margin: 0 auto;
+}
+
+#koledar_table th, td {
+	text-align: center;
+}
+
+#koledar_table td a {
+	display: flex;
+	flex-flow: column;
+	text-decoration: none;
+	color: black;
+	padding: 5px;
+}
+
+#koledar_table th {
+	padding: 15px;
+	font-size: 28px;
+	border: 3px solid white;
+}
+
+#koledar_table td {
+	margin: 5px;
+	font-size: 24px;
+	padding: 5px;
+}
+
+#koledar_table #mesec {
+	font-size: 42px;
+	background-color: #5bc0de;
+	color: white;
+}
+
+#koledar_table .day {
+	background-color: white;
+}
+
+#koledar_table .past_day {
+	background-color: lightgray;
+}
+
+#koledar_table .other_month_day {
+	background-color: gray;
+}
+
+#koledar_table #dnevi {
+	background-color: white;
+}
+
+#koledar_table .today {
+	border: 3px solid red;
+}
+
+
+.arrow-left {
+    cursor: pointer;
+    padding-right: 5px;
+    margin-top: 1px;
+    float: left;
+    height: 0;
+    width: 0;
+    border-top: 32px solid transparent;
+    border-bottom: 32px solid transparent;
+    border-right: 32px solid white;
+}
+
+.arrow-right {
+    cursor: pointer;
+    padding-left: 5px;
+    margin-top: 1px;
+    float: right;
+    height: 0;
+    width: 0;
+    border-top: 32px solid transparent;
+    border-bottom: 32px solid transparent;
+    border-left: 32px solid white;
+}

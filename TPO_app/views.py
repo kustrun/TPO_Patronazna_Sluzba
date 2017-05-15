@@ -75,7 +75,6 @@ class BaseZdravilaFormSet(BaseFormSet):
                         params={'zdravilo': zdravilo},
                     )
 
-
 class BaseBarvaEpruvetFormSet(BaseFormSet):
     def clean(self):
         if any(self.errors):
@@ -613,7 +612,6 @@ def aktivacija(request,ur_id,date):
     context['potekla'] = True
     return render(request, 'patronaza/aktivacija.html', context)
 
-#TODO naredi filtre za nadomestno medicinsko sestro??
 @login_required
 def izpisi_delavne_naloge(request):
     context = {'ime': ''}
