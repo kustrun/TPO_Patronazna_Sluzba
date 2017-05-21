@@ -8,13 +8,14 @@
 
     <form method="POST">
         {% csrf_token %}
-            
-        {{ delovniNalog.id_vrsta.naziv }}
-        
+
         {% if delovniNalog.id_vrsta.naziv == 'obisk nosečnice' %}
             <h2>Podatki nosečnice</h2>
             <ul class="list-group">
                 {% for podatek in vsiPodatki %}
+                    
+                    {{ podatek.id_aktivnost.storitev }}
+                
                     {% if podatek.id_aktivnost.storitev == 10 %}
                         {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
                             <li class="list-group-item">
