@@ -13,9 +13,6 @@
             <h2>Podatki nosečnice</h2>
             <ul class="list-group">
                 {% for podatek in vsiPodatki %}
-                    
-                    {{ podatek.id_aktivnost.storitev }}
-                
                     {% if podatek.id_aktivnost.storitev == 10 %}
                         {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
                             <li class="list-group-item">
