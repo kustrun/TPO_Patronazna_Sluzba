@@ -13,7 +13,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Aktivnosti(models.Model):
-    sifra = models.CharField(max_length=32)
     aktivnost = models.CharField(max_length=511)
     storitev = models.IntegerField(blank=True, null=True)
 

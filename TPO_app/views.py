@@ -1095,7 +1095,6 @@ def meritve(request, obiskId):
 
     vsiPodatki = PodatkiAktivnosti.objects.all()
 
-
     return render(request, 'patronaza/meritve.html', {
         'obisk': izbraniObisk,
         'ostaliPodatki': ostaliPodatki,
