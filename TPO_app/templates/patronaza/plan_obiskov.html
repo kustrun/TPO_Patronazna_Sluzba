@@ -20,14 +20,6 @@
 			izbrani_obiski.push(obisk)
 		})
 		
-		$.ajax({
-			type: 'POST',
-			data: {'izbrani[]': JSON.stringify(izbrani_obiski), 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()},
-			dataType: 'json',
-			success: function(data) {
-			}
-		});
-		
 		$("#datepicker").datepicker({ dateFormat: 'dd.mm.yy', 
 									minDate: 0,
 									changeMonth: true,
@@ -103,47 +95,6 @@
 			<label for='datepicker'>Datum:</label>
 			<input type="text" id="datepicker" value="{{ datumPrikaza.day }}.{{ datumPrikaza.month }}.{{ datumPrikaza.year }}" />
 		</div>
-		<label for="seznam_obiskov"><b>Neopravljeni obiski:</b></label>
-		<div class='seznam-wrapper'>
-			<ul class='seznam_obiskov' id="seznam_neopravljenih">
-				{% for objekt in objekti %}
-					<li>
-						<label class="obisk_checkbox_out">
-							{% if objekt in izbrani %}
-								{% if objekt in obvezni %}
-								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" disabled/>
-								{% else %}
-								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked"/>
-								{% endif %}
-							{% else %}
-								<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk"/>
-							{% endif %}
-							<span class="obisk_checkbox_in"></span>
-						</label>
-						<label for="obisk-{{ objekt.id_obisk.id }}" class="obisk_data">
-							{% language 'sl' %}
-							<span class="flex-full">#<span class="id-obiska">{{ objekt.id_obisk.pk }}</span> <b>{{ objekt.id_obisk.id_dn.id_vrsta.naziv|upper }}</b></span>
-							{% if objekt.id_obisk.izbran_datum %}
-							<span class="flex-half">Izbran datum: {{ objekt.id_obisk.izbran_datum }}</span>
-							{% else %}
-							<span class="flex-half">Izbran datum: --. ---- ----</span>
-							{% endif %}
-							<span class="flex-half">Predviden datum: {{ objekt.id_obisk.predviden_datum }}</span>
-							<span class="flex-half">Zap. št. obiska: {{ objekt.id_obisk.zaporedna_st_obiska }}</span>
-							<span class="flex-half">Zdravnik: {{ objekt.id_osebja.ime }} {{ objekt.id_osebja.priimek }}</span>
-							<span class="flex-half"></span>
-							<span class="flex-half"><a href="{% url 'delovniNalogPodrobno' objekt.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
-							<span class="flex-full">Podrobnosti: <br> {{ objekt.id_obisk.podrobnosti_obiska }}</span>
-							{% endlanguage %}
-						</label>
-					</li>
-				{% empty %}
-					<li>
-						<p>Ni neopravljenih obiskov</p>
-					</li>
-				{% endfor %}
-			</ul>
-		</div>
 		<label for="seznam_obiskov"><b>Izbrani obiski:</b></label>
 		<div class='seznam-wrapper'>
 			<ul class='seznam_obiskov' id='seznam_izbranih' style="margin:0;">
@@ -162,6 +113,57 @@
 					<p>Ni izbranih obiskov</p>
 				</li>
 			{% endfor %}
+			</ul>
+		</div>
+		<label for="seznam_obiskov"><b>Neopravljeni obiski:</b></label>
+		<div class='seznam-wrapper'>
+			<ul class='seznam_obiskov' id="seznam_neopravljenih">
+				{% for objekt in objekti %}
+					<li>
+						<label class="obisk_checkbox_out">
+							{% if objekt in izbrani %}
+								{% if obvezni and objekt in obvezni %}
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" value="{{ objekt.id_obisk.id }}" disabled/>
+									<input type="hidden" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}" />
+								{% else %}
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" value="{{ objekt.id_obisk.id }}"/>
+								{% endif %}
+							{% else %}
+								{% if obvezni and objekt in obvezni %}
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}" disabled/>
+								{% else %}
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}"/>
+								{% endif %}
+							{% endif %}
+							<span class="obisk_checkbox_in"></span>
+						</label>
+						<label for="obisk-{{ objekt.id_obisk.id }}" class="obisk_data">
+							{% language 'sl' %}
+							<span class="flex-full">
+								#<span class="id-obiska">{{ objekt.id_obisk.pk }}</span> <b>{{ objekt.id_obisk.id_dn.id_vrsta.naziv|upper }}</b>
+								{% if obvezni and objekt in obvezni %}
+								<span class="info-obvezen"> (OBISK JE OBVEZEN) </span>
+								{% endif %}
+							</span>
+							<span class="flex-half">Predviden datum: {{ objekt.id_obisk.predviden_datum }}</span>
+							{% if objekt.id_obisk.izbran_datum %}
+							<span class="flex-half">Izbran datum: {{ objekt.id_obisk.izbran_datum }}</span>
+							{% else %}
+							<span class="flex-half">Izbran datum: --. ---- ----</span>
+							{% endif %}
+							<span class="flex-half">Zap. št. obiska: {{ objekt.id_obisk.zaporedna_st_obiska }}</span>
+							<span class="flex-half">Izdajatelj: {{ objekt.id_osebja.ime }} {{ objekt.id_osebja.priimek }}</span>
+							<span class="flex-half"></span>
+							<span class="flex-half"><a href="{% url 'delovniNalogPodrobno' objekt.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+							<span class="flex-full">Podrobnosti: <br> {{ objekt.id_obisk.podrobnosti_obiska }}</span>
+							{% endlanguage %}
+						</label>
+					</li>
+				{% empty %}
+					<li>
+						<p>Ni neopravljenih obiskov</p>
+					</li>
+				{% endfor %}
 			</ul>
 		</div>
 		<span>

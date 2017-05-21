@@ -7,7 +7,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/TPO_app/templates/TPO_app/login.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/TPO_app/templates/TPO_app/welcome.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/static/patronaza/css/planiranje-obiskov.css" afterPath="$PROJECT_DIR$/TPO_app/static/patronaza/css/planiranje-obiskov.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/base.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/views.py" afterPath="$PROJECT_DIR$/TPO_app/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +40,7 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1696">
+            <state relative-caret-position="4096">
               <caret line="259" column="17" lean-forward="false" selection-start-line="259" selection-start-column="17" selection-end-line="259" selection-end-column="17" />
               <folding>
                 <element signature="e#493#532#0" expanded="true" />
@@ -47,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="452" column="37" lean-forward="false" selection-start-line="452" selection-start-column="37" selection-end-line="452" selection-end-column="37" />
+            <state relative-caret-position="336">
+              <caret line="433" column="53" lean-forward="false" selection-start-line="433" selection-start-column="48" selection-end-line="433" selection-end-column="53" />
               <folding>
                 <element signature="e#24#35#0" expanded="true" />
               </folding>
@@ -59,7 +61,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -84,7 +86,7 @@
       <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3724">
+            <state relative-caret-position="48">
               <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding />
             </state>
@@ -94,7 +96,7 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2192">
+            <state relative-caret-position="2272">
               <caret line="142" column="0" lean-forward="false" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
               <folding />
             </state>
@@ -138,7 +140,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
     <option name="width" value="1922" />
-    <option name="height" value="1055" />
+    <option name="height" value="1175" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -155,6 +157,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -216,7 +219,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -458,12 +460,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1922" height="1055" extended-state="6" />
+    <frame x="-1" y="0" width="1922" height="1175" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18177083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32899627" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -541,14 +543,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/widgets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="12" column="34" lean-forward="true" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/widgets.py" />
     <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2272">
@@ -840,13 +835,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/planiranje_obiskov.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/planiranje_obiskov.html" />
     <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/osebjeAdd.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -870,31 +859,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2192">
+        <state relative-caret-position="2272">
           <caret line="142" column="0" lean-forward="false" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/widgets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="16" column="12" lean-forward="true" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/widgets.py" />
     <entry file="file://$PROJECT_DIR$/../giter/backup/TPO_app/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="464">
           <caret line="451" column="75" lean-forward="false" selection-start-line="451" selection-start-column="8" selection-end-line="451" selection-end-column="75" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3724">
+        <state relative-caret-position="48">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
@@ -902,20 +883,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1696">
+        <state relative-caret-position="4096">
           <caret line="259" column="17" lean-forward="false" selection-start-line="259" selection-start-column="17" selection-end-line="259" selection-end-column="17" />
           <folding>
             <element signature="e#493#532#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="452" column="37" lean-forward="false" selection-start-line="452" selection-start-column="37" selection-end-line="452" selection-end-column="37" />
-          <folding>
-            <element signature="e#24#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -934,6 +905,16 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#25#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="433" column="53" lean-forward="false" selection-start-line="433" selection-start-column="48" selection-end-line="433" selection-end-column="53" />
+          <folding>
+            <element signature="e#24#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
