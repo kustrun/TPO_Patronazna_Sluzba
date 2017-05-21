@@ -24,4 +24,8 @@ urlpatterns = [
     url(r'^obiskPodrobno/(?P<obiskId>[0-9]+)$', views.obiskPodrobnosti, name='obiskPodrobno'),
     url(r'^planiranjeObiskov/$', views.planiranje_obiskov, name='planiranje_obiskov'),
     url(r'^posodabljanje/$', views.posodabljane_pacienta, name='posodabljane_pacienta'),
+    url(r'^meritve/(?P<obiskId>[0-9]+)$', views.meritve, name='meritve'),
+    url(r'^pridobiStevilko/(?P<obiskId>[0-9]+)/(?P<podatkiAktivnostId>[0-9]+)$', views.pridobiStevilko, name='pridobiStevilko'),
+    url(r'^pridobiDatum/(?P<obiskId>[0-9]+)/(?P<podatkiAktivnostId>[0-9]+)$', views.pridobiDatum, name='pridobiDatum'),
+    url(r'^pridobiNiz/(?P<obiskId>[0-9]+)/(?P<podatkiAktivnostId>[0-9]+)$', views.pridobiNiz, name='pridobiNiz'),
 ]

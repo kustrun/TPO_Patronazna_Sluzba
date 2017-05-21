@@ -327,6 +327,9 @@ class OstaliPodatki(models.Model):
         managed = False
         db_table = 'ostali_podatki'
 
+    def popraviDatum(self):
+        split = self.vrednost.split("-")
+        return split[2] + "." + split[1] + "." + split[0]
 
 
 class Pacient(models.Model):
@@ -359,6 +362,10 @@ class PodatkiAktivnosti(models.Model):
     class Meta:
         managed = False
         db_table = 'podatki_aktivnosti'
+
+    def pridobiVrednost(self, obiskId):
+        print(obiskId)
+        return ""
 
 class Posta(models.Model):
     st_poste = models.IntegerField(primary_key=True)
@@ -435,6 +442,8 @@ class VrstaPodatka(models.Model):
         managed = False
         db_table = 'vrsta_podatka'
 
+    def moznosti(self):
+        return self.naziv.split('/')
 
 class VrstaStoritve(models.Model):
     sifra = models.CharField(max_length=10)
