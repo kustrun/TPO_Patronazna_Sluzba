@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import simplejson as simplejson
+from django.core import serializers
 from django.shortcuts import render
-from django import forms
+from django import template
 from itertools import chain
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect,HttpResponse
@@ -1050,3 +1051,102 @@ def posodabljane_pacienta(request):
             eform.save()
 
     return render(request, 'patronaza/posodabljanje_pacienta.html', context)
+
+register = template.Library()
+@register.filter(name='cut')
+def cut(value, arg):
+    return value.replace(arg, '')
+
+def RepresentsInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+@login_required
+def meritve(request, obiskId):
+    ime = ''
+    if (Osebje.objects.filter(id_racuna=request.user).exists()):
+        ime = Osebje.objects.get(id_racuna=request.user)
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
+        ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    else:
+        ime = request.user.username
+
+    #if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        for key, value in request.POST.items():
+            if(value != '' and RepresentsInt(key) and OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=key).exists()):
+                op = OstaliPodatki.objects.get(id_obisk_id=obiskId, id_podatki_aktivnosti_id=key)
+                op.vrednost = value;
+
+                op.save()
+            elif(value != '' and RepresentsInt(key)):
+                op = OstaliPodatki(id_obisk_id=obiskId,
+                                   id_podatki_aktivnosti_id=key,
+                                   vrednost=value)
+                op.save()
+
+        return HttpResponseRedirect('/patronaza/domov')
+
+    ostaliPodatki = OstaliPodatki.objects.filter(id_obisk = obiskId)
+    izbraniObisk = Obisk.objects.get(id=obiskId)
+    dn = izbraniObisk.id_dn
+
+    vsiPodatki = PodatkiAktivnosti.objects.all()
+
+
+    return render(request, 'patronaza/meritve.html', {
+        'obisk': izbraniObisk,
+        'ostaliPodatki': ostaliPodatki,
+        'delovniNalog': dn,
+        'vsiPodatki': vsiPodatki,
+        'ime': name,
+    })
+
+def pridobiStevilko(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': 0,
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')
+
+def pridobiDatum(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': None,
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')
+
+def pridobiNiz(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': '',
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')

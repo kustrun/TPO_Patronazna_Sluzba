@@ -317,5 +317,11 @@ $(document).ready(function(){
         $("input").prop('disabled', true);
         $("select").attr('disabled', true);
 
+        var split = $('#id_datum_prvega_obiska').val().split("-")
+        $('#id_datum_prvega_obiska').val(split[2] + "." + split[1] + "." + split[0])
+
+        var split2 = $('#id_casovno_obdobje').val().split("-")
+        $('#id_casovno_obdobje').val(split2[2] + "." + split2[1] + "." + split2[0])
+
     }
 });

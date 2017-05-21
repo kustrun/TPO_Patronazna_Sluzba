@@ -1,0 +1,583 @@
+{% extends "./base.html" %}
+{% load static %}
+{% load index %}
+{% block content %}
+
+<h1>Vnesi podatke o meritvah</h1>
+
+
+    <form method="POST">
+        {% csrf_token %}
+        {% if delovniNalog.id_vrsta.naziv == 'obisk nosečnice' %}
+            <h2>Podatki nosečnice</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 10 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% elif delovniNalog.id_vrsta.naziv == 'obisk otročnice in novorojenčka' %}
+            <h2>Podatki otročnice</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 20 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+
+            <h2>Podatki novorojenčka</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 30 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% elif delovniNalog.id_vrsta.naziv == 'preventiva starostnika' %}
+            <h2>Podatki starostnika</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 40 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% elif delovniNalog.id_vrsta.naziv == 'aplikacija injekcij' %}
+            <h2>Podatki o aplikaciji injekcij</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 50 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% elif delovniNalog.id_vrsta.naziv == 'odvzem krvi' %}
+            <h2>Podatki o odvzemu krvi</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 60 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% elif delovniNalog.id_vrsta.naziv == 'kontrola zdravstvenega stanja' %}
+            <h2>Podatki o kontroli zdravstvenega stanja</h2>
+            <ul class="list-group">
+                {% for podatek in vsiPodatki %}
+                    {% if podatek.id_aktivnost.storitev == 70 %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'option' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id }}" izbran="{{ podatek | getString:id }}" required>
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <select name="{{ podatek.id_aktivnost.aktivnost }}" izbran="{{ podatek | getString:id }}">
+                                            <option value="">---------</option>
+                                            {% for moznost in podatek.id_vrsta_podatka.moznosti %}
+                                                <option value="{{ moznost }}">{{ moznost }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'date' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="date" name="{{ podatek.id }}" value="{{ podatek | getDate:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}" required> *
+                                    {% endwith %}
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="text" name="{{ podatek.id }}" value="{{ podatek | getString:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        {% endif %}
+
+
+
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+
+        <input type="submit" value="Shrani podatke" class="btn btn-info btn-lg">
+    </form>
+
+{% endblock %}
