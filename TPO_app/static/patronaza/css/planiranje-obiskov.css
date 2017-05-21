@@ -1,0 +1,79 @@
+.seznam-wrapper {
+	max-height: 768px;
+	overflow: auto;
+	display: flex;
+	flex-flow: column;
+	align-content: center;
+	border: 1px solid black;
+	margin-bottom: 20px;
+}
+
+form > * {
+	margin-bottom: 20px;
+}
+
+#plan-obiskov label {
+	margin: 0;
+}
+
+.seznam_obiskov li {
+	border: 1px solid silver;
+	margin: 2px;
+}
+
+.seznam_obiskov li:hover {
+	background-color: #eee
+}
+
+.seznam_obiskov li label {
+	min-height: 100%;
+	width: auto;
+}
+
+.seznam_obiskov li label:hover {
+	cursor: pointer;
+}
+
+.obisk_data {
+	display: flex;
+	flex-flow: row wrap;
+	flex-basis: 95%;
+}
+
+.obisk_data span {
+	margin-bottom: 5px;
+	font-weight: normal;
+}
+
+.obisk_checkbox_out {
+	flex-basis: 5%;
+}
+
+.flex-full {
+	flex-basis: 100%;
+}
+
+.flex-half {
+	flex-basis: 50%;
+}
+
+#seznam_neopravljenih li {
+	display: flex;
+	flex-flow: row;
+	align-content: stretch;
+}
+
+#seznam_neopravljenih li label {
+	padding: 10px;
+}
+
+.izbran_obisk {
+	display: flex;
+	flex-flow: row;
+	padding: 10px;
+}
+
+.izbran_obisk label {
+	margin:0;
+	padding:0;
+}

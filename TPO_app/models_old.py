@@ -263,7 +263,7 @@ class Obisk(models.Model):
     podrobnosti_obiska = models.TextField(blank=True, null=True)
     izbran_datum = models.DateField(blank=True, null=True)
     cena = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    obvezen = models.IntegerField(default=0)
+    obvezen = models.IntegerField()
 
     class Meta:
         managed = False
@@ -319,8 +319,10 @@ class Oskrba(models.Model):
 
 
 class OstaliPodatki(models.Model):
-    id_podatki_aktivnosti = models.ForeignKey('PodatkiAktivnosti', models.DO_NOTHING, db_column='id_podatki_aktivnosti')
+    id_vrsta_podatka = models.ForeignKey('VrstaPodatka', models.DO_NOTHING, db_column='id_vrsta_podatka')
+    id_aktivnosti = models.ForeignKey(Aktivnosti, models.DO_NOTHING, db_column='id_aktivnosti')
     id_obisk = models.ForeignKey(Obisk, models.DO_NOTHING, db_column='id_obisk')
+    obvezen = models.IntegerField()
     vrednost = models.CharField(max_length=256)
 
     class Meta:
@@ -354,7 +356,6 @@ class Pacient(models.Model):
 class PodatkiAktivnosti(models.Model):
     id_aktivnost = models.ForeignKey(Aktivnosti, models.DO_NOTHING, db_column='id_aktivnost')
     id_vrsta_podatka = models.ForeignKey('VrstaPodatka', models.DO_NOTHING, db_column='id_vrsta_podatka')
-    obvezen = models.IntegerField()
 
     class Meta:
         managed = False

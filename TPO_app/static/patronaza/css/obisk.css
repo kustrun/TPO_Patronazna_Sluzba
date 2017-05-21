@@ -1,0 +1,46 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* OBLIKUJ OBISK */
+#obiskPodrobnosti {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bababa;
+  padding-top: 10px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-left: 40px;
+  clear: all;
+  background-color: #e2f1e1;
+}
+
+#obiskPodrobnosti h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 25px;
+}
+
+
+#obiskPodrobnosti h4 {
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.imeVrednosti {
+  font-size: 16px;
+  font-weight: 700;
+  color: black;
+}
+
+#obiskPodrobnosti table {
+  width: 100%;
+}
+
+#obiskPodrobnosti th, #obiskPodrobnosti td {
+  width: 33%;
+  padding-left: 10px;
+  border: 1px solid black;
+}

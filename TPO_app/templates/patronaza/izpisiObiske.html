@@ -50,14 +50,22 @@
             <li class="list-group-item">
                 <label>Pacient</label>
                 <input type="text" name="pacient">
+            </li>            
+            <li class="list-group-item">
+                <label>Dejanski datum obiska: Od</label>
+                <input type="text" name="odDejanski" value="{% if odDatumDejanski %}{{ odDatum|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
-                <label>Od</label>
-                <input type="date" name="od">
+                <label>Dejanski datum obiska: Do</label>
+                <input type="text" name="doDejanski" value="{% if doDatumDejanski %}{{ doDatum|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
-                <label>Do</label>
-                <input type="date" name="do">
+                <label>Predviden datum obiska: Od</label>
+                <input type="text" name="odPredviden" value="{% if odDatumPredviden %}{{ odDatum|date:"d.m.Y" }}{% endif %}">
+            </li>
+            <li class="list-group-item">
+                <label>Predviden datum obiska: Do</label>
+                <input type="text" name="doPredviden" value="{% if doDatumPredviden %}{{ doDatum|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Vrsta</label>
@@ -78,7 +86,10 @@
                 </select>
             </li>
         </ul>
-            <input type="submit" value="Filtriraj">
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+            <input type="submit" value="Filtriraj" class="btn btn-info btn-lg">
         </form>
     </div>
     <div class="col-sm-9">
@@ -90,6 +101,8 @@
                     <th>Medicinska sestra</th>
                     <th>Nadomestna sestra</th>
                     <th>Pacient</th>
+                    <th>Dejanski datum obiska</th>
+                    <th>Predviden datum obiska</th>
                     <th>Status</th>
                     <th>Podrobnosti</th>
                 </tr>
@@ -102,7 +115,9 @@
                         <th>{% with index_result=sestra_list|index:i %}{{ index_result }}{% endwith %}</th>
                         <th>{% with index_result=nadomestnaSestra_list|index:i %}{{ index_result }}{% endwith %}</th>
                         <th>{% with index_result=pacient_list|index:i %}{{ index_result }}{% endwith %}</th>
-                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.status_dn.naziv }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.datum_obiska | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.predviden_datum | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.status_obiska.naziv }}{% endwith %}</th>
                         <th><a href="#">Podrobnosti</a></th>
                     </tr>
                 {% endfor %}

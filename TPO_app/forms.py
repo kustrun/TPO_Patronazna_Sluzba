@@ -10,6 +10,10 @@ from .DelovniNalogValidators import *
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime,date
 
+class PlaniranjeObiskovForm(forms.Form):
+    datum = forms.DateField(label=_('Datum'), widget=forms.DateInput, required=False)
+    obiski = forms.ModelMultipleChoiceField(label=_('Izbrani obiski'), required=False, widget=forms.CheckboxSelectMultiple, queryset=DodeljenoOsebje.objects.filter(id_obisk__status_obiska_id=1).order_by('id_obisk__predviden_datum', 'id_obisk__status_obiska'))
+
 class UporabniskiRacunForm(forms.ModelForm):
     password = forms.CharField(label='Geslo',widget=forms.PasswordInput(),min_length=8)
     password2 = forms.CharField(label='Ponovno geslo',widget=forms.PasswordInput())
@@ -61,8 +65,11 @@ class PacientForm(forms.ModelForm):
         else:
             return False
 
-
-
+class UporabniskiRacunEmailForm(forms.ModelForm):
+    email = forms.EmailField(label='Email', required=True)
+    class Meta:
+        model = User
+        fields = ['email']
 
 class SkrbnistvoForm(forms.ModelForm):
     CHOICES = [('moski', 'Moški'), ('zenska', 'Ženska')]
@@ -232,7 +239,7 @@ class PasswordChangeForm(forms.Form):
 		return cleaned_data
 
 
-class OsebjeSestraForm(forms.ModelForm):
+class OsebjeForm(forms.ModelForm):
     class Meta:
         model=Osebje
         fields=['ime', 'priimek', 'sifra','telefon', 'id_zd', 'okolis']
