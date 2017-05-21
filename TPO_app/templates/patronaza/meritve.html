@@ -8,6 +8,9 @@
 
     <form method="POST">
         {% csrf_token %}
+            
+        {{ delovniNalog.id_vrsta.naziv }}
+        
         {% if delovniNalog.id_vrsta.naziv == 'obisk nosečnice' %}
             <h2>Podatki nosečnice</h2>
             <ul class="list-group">
