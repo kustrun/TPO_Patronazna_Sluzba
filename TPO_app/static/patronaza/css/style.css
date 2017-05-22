@@ -66,11 +66,14 @@ body {
 	background-color: #994d00;
 }
 
+.small-form {
+	max-width: 420px;
+}
+
 .form-panel {
 	width: 100%;
 	margin-top: 10vh;
 	justify-content: center;
-	max-width: 420px;
 	min-width: 330px;
 	background-color: white;
 	padding: 35px;

@@ -278,7 +278,7 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+        name = unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     else:
@@ -440,7 +440,7 @@ def logout(request):
 
 @login_required
 def change_password(request):
-	context = {'passwordChangeForm':PasswordChangeForm(), 'message':"", 'error':False}
+	context = {'passwordChangeForm':PasswordChangeForm(), 'message':"", 'error':False, 'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
 	error = False
 	message = ""
 
@@ -967,7 +967,7 @@ def osebjeAdd(request):
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': request.user.username}
+    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
 
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
