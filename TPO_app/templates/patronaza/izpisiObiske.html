@@ -16,7 +16,7 @@
                 <select name = "izdajatelj">
                     <option value="">---------</option>
                     {% for zdravnik in zdravniki %}
-                        <option value="{{ zdravnik.sifra }}">{{ zdravnik.sifra }} {{ zdravnik }}</option>
+                        <option value="{{ zdravnik.sifra }}" {% if zdravnik.sifra == izdajatelj %}selected{% endif %}>{{ zdravnik.sifra }} {{ zdravnik }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -29,7 +29,7 @@
                 <select name = "sestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}" {% if sestra.sifra == sestraSifra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -42,15 +42,15 @@
                 <select name = "nadomestnaSestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}"{% if sestra.sifra == nadomestnaSestra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>
-                <input type="text" name="pacient">
-            </li>            
+                <input type="text" name="pacient" value="{% if pacient %}{{ pacient }}{% endif %}">
+            </li> 
             <li class="list-group-item">
                 <label>Dejanski datum obiska: Od</label>
                 <input type="text" name="odDejanski" value="{% if odDatumDejanski %}{{ odDatum|date:"d.m.Y" }}{% endif %}">
@@ -72,7 +72,7 @@
                 <select name = "vrsta">
                     <option value="">---------</option>
                     {% for obisk in obiski %}
-                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                        <option value="{{ obisk.id }}" {% if obisk.id == vrsta %}selected{% endif %}>{{ obisk.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
@@ -81,7 +81,7 @@
                 <select name = "status">
                     <option value="">---------</option>
                     {% for s in statusi %}
-                        <option value="{{ s.naziv }}">{{ s.naziv }}</option>
+                        <option value="{{ s.naziv }}" {% if s.naziv == status %}selected{% endif %}>{{ s.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
@@ -118,7 +118,7 @@
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.datum_obiska | date:"d.m.Y" }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.predviden_datum | date:"d.m.Y" }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.status_obiska.naziv }}{% endwith %}</th>
-                        <th><a href="#">Podrobnosti</a></th>
+                        <th>{% with index_result=obiski_list|index:i %}<a href="{% url 'obiskPodrobno' obiskId=index_result.id %}">Podrobnosti</a>{% endwith %}</th>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -771,16 +771,6 @@ def izpisi_obiske(request):
         dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
         dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba)).values('id_obisk')
-
-        """
-        dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
-                                      ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
-                                      'AND (dodeljeno.id_osebja=' + str(oseba.id) + 'OR dodeljeno.id_nadomestna=' + str(
-            oseba.id) + ')')
-        dn_list = dn_list.filter(id_dn__in=dn)
-        """
-        #obiski_tmp=Obisk.objects.raw('SELECT o.* FROM obisk o, dodeljeno_osebje do WHERE o.id=do.id_obisk AND ob.id_obisk IN (SELECT osebje.id FROM dodeljeno_osebje osebje WHERE osebje.id_osebja= ' + str(oseba.id) + 'OR osebje.id_nadomestna = ' + str(oseba.id) + ')')
-        
         obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
         zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
@@ -856,35 +846,18 @@ def izpisi_obiske(request):
         if (pacient):
             dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
         if (sestra and nadomestnaSestra and sestra == nadomestnaSestra):
-            """
-            medicinska = DodeljenoOsebje.objects.get(id_osebja=sestra)
-            dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
-                                          ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
-                                          'AND (dodeljeno.id_osebja=' + str(
-                medicinska.id) + 'OR dodeljeno.id_nadomestna=' + str(medicinska.id) + ')')
-
-            dn_list = dn_list.filter(id_dn__in=dn)
-            """
-            dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_osebja=sestra).values('id_obisk')
+            medicinska = Osebje.objects.get(sifra=sestra)
+            dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=medicinska) | Q(id_nadomestna=medicinska)).values('id_obisk')
             obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
         else:
             if (sestra):
-                #medicinska = Osebje.objects.get(sifra=sestra)
-                #dodeljeno = dodeljeno.filter(id_osebja__sifra=sestra)
-                #dn_list = dn_list.filter(id_pacient__id_okolis=medicinska.okolis)
-                dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_osebja=sestra).values('id_obisk')
+                medicinska = Osebje.objects.get(sifra=sestra)
+                dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_osebja=medicinska).values('id_obisk')
                 obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
-            # to spodaj je narobe
+            
             if (nadomestnaSestra):
-                #medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
-                #dodeljeno = dodeljeno.filter(id_nadomestna=medicinska)
-                """
-                dn = DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, dodeljeno_osebje dodeljeno,'
-                                              ' obisk o WHERE d.id = o.id_dn AND o.id = dodeljeno.id_obisk '
-                                              'AND (dodeljeno.id_nadomestna=' + str(medicinska.id) + ')')
-                dn_list = dn_list.filter(id_dn__in=dn)
-                """
-                dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_nadomestna=nadomestnaSestra).values('id_obisk')
+                medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
+                dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_nadomestna=medicinska).values('id_obisk')
                 obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
 
         if (odDejanski and doDejanski and not error):
@@ -895,9 +868,6 @@ def izpisi_obiske(request):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
         if (status):
             obiski_tmp=obiski_tmp.filter(status_obiska__naziv=status)
-            #dn=DelovniNalog.objects.raw('SELECT d.* FROM delovni_nalog d, obisk o WHERE d.id = o.id_dn AND o.id IN (SELECT ob.id FROM obisk ob, status_obiska so WHERE ob.status_obiska = so.id AND so.naziv = %s)', [str(status)])
-            #dn_list = dn_list.filter(id_dn__in=dn)
-            #requested_status=str(status)
 
 
     
@@ -908,22 +878,6 @@ def izpisi_obiske(request):
         for ob in o:
             pacient_list.append(p)
 
-    """
-        # medicinske sestre
-        zadolzenaSestra = None
-        nadomestnaSestra = '/'
-        for s in dodeljeno.filter(id_obisk__=dn.id_dn):
-            if zadolzenaSestra == None and s.id_osebja != None:
-                zadolzenaSestra = s.id_osebja
-            if nadomestnaSestra == '/' and s.id_nadomestna != None:
-                nadomestnaSestra = s.id_nadomestna
-        
-        for ob in o:
-            sestra_list.append(zadolzenaSestra)
-            nadomestnaSestra_list.append(nadomestnaSestra)
-    """
-
-    #TO-DO: iz seznama obiskov (obiski_list) sestavi enako dolg seznam medicinskih sester in nadomestnih medicinskih sester
     for obisk in obiski_list:
         dodeljeno=DodeljenoOsebje.objects.get(id_obisk=obisk.id)
         medicinska = None
@@ -936,19 +890,6 @@ def izpisi_obiske(request):
 
         sestra_list.append(medicinska)
         nadomestnaSestra_list.append(nadomestnaSestra)
-
-
-    #brsanje obiskov glede na status
-    """
-    if requested_status != "" :
-        for o in obiski_list:
-            if o.status_obiska.naziv != requested_status :
-                indexObiska=obiski_list.index(o);
-                obiski_list.remove(obiski_list[indexObiska])
-                pacient_list.remove(pacient_list[indexObiska])            
-                sestra_list.remove(sestra_list[indexObiska])            
-                nadomestnaSestra_list.remove(nadomestnaSestra_list[indexObiska])
-    """
 
     paginator = Paginator(obiski_list, 15)  # Show 10 contacts per page
 
