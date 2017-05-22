@@ -406,7 +406,7 @@ def change_password(request):
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': request.user.username}
+    context = {'ime': request.user.username, 'izbrani': None}
 
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
@@ -425,30 +425,44 @@ def planiranje_obiskov(request):
             form = PlaniranjeObiskovForm()
             obiski_query = form.fields['obiski'].queryset.filter(
                 Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
-            request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani[]'))
+            request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani'))
+            request.session['datum_zadnjega_plana'] = request.POST.get('datum_prikaza')
+            print request.session['izbrani_obiski']
         else:
             form = PlaniranjeObiskovForm(request.POST)
             obiski_query = form.fields['obiski'].queryset.filter(
                 Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
             if form.is_valid():
                 id_list = request.POST.getlist('obisk')
+                print id_list
                 pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
                 for item in pobrisani:
-                    item.id_obisk.izbran_datum = None
-                    item.id_obisk.save()
+                    if not item.id in id_list:
+                        item.id_obisk.izbran_datum = None
+                        item.id_obisk.save()
 
                 for id in id_list:
-                    obisk = obiski_query.get(id_obisk__id=id)
+                    obisk = obiski_query.get(id_obisk_id=id)
                     obisk.id_obisk.izbran_datum = datum
                     obisk.id_obisk.save()
-                    obisk.save()
-
     else:
         form = PlaniranjeObiskovForm()
         obiski_query = form.fields['obiski'].queryset.filter(Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
+        if 'datum_zadnjega_plana' in request.session:
+            zadnji = request.session['datum_zadnjega_plana'].split(".")
+            zadnji_datum = date(int(zadnji[2]), int(zadnji[1]), int(zadnji[0]))
+            if zadnji_datum == datum:
+                if 'izbrani_obiski' in request.session:
+                    id_list = [x['id'] for x in request.session['izbrani_obiski']]
+                    context['izbrani'] = obiski_query.filter(id_obisk__id__in=id_list)
+            else:
+                del request.session['izbrani_obiski']
+                del request.session['datum_zadnjega_plana']
+
+    if context['izbrani'] == None:
+        context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
 
     context['objekti'] = obiski_query
-    context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
     context['obvezni'] = obiski_query.filter(id_obisk__obvezen=0)
     context['datumPrikaza'] = datum
     context['planObiskovForm'] = form
