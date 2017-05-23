@@ -53,19 +53,19 @@
             </li> 
             <li class="list-group-item">
                 <label>Dejanski datum obiska: Od</label>
-                <input type="text" name="odDejanski" value="{% if odDatumDejanski %}{{ odDatum|date:"d.m.Y" }}{% endif %}">
+                <input type="text" name="odDejanski" value="{% if odDatumDejanski %}{{ odDatumDejanski|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Dejanski datum obiska: Do</label>
-                <input type="text" name="doDejanski" value="{% if doDatumDejanski %}{{ doDatum|date:"d.m.Y" }}{% endif %}">
+                <input type="text" name="doDejanski" value="{% if doDatumDejanski %}{{ doDatumDejanski|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Predviden datum obiska: Od</label>
-                <input type="text" name="odPredviden" value="{% if odDatumPredviden %}{{ odDatum|date:"d.m.Y" }}{% endif %}">
+                <input type="text" name="odPredviden" value="{% if odDatumPredviden %}{{ odDatumPredviden|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Predviden datum obiska: Do</label>
-                <input type="text" name="doPredviden" value="{% if doDatumPredviden %}{{ doDatum|date:"d.m.Y" }}{% endif %}">
+                <input type="text" name="doPredviden" value="{% if doDatumPredviden %}{{ doDatumPredviden|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Vrsta</label>
@@ -96,6 +96,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Odgovorni</th>
                     <th>Vrsta obiska</th>
                     <th>Medicinska sestra</th>
@@ -110,6 +111,7 @@
             <tbody>
                 {% for i in loop_times %}
                     <tr>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_osebje }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_vrsta }}{% endwith %}</th>
                         <th>{% with index_result=sestra_list|index:i %}{{ index_result }}{% endwith %}</th>
@@ -118,7 +120,13 @@
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.datum_obiska | date:"d.m.Y" }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.predviden_datum | date:"d.m.Y" }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.status_obiska.naziv }}{% endwith %}</th>
-                        <th>{% with index_result=obiski_list|index:i %}<a href="{% url 'obiskPodrobno' obiskId=index_result.id %}">Podrobnosti</a>{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}
+                            {% if index_result.status_obiska.naziv == 'opravljen' %}
+                            <a href="{% url 'obiskPodrobno' obiskId=index_result.id %}">Podrobnosti</a>
+                            {% else %}
+                                /
+                            {% endif %}
+                            {% endwith %}</th>
                     </tr>
                 {% endfor %}
             </tbody>

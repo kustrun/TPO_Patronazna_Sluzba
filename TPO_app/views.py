@@ -768,7 +768,7 @@ def izpisi_obiske(request):
 
 
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
-        dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
+        #   dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
         dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba)).values('id_obisk')
         obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
@@ -891,7 +891,7 @@ def izpisi_obiske(request):
         sestra_list.append(medicinska)
         nadomestnaSestra_list.append(nadomestnaSestra)
 
-    paginator = Paginator(obiski_list, 15)  # Show 10 contacts per page
+    paginator = Paginator(obiski_list, 30)  # Show 30 contacts per page
 
     page = request.GET.get('page')
     try:
