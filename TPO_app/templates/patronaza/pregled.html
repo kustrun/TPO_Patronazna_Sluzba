@@ -2,8 +2,16 @@
 {% load static %}
 {% block content %}
 {% for p in pacijenti %}
-    <h4>Oseba</h4>
-    {{ p.as_p }}
+    <h4><b>{{ p.ime }} {{ p.priimek }}</b></h4>
+    <p><label>Datum rojstva:</label> {{ p.datum_rojstva }}</p>
+    <p><label>Naslov:</label> {{ p.naslov }}</p>
+    <p><label>Posta:</label> {{ p.id_posta }}</p>
+    <p><label>Številka kartice:</label> {{ p.st_kartice }}</p>
+    <p><label>Telefon:</label> {{ p.telefon }}</p>
+    <p><label>Spol:</label> {{ p.spol | upper}}</p>
+    <p><label>Sorodstveno razmerje:</label> {{ p.razmerje_ur | upper}}</p>
+    <a class="btn btn-info" role="button" href="{% url 'uredi_skrbnistvo' pacientId=p.id %}">Uredi</a>
 {% endfor %}
+    </br>
 <a class="btn btn-info" role="button" href="{% url 'dodaj_skrbnistvo' %}">Dodaj skrbništvo</a>
 {% endblock %}

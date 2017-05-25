@@ -3,12 +3,7 @@
 {% block content %}
 <form class="form-horizontal" method="POST">
     {% csrf_token %}
-    {{ pacientForm.as_p }}
-    {{ emailForm.as_p }}
-    {% if kontaktForm %}
-    <h4>Kontaktna oseba</h4>
-    {{ kontaktForm.as_p }}
-    {% endif %}
+    {{ skrbnistvoForm.as_p }}
     <input type="submit" class="btn btn-info" value="Posodobi"/>
     {% if kartice or email or date or telefon %}
     <p>Napaka</p>
