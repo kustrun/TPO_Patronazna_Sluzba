@@ -278,7 +278,7 @@ def delovniNalogPodrobnosti(request, delovniNalogId):
     ime = ''
     if (Osebje.objects.filter(id_racuna=request.user).exists()):
         ime = Osebje.objects.get(id_racuna=request.user)
-        name = unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     else:
@@ -574,7 +574,7 @@ def dodaj_skrbnistvo(request):
         if sform.is_valid():
             if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists()):
                 context['kartica'] = True
-                return render(request, 'patronaza/registracija.html', context)
+                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
             if(not sform.telefon_regex()):
                 context['telefon'] = True
                 context['skrbnistvoForm'] = sform
@@ -596,27 +596,25 @@ def uredi_skrbnistvo(request,pacientId):
     context = {'date':False, 'telefon':False}
     ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     pacient = Pacient.objects.get(pk=pacientId)
+    pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
+    sform = SkrbnistvoForm(instance=pacient)
     context['ime'] = ime
     context['skrbnistvoForm'] = SkrbnistvoForm(instance=pacient)
     if(request.method == 'POST'):
-        sform = SkrbnistvoForm(request.POST)
+        sform = SkrbnistvoForm(request.POST,instance=pacient)
         if sform.is_valid():
-            if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists()):
+            if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists() and sform.cleaned_data['st_kartice'] != pacient.st_kartice):
                 context['kartica'] = True
-                return render(request, 'patronaza/registracija.html', context)
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
             if(not sform.telefon_regex()):
                 context['telefon'] = True
                 context['skrbnistvoForm'] = sform
-                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
             if(not sform.date_valid()):
                 context['date'] = True
                 context['skrbnistvoForm'] = sform
-                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
-            instance = sform.save(commit=False)
-            instance.id_racuna = request.user
-            instance.lastnik_racuna = False
-            instance.id_okolis = Okolis.objects.get(sifra=str(instance.id_posta.st_poste))
-            instance.save()
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
+            sform.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
     return render(request, 'patronaza/urediSkrbnistvo.html', context)
 
@@ -997,7 +995,7 @@ def osebjeAdd(request):
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
+    context = {'ime': str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))}
 
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
@@ -1065,7 +1063,15 @@ def posodabljane_pacienta(request):
     if request.method == 'POST':
         pform = PacientForm(request.POST,instance=pacient)
         eform = UporabniskiRacunEmailForm(request.POST,instance=ur)
+        if(kontaktForm):
+            kontaktForm = kontaktForm(request.POST,instance=kontaktnaOseba)
         if pform.is_valid() and eform.is_valid():
+            if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists() and pform.cleaned_data['st_kartice'] != pacient.st_kartice):
+                context['kartica'] = True
+                return render(request, 'patronaza/registracija.html', context)
+            elif (User.objects.filter(email=eform.cleaned_data['email']).exists() and eform.cleaned_data['email'] != ur.email):
+                context['email'] = True
+                return render(request, 'patronaza/registracija.html', context)
             if(not pform.date_valid()):
                 context['uporabniskiRacunForm'] = pform
                 context['pacientForm'] = pform
@@ -1080,7 +1086,8 @@ def posodabljane_pacienta(request):
                 return render(request,'patronaza/posodabljanje_pacienta.html',context)
             print("Test")
             pform.save()
-            eform.save()
+            ur.email = eform.cleaned_data['email']
+            ur.username = eform.cleaned_data['email']
             context['pacientForm'] = pform
             context['emailForm'] = eform
 

@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3d724b21-4252-45c7-922d-bcd0654ac1b6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py" afterPath="$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css" afterPath="$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/change_password.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/change_password.html" />
+    <list default="true" id="2ae07a81-938b-4c02-a4f1-9c56a526d9cd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/TPO_Patronazna_Sluzba.iml" afterPath="$PROJECT_DIR$/.idea/TPO_Patronazna_Sluzba.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/index.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/login.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija_kontakt.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija_kontakt.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/views.py" afterPath="$PROJECT_DIR$/TPO_app/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,12 +27,116 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8064">
-              <caret line="442" column="152" lean-forward="false" selection-start-line="442" selection-start-column="152" selection-end-line="442" selection-end-column="152" />
+            <state relative-caret-position="17">
+              <caret line="276" column="0" lean-forward="false" selection-start-line="276" selection-start-column="0" selection-end-line="276" selection-end-column="0" />
+              <folding>
+                <element signature="e#25#56#0" expanded="true" />
+                <element signature="e#947#1085#0" expanded="false" />
+                <element signature="e#1131#1720#0" expanded="false" />
+                <element signature="e#1766#2349#0" expanded="false" />
+                <element signature="e#2399#2961#0" expanded="false" />
+                <element signature="e#3010#10491#0" expanded="false" />
+                <element signature="e#10567#15027#0" expanded="false" />
+                <element signature="e#15089#16033#0" expanded="false" />
+                <element signature="e#16075#16584#0" expanded="false" />
+                <element signature="e#16610#17893#0" expanded="false" />
+                <element signature="e#18039#19282#0" expanded="false" />
+                <element signature="e#19315#22504#0" expanded="false" />
+                <element signature="e#22535#22994#0" expanded="false" />
+                <element signature="e#23049#23578#0" expanded="false" />
+                <element signature="e#23631#24993#0" expanded="false" />
+                <element signature="e#25055#26453#0" expanded="false" />
+                <element signature="e#26495#27704#0" expanded="false" />
+                <element signature="e#27762#34254#0" expanded="false" />
+                <element signature="e#34304#40591#0" expanded="false" />
+                <element signature="e#40640#43024#0" expanded="false" />
+                <element signature="e#43089#43565#0" expanded="false" />
+                <element signature="e#43611#44787#0" expanded="false" />
+                <element signature="e#44842#46907#0" expanded="false" />
+                <element signature="e#46965#49430#0" expanded="false" />
+                <element signature="e#49516#49545#0" expanded="false" />
+                <element signature="e#49573#49656#0" expanded="false" />
+                <element signature="e#49709#51331#0" expanded="false" />
+                <element signature="e#51396#51759#0" expanded="false" />
+                <element signature="e#51821#52187#0" expanded="false" />
+                <element signature="e#52247#52611#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="izpisiDelavneNaloge.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-287">
+              <caret line="78" column="41" lean-forward="false" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="delovniNalog.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalog.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3383">
+              <caret line="199" column="6" lean-forward="false" selection-start-line="199" selection-start-column="6" selection-end-line="199" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="delovniNalog.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/delovniNalog.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="91" column="65" lean-forward="false" selection-start-line="91" selection-start-column="42" selection-end-line="91" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="77" column="20" lean-forward="false" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="63" />
+              <folding>
+                <element signature="e#379#720#0" expanded="false" />
+                <element signature="e#771#1570#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="posodabljanje_pacienta.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="14" lean-forward="false" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pregled.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="61" lean-forward="false" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -31,8 +145,18 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="30" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+            <state relative-caret-position="339">
+              <caret line="27" column="16" lean-forward="false" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urediSkrbnistvo.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -40,10 +164,46 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>str(</find>
-      <find>name</find>
+      <find>dodeljeno_osebje</find>
+      <find>DelovniNa</find>
+      <find>oskrba</find>
+      <find>DNM</find>
+      <find>related_name</find>
+      <find>remove</find>
+      <find>je_za</find>
+      <find>je_zad</find>
+      <find>User</find>
+      <find>delavniNa</find>
+      <find>delavniNalogi</find>
+      <find>dodel</find>
+      <find>delo</find>
+      <find>Pozdravljeni \n Ustvarili ste si račun za uporabo naš</find>
+      <find>obisk</find>
+      <find>defa</find>
+      <find>Vodja patronaže</find>
+      <find>reg</find>
+      <find>skrbni</find>
+      <find>podat</find>
+      <find>vsiPoda</find>
+      <find>VrstaPodatka</find>
+      <find>vsiPodatki</find>
+      <find>planira</find>
+      <find>podatek.id_aktivnost.storitev</find>
+      <find>konta</find>
+      <find>pacient</find>
+      <find>izda</find>
+      <find>objekti</find>
+      <find>delovniNalogPodrobnosti</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -52,7 +212,34 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/jquery.formset.js" />
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/nadomescanje.js" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html" />
+        <option value="$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py" />
+        <option value="$PROJECT_DIR$/TPO_app/forms.py" />
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js" />
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/meritve.js" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalog.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/obiskPodrobnosti.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templatetags/index.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/css/delovniNalog.css" />
+        <option value="$PROJECT_DIR$/TPO_app/models.py" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/base.html" />
+        <option value="$PROJECT_DIR$/TPO_app/urls.py" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/index.html" />
         <option value="$PROJECT_DIR$/TPO_app/views.py" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/registracija_kontakt.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/login.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html" />
       </list>
     </option>
   </component>
@@ -63,9 +250,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
-    <option name="width" value="1922" />
-    <option name="height" value="1175" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -82,6 +270,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -108,14 +298,92 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/PiNM_seminar_novo_v1.ipynb" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\David\FRI\Patronaža-sprint2\TPO_Patronazna_Sluzba\TPO_app\templates\patronaza" />
+      <recent name="E:\David\FRI\Patronaža-sprint2\TPO_Patronazna_Sluzba\TPO_app\static\patronaza\css" />
+      <recent name="E:\David\FRI\Patronaža-sprint2\TPO_Patronazna_Sluzba\TPO_app\static\patronaza\js" />
+      <recent name="E:\David\FRI\Patronaža-sprint2\TPO_Patronazna_Sluzba\TPO_app\static\patronaza" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -223,7 +491,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\David\AppData\Local\Programs\Python\Python36-32\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -249,7 +517,49 @@
       <module name="TPO_Patronazna_Sluzba" />
       <method />
     </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="C:\Users\David\AppData\Local\Programs\Python\Python36-32\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="TPO_Patronazna_Sluzba" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="rst2html" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="C:\Users\David\AppData\Local\Programs\Python\Python36-32\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="TPO_Patronazna_Sluzba" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="html" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -300,8 +610,9 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="TPO_Patronazna_sluzba.settings" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\David\AppData\Local\Programs\Python\Python36-32\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -309,9 +620,9 @@
       <module name="TPO_Patronazna_Sluzba" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="" />
+      <option name="host" value="localhost" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
+      <option name="browserUrl" value="http://localhost:8000/patronaza" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
@@ -327,38 +638,186 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3d724b21-4252-45c7-922d-bcd0654ac1b6" name="Default" comment="" />
-      <created>1495440634984</created>
+      <changelist id="2ae07a81-938b-4c02-a4f1-9c56a526d9cd" name="Default" comment="" />
+      <created>1492630957674</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1495440634984</updated>
+      <updated>1492630957674</updated>
     </task>
+    <task id="LOCAL-00001" summary="Spremeba v bazi in delno popravljen izpis delavnih nalogov">
+      <created>1494009050519</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1494009050519</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Skoraj realizirana zgodba #12">
+      <created>1494177722193</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1494177722193</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Popravki pri zgodbi #12, dodan cas zadnje prijave">
+      <created>1494356892798</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1494356892798</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Popravek prikaza datuma zadnje prijave">
+      <created>1494357550089</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1494357550089</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Izpis delovnih nalogov za zadolženo sestro">
+      <created>1494445705115</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1494445705115</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Končno realizirana zgodba 6">
+      <created>1494523555363</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1494523555363</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Zaključil upam">
+      <created>1494525435747</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1494525435747</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Zaključil upam">
+      <created>1494528946629</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1494528946629</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Popravljeno od dezota">
+      <created>1494569875341</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1494569875341</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Manjka view od tima">
+      <created>1494873935937</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1494873935937</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Dodan view za planiranje obiskov">
+      <created>1494874768439</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1494874768439</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Dodana opcija za posodabljanje ki še ne dela v celoti">
+      <created>1494876451506</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1494876451506</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Dodana opcija za posodabljanje ki še ne dela v celoti">
+      <created>1495283070725</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1495283070725</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Od Domna meritve">
+      <created>1495399744425</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1495399744425</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Dodano od Tima">
+      <created>1495400967420</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1495400967420</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Popravljena Aktivnost">
+      <created>1495402580526</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1495402580526</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Popravljeno!">
+      <created>1495402793148</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1495402793148</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Dodan frontend za popravljanje skrbništev.">
+      <created>1495728476379</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1495728476379</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1922" height="1175" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5075" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.4925" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2689295" sideWeight="0.4975" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3381201" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -366,25 +825,613 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Spremeba v bazi in delno popravljen izpis delavnih nalogov" />
+    <MESSAGE value="Skoraj realizirana zgodba #12" />
+    <MESSAGE value="Popravki pri zgodbi #12, dodan cas zadnje prijave" />
+    <MESSAGE value="Popravek prikaza datuma zadnje prijave" />
+    <MESSAGE value="Izpis delovnih nalogov za zadolženo sestro" />
+    <MESSAGE value="Končno realizirana zgodba 6" />
+    <MESSAGE value="Zaključil upam" />
+    <MESSAGE value="Popravljeno od dezota" />
+    <MESSAGE value="Manjka view od tima" />
+    <MESSAGE value="Dodan view za planiranje obiskov" />
+    <MESSAGE value="Dodana opcija za posodabljanje ki še ne dela v celoti" />
+    <MESSAGE value="Od Domna meritve" />
+    <MESSAGE value="Dodano od Tima" />
+    <MESSAGE value="Popravljena Aktivnost" />
+    <MESSAGE value="Popravljeno!" />
+    <MESSAGE value="Dodan frontend za popravljanje skrbništev." />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodan frontend za popravljanje skrbništev." />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/TPO_app/forms.py</url>
+          <line>2</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
+    <entry file="file://$PROJECT_DIR$/TPO_app/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="30" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        <state relative-caret-position="4454">
+          <caret line="262" column="26" lean-forward="false" selection-start-line="262" selection-start-column="26" selection-end-line="262" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8064">
-          <caret line="442" column="152" lean-forward="false" selection-start-line="442" selection-start-column="152" selection-end-line="442" selection-end-column="152" />
+        <state relative-caret-position="10081">
+          <caret line="593" column="9" lean-forward="false" selection-start-line="593" selection-start-column="9" selection-end-line="593" selection-end-column="9" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="64" column="44" lean-forward="false" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="80" lean-forward="false" selection-start-line="17" selection-start-column="80" selection-end-line="17" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2516">
+          <caret line="148" column="67" lean-forward="false" selection-start-line="148" selection-start-column="66" selection-end-line="148" selection-end-column="67" />
+          <folding>
+            <element signature="e#379#720#0" expanded="false" />
+            <element signature="e#771#1570#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8687">
+          <caret line="511" column="35" lean-forward="false" selection-start-line="511" selection-start-column="35" selection-end-line="511" selection-end-column="35" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="64" column="44" lean-forward="false" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="80" lean-forward="true" selection-start-line="17" selection-start-column="80" selection-end-line="17" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2516">
+          <caret line="148" column="67" lean-forward="false" selection-start-line="148" selection-start-column="66" selection-end-line="148" selection-end-column="67" />
+          <folding>
+            <element signature="e#379#720#0" expanded="false" />
+            <element signature="e#771#1570#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9486">
+          <caret line="558" column="82" lean-forward="false" selection-start-line="558" selection-start-column="82" selection-end-line="558" selection-end-column="82" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/jquery.formset.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3740">
+          <caret line="230" column="11" lean-forward="false" selection-start-line="230" selection-start-column="11" selection-end-line="230" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/nadomescanje.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templatetags/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="19" lean-forward="true" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="83" lean-forward="false" selection-start-line="37" selection-start-column="83" selection-end-line="37" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalogPodrobnosti.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-442">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/models_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/register.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="37" lean-forward="false" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="147" column="61" lean-forward="false" selection-start-line="147" selection-start-column="61" selection-end-line="147" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/obiskPodrobnosti.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="18" lean-forward="false" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/meritve.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templatetags/index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5508">
+          <caret line="324" column="4" lean-forward="false" selection-start-line="324" selection-start-column="4" selection-end-line="324" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="14" column="47" lean-forward="false" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/koledar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/PiNM_seminar_novo_v1.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5899">
+          <caret line="350" column="27" lean-forward="false" selection-start-line="350" selection-start-column="20" selection-end-line="350" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="61" lean-forward="false" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base_register.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-814">
+          <caret line="104" column="76" lean-forward="false" selection-start-line="104" selection-start-column="76" selection-end-line="104" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="49" lean-forward="true" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="77" column="20" lean-forward="false" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="63" />
+          <folding>
+            <element signature="e#379#720#0" expanded="false" />
+            <element signature="e#771#1570#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="14" lean-forward="false" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/registracija.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="29" column="49" lean-forward="false" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="91" column="65" lean-forward="false" selection-start-line="91" selection-start-column="42" selection-end-line="91" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="27" column="16" lean-forward="false" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/registracija_kontakt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="56" lean-forward="false" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="42" lean-forward="false" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="276" column="0" lean-forward="false" selection-start-line="276" selection-start-column="0" selection-end-line="276" selection-end-column="0" />
+          <folding>
+            <element signature="e#25#56#0" expanded="true" />
+            <element signature="e#947#1085#0" expanded="false" />
+            <element signature="e#1131#1720#0" expanded="false" />
+            <element signature="e#1766#2349#0" expanded="false" />
+            <element signature="e#2399#2961#0" expanded="false" />
+            <element signature="e#3010#10491#0" expanded="false" />
+            <element signature="e#10567#15027#0" expanded="false" />
+            <element signature="e#15089#16033#0" expanded="false" />
+            <element signature="e#16075#16584#0" expanded="false" />
+            <element signature="e#16610#17893#0" expanded="false" />
+            <element signature="e#18039#19282#0" expanded="false" />
+            <element signature="e#19315#22504#0" expanded="false" />
+            <element signature="e#22535#22994#0" expanded="false" />
+            <element signature="e#23049#23578#0" expanded="false" />
+            <element signature="e#23631#24993#0" expanded="false" />
+            <element signature="e#25055#26453#0" expanded="false" />
+            <element signature="e#26495#27704#0" expanded="false" />
+            <element signature="e#27762#34254#0" expanded="false" />
+            <element signature="e#34304#40591#0" expanded="false" />
+            <element signature="e#40640#43024#0" expanded="false" />
+            <element signature="e#43089#43565#0" expanded="false" />
+            <element signature="e#43611#44787#0" expanded="false" />
+            <element signature="e#44842#46907#0" expanded="false" />
+            <element signature="e#46965#49430#0" expanded="false" />
+            <element signature="e#49516#49545#0" expanded="false" />
+            <element signature="e#49573#49656#0" expanded="false" />
+            <element signature="e#49709#51331#0" expanded="false" />
+            <element signature="e#51396#51759#0" expanded="false" />
+            <element signature="e#51821#52187#0" expanded="false" />
+            <element signature="e#52247#52611#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-287">
+          <caret line="78" column="41" lean-forward="false" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalog.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3383">
+          <caret line="199" column="6" lean-forward="false" selection-start-line="199" selection-start-column="6" selection-end-line="199" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/delovniNalog.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
           <folding />
         </state>
       </provider>

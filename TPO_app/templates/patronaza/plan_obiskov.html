@@ -102,6 +102,7 @@
 				<li class='izbran_obisk' id='izbran-{{ izbran.id_obisk.id }}'>
 					<span class="flex-full">#<span class="id-obiska">{{ izbran.id_obisk.id }}</span> <b>{{ izbran.id_obisk.id_dn.id_vrsta.naziv|upper }}</b></span>
 					<span class="flex-full"><a href="{% url 'delovniNalogPodrobno' izbran.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+                    <span class="flex-full"><a href="{% url 'meritve' izbran.id_obisk.id %}">Meritve</a></span>
 					{% if obvezni and izbran in obvezni %}
 					<p class='obvezen' style="margin:0">Obvezen</p>
 					{% else %}
