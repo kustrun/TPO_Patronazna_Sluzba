@@ -16,7 +16,7 @@
                 <select name = "izdajatelj">
                     <option value="">---------</option>
                     {% for zdravnik in zdravniki %}
-                        <option value="{{ zdravnik.sifra }}">{{ zdravnik.sifra }} {{ zdravnik }}</option>
+                        <option value="{{ zdravnik.sifra }}" {% if zdravnik.sifra == izdajatelj %}selected{% endif %}>{{ zdravnik.sifra }} {{ zdravnik }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -29,7 +29,7 @@
                 <select name = "sestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}" {% if sestra.sifra == sestraSifra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
@@ -42,29 +42,37 @@
                 <select name = "nadomestnaSestra">
                     <option value="">---------</option>
                     {% for sestra in sestre %}
-                        <option value="{{ sestra.sifra }}">{{ sestra.sifra }} {{ sestra }}</option>
+                        <option value="{{ sestra.sifra }}"{% if sestra.sifra == nadomestnaSestra %}selected{% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}
             </li>
             <li class="list-group-item">
                 <label>Pacient</label>
-                <input type="text" name="pacient">
+                <input type="text" name="pacient" value="{% if pacient %}{{ pacient }}{% endif %}">
             </li>
             <li class="list-group-item">
-                <label>Od</label>
-                <input type="date" name="od">
+                <label>Dejanski datum obiska: Od</label>
+                <input type="text" name="odDejanski" value="{% if odDatumDejanski %}{{ odDatumDejanski|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
-                <label>Do</label>
-                <input type="date" name="do">
+                <label>Dejanski datum obiska: Do</label>
+                <input type="text" name="doDejanski" value="{% if doDatumDejanski %}{{ doDatumDejanski|date:"d.m.Y" }}{% endif %}">
+            </li>
+            <li class="list-group-item">
+                <label>Predviden datum obiska: Od</label>
+                <input type="text" name="odPredviden" value="{% if odDatumPredviden %}{{ odDatumPredviden|date:"d.m.Y" }}{% endif %}">
+            </li>
+            <li class="list-group-item">
+                <label>Predviden datum obiska: Do</label>
+                <input type="text" name="doPredviden" value="{% if doDatumPredviden %}{{ doDatumPredviden|date:"d.m.Y" }}{% endif %}">
             </li>
             <li class="list-group-item">
                 <label>Vrsta</label>
                 <select name = "vrsta">
                     <option value="">---------</option>
                     {% for obisk in obiski %}
-                        <option value="{{ obisk.id }}">{{ obisk.naziv }}</option>
+                        <option value="{{ obisk.id }}" {% if obisk.id == vrsta %}selected{% endif %}>{{ obisk.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
@@ -73,23 +81,29 @@
                 <select name = "status">
                     <option value="">---------</option>
                     {% for s in statusi %}
-                        <option value="{{ s.naziv }}">{{ s.naziv }}</option>
+                        <option value="{{ s.naziv }}" {% if s.naziv == status %}selected{% endif %}>{{ s.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>
         </ul>
-            <input type="submit" value="Filtriraj">
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+            <input type="submit" value="Filtriraj" class="btn btn-info btn-lg">
         </form>
     </div>
     <div class="col-sm-9">
-        <table class="table table-hover">
+        <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Odgovorni</th>
                     <th>Vrsta obiska</th>
                     <th>Medicinska sestra</th>
                     <th>Nadomestna sestra</th>
                     <th>Pacient</th>
+                    <th>Dejanski datum obiska</th>
+                    <th>Predviden datum obiska</th>
                     <th>Status</th>
                     <th>Podrobnosti</th>
                 </tr>
@@ -97,13 +111,22 @@
             <tbody>
                 {% for i in loop_times %}
                     <tr>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_osebje }}{% endwith %}</th>
                         <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_vrsta }}{% endwith %}</th>
                         <th>{% with index_result=sestra_list|index:i %}{{ index_result }}{% endwith %}</th>
                         <th>{% with index_result=nadomestnaSestra_list|index:i %}{{ index_result }}{% endwith %}</th>
                         <th>{% with index_result=pacient_list|index:i %}{{ index_result }}{% endwith %}</th>
-                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.status_dn.naziv }}{% endwith %}</th>
-                        <th><a href="#">Podrobnosti</a></th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.datum_obiska | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.predviden_datum | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.status_obiska.naziv }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}
+                            {% if index_result.status_obiska.naziv == 'opravljen' %}
+                            <a href="{% url 'obiskPodrobno' obiskId=index_result.id %}">Podrobnosti</a>
+                            {% else %}
+                                /
+                            {% endif %}
+                            {% endwith %}</th>
                     </tr>
                 {% endfor %}
             </tbody>
