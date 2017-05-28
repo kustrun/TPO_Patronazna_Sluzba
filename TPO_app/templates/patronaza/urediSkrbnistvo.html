@@ -6,8 +6,8 @@
     {% csrf_token %}
     {{ skrbnistvoForm.as_p }}
     <input type="submit" class="btn btn-info" value="Posodobi"/>
-    {% if kartice or email or date or telefon %}
-    <p>Napaka</p>
+    {% if napaka %}
+    <p>{{ napaka }}</p>
     {% endif %}
 </form>
 

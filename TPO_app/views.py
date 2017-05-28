@@ -590,10 +590,10 @@ def dodaj_skrbnistvo(request):
             instance.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
     return render(request, 'patronaza/dodajSkrbnistvo.html', context)\
-
+#unicode??
 @login_required
 def uredi_skrbnistvo(request,pacientId):
-    context = {'date':False, 'telefon':False}
+    context = {'napaka':False}
     ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     pacient = Pacient.objects.get(pk=pacientId)
     pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
@@ -604,18 +604,22 @@ def uredi_skrbnistvo(request,pacientId):
         sform = SkrbnistvoForm(request.POST,instance=pacient)
         if sform.is_valid():
             if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists() and sform.cleaned_data['st_kartice'] != pacient.st_kartice):
-                context['kartica'] = True
+                context['napaka'] = "Številka kartice že obstaja"
+                print(context['napaka'])
                 return render(request, 'patronaza/urediSkrbnistvo.html', context)
             if(not sform.telefon_regex()):
-                context['telefon'] = True
+                context['napaka'] = "Nepravilen format telefonske številke"
                 context['skrbnistvoForm'] = sform
+                print(context['napaka'])
                 return render(request, 'patronaza/urediSkrbnistvo.html', context)
             if(not sform.date_valid()):
-                context['date'] = True
+                context['napaka'] = "Nepravilna oblika datuma. Pravilna oblika %d.%m.%Y"
+                print(context['napaka'])
                 context['skrbnistvoForm'] = sform
                 return render(request, 'patronaza/urediSkrbnistvo.html', context)
             sform.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
+        context['napaka'] = "Nepravilna oblika datuma. Pravilna oblika %d.%m.%Y"
     return render(request, 'patronaza/urediSkrbnistvo.html', context)
 
 def aktivacija(request,ur_id,date):
@@ -1045,18 +1049,18 @@ def planiranje_obiskov(request):
 
 @login_required
 def posodabljane_pacienta(request):
-    context = {}
+    context = {'napaka': False}
     pacient = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     ur = request.user
     context['ime'] = "Pacient " + str(pacient)
     pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
     pacientForm = PacientForm(instance=pacient)
     emailForm = UporabniskiRacunEmailForm(instance=request.user)
+    kontaktnaOseba = None
+    kontaktForm = None
     if KontaktnaOseba.objects.filter(pacient=pacient).exists():
         kontaktnaOseba = KontaktnaOseba.objects.get(pacient=pacient)
         kontaktForm = KontaktForm(instance=kontaktnaOseba)
-    else:
-        kontaktForm = None
     context['pacientForm'] = pacientForm
     context['emailForm'] = emailForm
     context['kontaktForm'] = kontaktForm
@@ -1067,27 +1071,25 @@ def posodabljane_pacienta(request):
             kontaktForm = kontaktForm(request.POST,instance=kontaktnaOseba)
         if pform.is_valid() and eform.is_valid():
             if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists() and pform.cleaned_data['st_kartice'] != pacient.st_kartice):
-                context['kartica'] = True
+                context['napaka'] = "Ta stevilka kartice že obstaja."
                 return render(request, 'patronaza/registracija.html', context)
             elif (User.objects.filter(email=eform.cleaned_data['email']).exists() and eform.cleaned_data['email'] != ur.email):
-                context['email'] = True
+                context['napaka'] = "Email že obstaja."
                 return render(request, 'patronaza/registracija.html', context)
             if(not pform.date_valid()):
-                context['uporabniskiRacunForm'] = pform
-                context['pacientForm'] = pform
-                context['date'] = True
+                context['napaka'] = "Napačna oblika datuma. Pravilna oblika %d.%m.%Y"
                 print("date")
                 return render(request, 'patronaza/posodabljanje_pacienta.html', context)
             if(not pform.telefon_regex()):
-                context['uporabniskiRacunForm'] = pform
-                context['pacientForm'] = pform
-                context['telefon'] = True
+                context['napaka'] = "Ni telefonska številka"
                 print("telefon")
                 return render(request,'patronaza/posodabljanje_pacienta.html',context)
-            print("Test")
             pform.save()
             ur.email = eform.cleaned_data['email']
             ur.username = eform.cleaned_data['email']
+            ur.save()
+            if(kontaktForm):
+                kontaktForm.save()
             context['pacientForm'] = pform
             context['emailForm'] = eform
 
