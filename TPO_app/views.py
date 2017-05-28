@@ -375,7 +375,7 @@ def obiskPodrobnosti(request, obiskId):
         name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
-        name = str(request.user.groups.all()[0].name) + ' ' + str(Pacient.objects.get(id_racuna=request.user))
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     else:
         ime = request.user.username
 
