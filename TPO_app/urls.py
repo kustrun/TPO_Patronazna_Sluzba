@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^nadomescanje/$',views.nadomescanje,name='nadomescanje'),
     url(r'^osebjeAdd/', views.osebjeAdd, name='osebjeAdd'),
     url(r'^obiski/', views.izpisi_obiske, name='izpisi_obiske'),
+    url(r'^obiskiPacient/', views.izpisi_obiske_pacient, name='izpisi_obiske_pacient'),
     url(r'^obiskPodrobno/(?P<obiskId>[0-9]+)$', views.obiskPodrobnosti, name='obiskPodrobno'),
     url(r'^planiranjeObiskov/$', views.planiranje_obiskov, name='planiranje_obiskov'),
     url(r'^posodabljanje/$', views.posodabljane_pacienta, name='posodabljane_pacienta'),

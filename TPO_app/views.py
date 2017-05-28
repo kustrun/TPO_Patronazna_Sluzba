@@ -375,6 +375,7 @@ def obiskPodrobnosti(request, obiskId):
         name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Pacient.objects.get(id_racuna=request.user))
     else:
         ime = request.user.username
 
@@ -945,6 +946,89 @@ def izpisi_obiske(request):
     context['loop_times'] = range(len(pacient_list))
     context['paginator'] = contacts
     return render(request, 'patronaza/izpisiObiske.html', context)
+
+@login_required
+def izpisi_obiske_pacient(request):
+    context = {'ime': ''}
+    oseba = None
+    ime = ''
+    if (Osebje.objects.filter(id_racuna=request.user).exists()):
+        ime = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+        oseba = Osebje.objects.get(id_racuna=request.user)
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
+        ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
+    else:
+        ime = request.user.username
+    context['ime'] = ime
+    context['oseba'] = oseba
+
+    dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
+    obiski_tmp = Obisk.objects.all()
+    pacienti = Pacient.objects.filter(id_racuna=request.user)
+    pacient1 = pacienti[0]
+    pacient2 = None
+    pacient3 = None
+    if len(pacienti) == 2:
+        pacient2 = pacienti[1]
+    if len(pacienti) == 3:
+        pacient2 = pacienti[1]
+        pacient3 = pacienti[2]
+
+    obiski_list = []
+    pacient_list = []
+    sestra_list = []
+    nadomestnaSestra_list = []
+
+    if len(pacienti) == 1:
+        dn_list = dn_list.filter(Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek))
+    elif len(pacienti) == 2:
+        dn_list = dn_list.filter((Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (
+        Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)))
+    elif len(pacienti) == 3:
+        dn_list = dn_list.filter((Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (
+        Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)) | (
+                                 Q(id_pacient__ime=pacient3.ime) & Q(id_pacient__priimek=pacient3.priimek)))
+
+    obiski_tmp = obiski_tmp.filter(status_obiska__naziv="opravljen")
+
+    for dn in dn_list:
+        o = obiski_tmp.filter(id_dn=dn.id_dn)
+        obiski_list = list(chain(obiski_list, o))
+        p = dn.id_pacient
+        for ob in o:
+            pacient_list.append(p)
+
+    for obisk in obiski_list:
+        dodeljeno = DodeljenoOsebje.objects.get(id_obisk=obisk.id)
+        medicinska = None
+        nadomestnaSestra = '/'
+
+        if dodeljeno.id_osebja != None:
+            medicinska = dodeljeno.id_osebja
+        if dodeljeno.id_nadomestna != None:
+            nadomestnaSestra = dodeljeno.id_nadomestna
+
+        sestra_list.append(medicinska)
+        nadomestnaSestra_list.append(nadomestnaSestra)
+
+    paginator = Paginator(obiski_list, 30)  # Show 30 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
+    context['obiski_list'] = obiski_list
+    context['sestra_list'] = sestra_list
+    context['nadomestnaSestra_list'] = nadomestnaSestra_list
+    context['pacient_list'] = pacient_list
+    context['loop_times'] = range(len(pacient_list))
+    context['paginator'] = contacts
+    return render(request, 'patronaza/izpisiObiskePacient.html', context)
 
 @login_required
 def nadomescanje(request):
