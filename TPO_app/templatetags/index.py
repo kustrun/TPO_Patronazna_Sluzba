@@ -15,7 +15,7 @@ def getInt(value, arg):
         data = json.loads(url.read().decode())
         return int(data["vrednost"])
 
-    return 0
+    return None
 
 @register.filter
 def getDate(value, arg):
@@ -31,4 +31,4 @@ def getString(value, arg):
         data = json.loads(url.read().decode())
         return data["vrednost"]
 
-    return ""
+    return None

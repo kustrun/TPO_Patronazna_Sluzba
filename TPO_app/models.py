@@ -363,11 +363,6 @@ class PodatkiAktivnosti(models.Model):
         managed = False
         db_table = 'podatki_aktivnosti'
 
-    def pridobiVrednost(self, obiskId):
-        print(obiskId)
-
-        return ""
-
 class Posta(models.Model):
     st_poste = models.IntegerField(primary_key=True)
     naziv = models.CharField(max_length=64)

@@ -1084,10 +1084,19 @@ def meritve(request, obiskId):
 
                 op.save()
             elif(value != '' and RepresentsInt(key)):
-                op = OstaliPodatki(id_obisk_id=obiskId,
-                                   id_podatki_aktivnosti_id=key,
-                                   vrednost=value)
-                op.save()
+                if(key == '26' or key == '29' or key == '30'):
+                    glavniObisk = Obisk.objects.get(id=obiskId)
+                    obiski = Obisk.objects.filter(id_dn=glavniObisk.id_dn)
+                    for obisk in obiski:
+                        op = OstaliPodatki(id_obisk=obisk,
+                                           id_podatki_aktivnosti_id=key,
+                                           vrednost=value)
+                        op.save()
+                else:
+                    op = OstaliPodatki(id_obisk_id=obiskId,
+                                       id_podatki_aktivnosti_id=key,
+                                       vrednost=value)
+                    op.save()
 
         return HttpResponseRedirect('/patronaza/domov')
 
