@@ -37,6 +37,7 @@
                 <li><a href="{% url 'index' %}">Domov</a></li>
                 {% if request.user.groups.all.0.name == 'Pacient' %}
                 <li><a href="{% url 'pregled_skrbnistev' %}">Pregled skrbništev</a></li>
+                <li><a href="{% url 'izpisi_obiske_pacient' %}">Pregled obiskov</a></li>
                 {% endif %}
                 {% if request.user.groups.all.0.name == 'Zdravnik' or request.user.groups.all.0.name == 'Vodja patronaže' %}
                 <li><a href="{% url 'delovniNalog' %}">Dodaj delovni nalog</a></li>

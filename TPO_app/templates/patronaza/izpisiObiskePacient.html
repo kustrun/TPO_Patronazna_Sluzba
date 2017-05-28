@@ -1,0 +1,58 @@
+{% extends "./base.html" %}
+{% load static %}
+{% load index %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-9">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Odgovorni</th>
+                    <th>Vrsta obiska</th>
+                    <th>Medicinska sestra</th>
+                    <th>Nadomestna sestra</th>
+                    <th>Pacient</th>
+                    <th>Dejanski datum obiska</th>
+                    <th>Predviden datum obiska</th>
+                    <th>Status</th>
+                    <th>Podrobnosti</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in loop_times %}
+                    <tr>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_osebje }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.id_dn.id_vrsta }}{% endwith %}</th>
+                        <th>{% with index_result=sestra_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=nadomestnaSestra_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=pacient_list|index:i %}{{ index_result }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.datum_obiska | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.predviden_datum | date:"d.m.Y" }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}{{ index_result.status_obiska.naziv }}{% endwith %}</th>
+                        <th>{% with index_result=obiski_list|index:i %}
+                            {% if index_result.status_obiska.naziv == 'opravljen' %}
+                            <a href="{% url 'obiskPodrobno' obiskId=index_result.id %}">Podrobnosti</a>
+                            {% else %}
+                                /
+                            {% endif %}
+                            {% endwith %}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <ul class="pagination">
+        {% if paginator.has_previous %}
+        <li><a href="?page={{ paginator.previous_page_number }}">«</a></li>
+        {% endif %}
+        <li><a class="active" href="&">{{ paginator.number }}</a></li>
+        {% if paginator.has_next %}
+        <li><a href="?page={{ paginator.next_page_number }}">»</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
