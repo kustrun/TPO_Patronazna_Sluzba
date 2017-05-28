@@ -1097,19 +1097,12 @@ def posodabljane_pacienta(request):
     pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
     pacientForm = PacientForm(instance=pacient)
     emailForm = UporabniskiRacunEmailForm(instance=request.user)
-    kontaktnaOseba = None
-    kontaktForm = None
-    if KontaktnaOseba.objects.filter(pacient=pacient).exists():
-        kontaktnaOseba = KontaktnaOseba.objects.get(pacient=pacient)
-        kontaktForm = KontaktForm(instance=kontaktnaOseba)
+    context['kontakt'] = KontaktnaOseba.objects.filter(pacient=pacient).exists()
     context['pacientForm'] = pacientForm
     context['emailForm'] = emailForm
-    context['kontaktForm'] = kontaktForm
     if request.method == 'POST':
         pform = PacientForm(request.POST,instance=pacient)
         eform = UporabniskiRacunEmailForm(request.POST,instance=ur)
-        if(kontaktForm):
-            kontaktForm = kontaktForm(request.POST,instance=kontaktnaOseba)
         if pform.is_valid() and eform.is_valid():
             if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists() and pform.cleaned_data['st_kartice'] != pacient.st_kartice):
                 context['napaka'] = "Ta stevilka kartice že obstaja."
@@ -1129,13 +1122,39 @@ def posodabljane_pacienta(request):
             ur.email = eform.cleaned_data['email']
             ur.username = eform.cleaned_data['email']
             ur.save()
-            if(kontaktForm):
-                kontaktForm.save()
             context['pacientForm'] = pform
             context['emailForm'] = eform
 
     return render(request, 'patronaza/posodabljanje_pacienta.html', context)
 
+@login_required
+def uredi_kontakt(request):
+    context = {}
+    pacient = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    context['ime'] = "Pacient " + str(pacient)
+    kontaktnaOseba = None
+    kontaktForm = KontaktForm()
+    if KontaktnaOseba.objects.filter(pacient__id_racuna=request.user).exists():
+        kontaktnaOseba = KontaktnaOseba.objects.get(pacient__id_racuna=request.user)
+    if kontaktnaOseba:
+        kontaktForm = KontaktForm(instance=kontaktnaOseba)
+    context['kontaktForm'] = kontaktForm
+    if request.method == 'POST':
+        if kontaktnaOseba:
+            kontaktForm = KontaktForm(request.POST,instance=kontaktnaOseba)
+        else:
+            kontaktForm = KontaktForm(request.POST)
+
+        if kontaktForm.is_valid():
+            if kontaktnaOseba:
+                kontaktForm.save()
+            else:
+                kontakt = kontaktForm.save(commit=False)
+                kontakt.pacient = pacient
+                kontakt.save()
+            context['kontaktForm'] = kontaktForm
+
+    return render(request, 'patronaza/uredi_kontakt.html', context)
 register = template.Library()
 @register.filter(name='cut')
 def cut(value, arg):
