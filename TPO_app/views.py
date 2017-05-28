@@ -845,7 +845,14 @@ def izpisi_obiske(request):
         if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if (pacient):
-            dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
+            nizi=pacient.split()
+            if len(nizi)==1:
+                dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
+            else:
+                ime_pacienta=nizi[0]
+                priimek_pacienta=nizi[1]
+                dn_list = dn_list.filter(Q(id_pacient__ime__contains=ime_pacienta) & Q(id_pacient__priimek__contains=priimek_pacienta))
+            
         if (sestra and nadomestnaSestra and sestra == nadomestnaSestra):
             medicinska = Osebje.objects.get(sifra=sestra)
             dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=medicinska) | Q(id_nadomestna=medicinska)).values('id_obisk')
