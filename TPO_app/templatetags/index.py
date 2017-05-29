@@ -19,7 +19,7 @@ def getInt(value, arg):
 
 @register.filter
 def getDate(value, arg):
-    with urllib.request.urlopen("http://localhost:8000/patronaza/pridobiDatum/" + str(arg) + "/" + str(value.id)) as url:
+    with urllib.request.urlopen("https://patronaza.herokuapp.com/patronaza/pridobiDatum/" + str(arg) + "/" + str(value.id)) as url:
         data = json.loads(url.read().decode())
         return data["vrednost"]
 
@@ -27,7 +27,7 @@ def getDate(value, arg):
 
 @register.filter
 def getString(value, arg):
-    with urllib.request.urlopen("http://localhost:8000/patronaza/pridobiNiz/" + str(arg) + "/" + str(value.id)) as url:
+    with urllib.request.urlopen("https://patronaza.herokuapp.com/patronaza/pridobiNiz/" + str(arg) + "/" + str(value.id)) as url:
         data = json.loads(url.read().decode())
         return data["vrednost"]
 
