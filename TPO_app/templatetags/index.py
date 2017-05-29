@@ -11,7 +11,7 @@ def index(List, i):
 
 @register.filter
 def getInt(value, arg):
-    with urllib.request.urlopen("http://localhost:8000/patronaza/pridobiStevilko/" + str(arg) + "/" + str(value.id)) as url:
+    with urllib.request.urlopen("https://patronaza.herokuapp.com/patronaza/pridobiStevilko/" + str(arg) + "/" + str(value.id)) as url:
         data = json.loads(url.read().decode())
         return int(data["vrednost"])
 
