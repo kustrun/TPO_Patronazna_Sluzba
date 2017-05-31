@@ -10,6 +10,10 @@ from .DelovniNalogValidators import *
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime,date
 
+class PlaniranjeObiskovForm(forms.Form):
+    datum = forms.DateField(label=_('Datum'), widget=forms.DateInput, required=False)
+    obiski = forms.ModelMultipleChoiceField(label=_('Izbrani obiski'), required=False, widget=forms.CheckboxSelectMultiple, queryset=DodeljenoOsebje.objects.filter(id_obisk__status_obiska_id=1).order_by('id_obisk__predviden_datum'))
+
 class UporabniskiRacunForm(forms.ModelForm):
     password = forms.CharField(label='Geslo',widget=forms.PasswordInput(),min_length=8)
     password2 = forms.CharField(label='Ponovno geslo',widget=forms.PasswordInput())
@@ -61,8 +65,11 @@ class PacientForm(forms.ModelForm):
         else:
             return False
 
-
-
+class UporabniskiRacunEmailForm(forms.ModelForm):
+    email = forms.EmailField(label='Email', required=True)
+    class Meta:
+        model = User
+        fields = ['email']
 
 class SkrbnistvoForm(forms.ModelForm):
     CHOICES = [('moski', 'Moški'), ('zenska', 'Ženska')]
@@ -126,7 +133,7 @@ class DelovniNalogVrstaObiskaForm(forms.ModelForm):
 
     VRSTA_OBISKA = []
     for v in vrstaObiskaDB:
-        VRSTA_OBISKA.append((v.naziv, v.naziv))
+        VRSTA_OBISKA.append((v.naziv + "_" + v.tip.tip, v.naziv))
 
     vrstaObiska = forms.ChoiceField(choices=VRSTA_OBISKA, widget=forms.RadioSelect)
 
@@ -139,7 +146,7 @@ class DelovniNalogPacientForm(forms.ModelForm):
 
     PACIENTI = []
     for p in pacientDB:
-        PACIENTI.append((p.st_kartice + ": " + p.ime + " " + p.priimek, p.st_kartice + ": " + p.ime + " " + p.priimek))
+        PACIENTI.append((p.st_kartice + ": " + p.ime + " " + p.priimek + "_" + str(p.lastnik_racuna) + "&" + str(p.id_racuna_id), p.st_kartice + ": " + p.ime + " " + p.priimek))
 
     ime = forms.CharField(widget=forms.Select(choices=PACIENTI))
 
@@ -173,6 +180,20 @@ class DelovniNalogZdravilaForm(forms.ModelForm):
     class Meta:
         model = Zdravila
         fields = ['naziv']
+
+class DelovniNalogBarvaEpruveteForm(forms.ModelForm):
+    barvaDB = BarvaEpruvete.objects.all()
+
+    BARVA_EPRUVETE = []
+    for b in barvaDB:
+        BARVA_EPRUVETE.append((b.barva, b.barva))
+
+    barva = forms.CharField(max_length=20, widget=forms.Select(choices=BARVA_EPRUVETE))
+    st_epruvet = forms.IntegerField(label='Število epruvet')
+
+    class Meta:
+        model = BarvaEpruvete
+        fields = ['barva']
 
 class DelovniNalogBarvaEpruveteForm(forms.ModelForm):
     barvaDB = BarvaEpruvete.objects.all()
@@ -226,11 +247,10 @@ class OsebjeForm(forms.ModelForm):
             'id_zd': _('Izvajalec zdravstvene dejavnosti'),
         }
 
-
 class UporabniskiForm(forms.ModelForm):
     groups = forms.ModelChoiceField(queryset=Group.objects.exclude(name="Pacient"), required=True)
     email=forms.EmailField(required=True)
-    ponovno_geslo=forms.CharField(max_length=128, widget=forms.PasswordInput())
+    ponovno_geslo=forms.CharField(max_length=128,widget=forms.PasswordInput())
     password=forms.CharField(label="Geslo", widget=forms.PasswordInput(), min_length=8)
 
     class Meta:
@@ -258,8 +278,3 @@ class UporabniskiForm(forms.ModelForm):
         if(re.match(regex,password)):
             return True
         return False
-
-
-class PlaniranjeObiskovForm(forms.Form):
-    datum = forms.DateField(label=_('Datum'), widget=forms.DateInput, required=False)
-    obiski = forms.ModelMultipleChoiceField(label=_('Izbrani obiski'), required=False, widget=forms.CheckboxSelectMultiple, queryset=DodeljenoOsebje.objects.filter(id_obisk__status_obiska_id=1).order_by('id_obisk__predviden_datum', 'id_obisk__status_obiska'))

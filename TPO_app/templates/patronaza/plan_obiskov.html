@@ -8,10 +8,6 @@
 <script type="text/javascript" src="{% static 'patronaza/js/datepicker-sl.js' %}"></script>
 <script>
 	var izbrani_obiski = []
-		
-	$(document).ajaxSend(function (event, jqxhr, settings) {
-		jqxhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-	});
 	
 	$(document).ready(function(){
 		$('#seznam_izbranih').children('li.izbran_obisk').each(function(izbran) {
@@ -34,13 +30,13 @@
 									showOtherMonths: true,
 									selectOtherMonths: true,
 									onSelect: function () {
-										var datum = $(this).datepicker('getDate');
-										dan  = datum.getDate();
-										mesec = datum.getMonth() + 1;
+										var datum = $(this).datepicker('getDate'),
+										dan  = datum.getDate(),  
+										mesec = datum.getMonth() + 1,              
 										leto =  datum.getFullYear();
 										window.location.href = "{% url 'planiranje_obiskov' %}" + '?dan=' + dan + '&mesec=' + mesec + '&leto=' + leto;
 									}
-								});
+									});
 		
 		$("input:checkbox").change(function() {
 			var selected_tag = $(this).parent().next()
@@ -62,44 +58,30 @@
 				izbrani_obiski.push(obisk)
 			}else {
 				$("#izbran-" + obisk.id).remove()
-				
-				izbrani_obiski = izbrani_obiski.filter(function(acceptable){
-					return acceptable.id !== obisk.id;
-				});
-
+				izbrani_obiski.pop(obisk)
 				if(izbrani_obiski.length == 0) {
 					$("#seznam_izbranih").html("<li><p>Ni izbranih obiskov</p></li>")
 				}
 			}
-			
-			console.log(izbrani_obiski)
+						
+			$.ajax({
+				type: 'POST',
+				data: {'izbrani[]': JSON.stringify(izbrani_obiski), 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()},
+				dataType: 'json',
+				success: function(data) {
+				}
+			});
 		})
 		
 		$(".izbrisi").on('click', function(e){
 			var selected_tag = $(this).parent()
+			
 			e.preventDefault()
 			var checkbox_id = $(this).attr("for")
+			console.log(checkbox_id)
 			if($("#" + checkbox_id).length)
 				$("#" + checkbox_id).trigger('click')
 		})
-		
-		$(".preglej-delovni-nalog").on('click', function(e){
-			var datum = $("#datepicker").attr("value")
-			e.preventDefault();
-			console.log(datum)
-			$.ajax({
-				url: '/patronaza/planiranjeObiskov/',
-				type: 'POST',
-				data: {
-					izbrani: JSON.stringify(izbrani_obiski), 
-					datum_prikaza: datum
-				},
-				dataType: 'json',
-				complete: function() {
-					window.location.href = e.target.href
-				}
-			})
-		});
 	});
 </script>
 {% endblock %}
@@ -119,7 +101,8 @@
 			{% for izbran in izbrani %}
 				<li class='izbran_obisk' id='izbran-{{ izbran.id_obisk.id }}'>
 					<span class="flex-full">#<span class="id-obiska">{{ izbran.id_obisk.id }}</span> <b>{{ izbran.id_obisk.id_dn.id_vrsta.naziv|upper }}</b></span>
-					<span class="flex-full"><a class="preglej-delovni-nalog" href="{% url 'delovniNalogPodrobno' izbran.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+					<span class="flex-full"><a href="{% url 'delovniNalogPodrobno' izbran.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+                    <span class="flex-full"><a href="{% url 'meritve' izbran.id_obisk.id %}">Meritve</a></span>
 					{% if obvezni and izbran in obvezni %}
 					<p class='obvezen' style="margin:0">Obvezen</p>
 					{% else %}
@@ -141,14 +124,14 @@
 						<label class="obisk_checkbox_out">
 							{% if objekt in izbrani %}
 								{% if obvezni and objekt in obvezni %}
-									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" value="{{ objekt.id_obisk.id }}"/>
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" value="{{ objekt.id_obisk.id }}" disabled/>
 									<input type="hidden" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}" />
 								{% else %}
 									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" checked="checked" value="{{ objekt.id_obisk.id }}"/>
 								{% endif %}
 							{% else %}
 								{% if obvezni and objekt in obvezni %}
-									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}"/>
+									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}" disabled/>
 								{% else %}
 									<input type="checkbox" id="obisk-{{ objekt.id_obisk.id }}" name="obisk" value="{{ objekt.id_obisk.id }}"/>
 								{% endif %}
@@ -172,7 +155,7 @@
 							<span class="flex-half">Zap. št. obiska: {{ objekt.id_obisk.zaporedna_st_obiska }}</span>
 							<span class="flex-half">Izdajatelj: {{ objekt.id_osebja.ime }} {{ objekt.id_osebja.priimek }}</span>
 							<span class="flex-half"></span>
-							<span class="flex-half"><a class="preglej-delovni-nalog" href="{% url 'delovniNalogPodrobno' objekt.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
+							<span class="flex-half"><a href="{% url 'delovniNalogPodrobno' objekt.id_obisk.id_dn.id %}">Preglej delovni nalog</a></span>
 							<span class="flex-full">Podrobnosti: <br> {{ objekt.id_obisk.podrobnosti_obiska }}</span>
 							{% endlanguage %}
 						</label>

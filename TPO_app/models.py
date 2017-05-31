@@ -13,8 +13,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Aktivnosti(models.Model):
-    sifra = models.CharField(max_length=32)
-    aktivnost = models.CharField(max_length=64)
+    aktivnost = models.CharField(max_length=511)
+    storitev = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -123,7 +123,6 @@ class DelovniNalog(models.Model):
         managed = False
         db_table = 'delovni_nalog'
 
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -171,7 +170,7 @@ class DjangoSession(models.Model):
 class DodeljenoOsebje(models.Model):
     id_osebja = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_osebja')
     id_obisk = models.ForeignKey('Obisk', models.DO_NOTHING, db_column='id_obisk')
-    id_nadomestna = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_nadomestna', related_name='id_nadomestna', blank=True, null=True)
+    id_nadomestna = models.ForeignKey('Osebje', models.DO_NOTHING, db_column='id_nadomestna',related_name='id_nadomestna',blank=True, null=True)
 
     class Meta:
         managed = False
@@ -199,7 +198,7 @@ class IzvajalecZd(models.Model):
         db_table = 'izvajalec_zd'
 
     def __str__(self):
-        return self.sifra
+        return self.sifra + ' ' + self.naziv
 
 
 class KontaktnaOseba(models.Model):
@@ -263,7 +262,7 @@ class Obisk(models.Model):
     podrobnosti_obiska = models.TextField(blank=True, null=True)
     izbran_datum = models.DateField(blank=True, null=True)
     cena = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    obvezen = models.IntegerField()
+    obvezen = models.IntegerField(default=0)
 
     class Meta:
         managed = False
@@ -301,7 +300,6 @@ class Osebje(models.Model):
     id_zd = models.ForeignKey(IzvajalecZd, models.DO_NOTHING, db_column='id_zd')
     izbrisan = models.IntegerField()
     okolis = models.ForeignKey(Okolis, models.DO_NOTHING, db_column='okolis', blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'osebje'
@@ -320,16 +318,17 @@ class Oskrba(models.Model):
 
 
 class OstaliPodatki(models.Model):
-    id_vrsta_podatka = models.ForeignKey('VrstaPodatka', models.DO_NOTHING, db_column='id_vrsta_podatka')
-    id_aktivnosti = models.ForeignKey(Aktivnosti, models.DO_NOTHING, db_column='id_aktivnosti')
+    id_podatki_aktivnosti = models.ForeignKey('PodatkiAktivnosti', models.DO_NOTHING, db_column='id_podatki_aktivnosti')
     id_obisk = models.ForeignKey(Obisk, models.DO_NOTHING, db_column='id_obisk')
-    obvezen = models.IntegerField()
     vrednost = models.CharField(max_length=256)
 
     class Meta:
         managed = False
         db_table = 'ostali_podatki'
 
+    def popraviDatum(self):
+        split = self.vrednost.split("-")
+        return split[2] + "." + split[1] + "." + split[0]
 
 
 class Pacient(models.Model):
@@ -354,6 +353,18 @@ class Pacient(models.Model):
     def __str__(self):
         return self.ime + ' ' + self.priimek
 
+class PodatkiAktivnosti(models.Model):
+    id_aktivnost = models.ForeignKey(Aktivnosti, models.DO_NOTHING, db_column='id_aktivnost')
+    id_vrsta_podatka = models.ForeignKey('VrstaPodatka', models.DO_NOTHING, db_column='id_vrsta_podatka')
+    obvezen = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'podatki_aktivnosti'
+
+    def pridobiVrednost(self, obiskId):
+        print(obiskId)
+        return ""
 
 class Posta(models.Model):
     st_poste = models.IntegerField(primary_key=True)
@@ -364,7 +375,7 @@ class Posta(models.Model):
         db_table = 'posta'
 
     def __str__(self):
-        return str(self.st_poste)
+        return str(self.st_poste) + ' ' + self.naziv
 
 
 class SorodstvenaVez(models.Model):
@@ -422,14 +433,16 @@ class VrstaObiska(models.Model):
 
 
 class VrstaPodatka(models.Model):
-    naziv = models.CharField(max_length=64)
+    naziv = models.CharField(max_length=255)
     podatkovni_tip = models.CharField(max_length=20)
-    enote = models.CharField(max_length=10)
+    enote = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'vrsta_podatka'
 
+    def moznosti(self):
+        return self.naziv.split('/')
 
 class VrstaStoritve(models.Model):
     sifra = models.CharField(max_length=10)

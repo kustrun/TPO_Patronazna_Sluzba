@@ -1,20 +1,18 @@
-* {
-  margin: 0px;
-  padding: 0px;
+#delovniNalog * {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-label {
+#delovniNalog label {
   display: inline-block;
   width: 5vw;
   margin-left: 2vh;
 }
 
-label:first-letter {
+#delovniNalog label:first-letter {
   text-transform: capitalize;
 }
 
-label:not(:last-child) {
+#delovniNalog label:not(:last-child) {
   padding-bottom: 1.2vh;
 }
 
@@ -104,3 +102,19 @@ label:not(:last-child) {
   margin-left: 5vw;
   width: 7vw;
 }
+
+/* OBISKI */
+#obiski {
+  width: 100%;
+}
+
+#obiskiTabela {
+  width: 100%;
+}
+
+#obiskiTabela tr {
+  border-bottom: 1px solid black;
+}
+
+
+

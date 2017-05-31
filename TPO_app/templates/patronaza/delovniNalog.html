@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+<div id="delovniNalog">
 <h1>Delovni nalog FORM</h1>
 
 	<form method="POST" action="#">
@@ -29,22 +30,46 @@
 		<div id="vrstaObiska" class="skupina">
 			<h3>2 - TIP OBISKA</h3>
 
-			{% for tip in tipObiska.tip %}
-				<div class="fieldWrapper">
-					{{ tip }}
-				</div>
-			{% endfor %}
+			{% if request.user.groups.all.0.name == 'Zdravnik' %}
+				{% for tip in tipObiska.tip %}
+					<div class="fieldWrapper">
+						{{ tip }}
+					</div>
+				{% endfor %}
+			{% endif %}
+
+			{% if request.user.groups.all.0.name == 'Vodja patronaže' %}
+				{% for tip in tipObiska.tip %}
+					{% if tip.choice_value == 'preventivni' %}
+						<div class="fieldWrapper">
+							{{ tip }}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 
 		</div>
 
 		<div id="vrstaStoritve" class="skupina">
 			<h3>3 - VRSTA OBISKA</h3>
 
-			{% for vrsta in vrstaObiska.vrstaObiska %}
-				<div class="fieldWrapper">
-					{{ vrsta }}
-				</div>
-			{% endfor %}
+			{% if request.user.groups.all.0.name == 'Zdravnik' %}
+				{% for vrsta in vrstaObiska.vrstaObiska %}
+					<div class="fieldWrapper">
+						{{ vrsta }}
+					</div>
+				{% endfor %}
+			{% endif %}
+
+			{% if request.user.groups.all.0.name == 'Vodja patronaže' %}
+				{% for vrsta in vrstaObiska.vrstaObiska %}
+					{% if 'preventivni' in vrsta.choice_value %}
+						<div class="fieldWrapper">
+							{{ vrsta }}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 
 		</div>
 
@@ -172,5 +197,5 @@
 
 		<input class="shrani" type="submit" name="shrani" value="Shrani" />
 	</form>
-
+</div>
 {% endblock %}

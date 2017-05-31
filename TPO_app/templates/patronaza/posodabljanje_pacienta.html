@@ -1,0 +1,16 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+<form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    {{ pacientForm.as_p }}
+    {{ emailForm.as_p }}
+    <a class="btn btn-info" role="button" href="{% url 'uredi_kontakt' %}">{% if kontakt %}Uredi kontakt{% else %}Dodaj kontakt{% endif %}</a>
+    <br>
+    <input type="submit" class="btn btn-info" value="Posodobi"/>
+    {% if napaka %}
+    <p>{{ napaka }}</p>
+    {% endif %}
+</form>
+
+{% endblock %}

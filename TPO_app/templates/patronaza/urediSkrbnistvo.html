@@ -1,0 +1,14 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block content %}
+<h2>Urejanje</h2>
+<form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    {{ skrbnistvoForm.as_p }}
+    <input type="submit" class="btn btn-info" value="Posodobi"/>
+    {% if napaka %}
+    <p>{{ napaka }}</p>
+    {% endif %}
+</form>
+
+{% endblock %}

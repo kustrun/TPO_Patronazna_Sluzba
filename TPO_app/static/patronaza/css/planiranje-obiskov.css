@@ -53,14 +53,6 @@ form > * {
 	flex-basis: 5%;
 }
 
-.flex-full {
-	flex-basis: 100%;
-}
-
-.flex-half {
-	flex-basis: 50%;
-}
-
 #seznam_neopravljenih li {
 	display: flex;
 	flex-flow: row;
