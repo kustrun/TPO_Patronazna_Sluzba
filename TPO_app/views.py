@@ -1032,46 +1032,60 @@ def izpisi_obiske_pacient(request):
 
 @login_required
 def nadomescanje(request):
-    context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False}
+    context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False, 'nadomestneSestre': None, 'danes': None}
     osebje = Osebje.objects.get(id_racuna=request.user)
-    ime = "Vodja patronaže " + str(osebje)
+    ime = "Vodja patronaze " + str(osebje)
     context['ime'] = ime
     sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     context['sestre'] = sestre
+    context['nadomestniObiski'] = DodeljenoOsebje.objects.exclude(id_nadomestna=None).filter(id_obisk__status_obiska_id=1).order_by('id_osebja', 'id_obisk__predviden_datum')
+    context['nadomestneSestre'] = context['nadomestniObiski'].order_by('id_osebja', '-id_obisk__predviden_datum').distinct('id_osebja')
+    context['danes'] = date.today() + timedelta(days=20)
     if request.method == 'POST':
-        sestra1 = Osebje.objects.get(sifra = request.POST.get('sestra'))
-        sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
-        od = request.POST.get('od')
-        do = request.POST.get('do')
-        error = False
-        context['sestra1'] = sestra1
-        context['sestra2'] = sestra2
-        context['datumOd'] = od
-        context['datumDo'] = do
-        context['error'] = error
-        try:
-            datetime.datetime.strptime(od, '%d.%m.%Y')
-            datetime.datetime.strptime(do, '%d.%m.%Y')
-        except:
-            error = "Nepravilen format datuma. Pravilen format d.m.Y"
+        if request.POST.get('preklic'):
+            list_izbranih = request.POST.getlist('obisk')
+            DodeljenoOsebje.objects.filter(id_obisk__id__in=list_izbranih).update(id_nadomestna=None)
+        else:
+            sestra1 = Osebje.objects.get(sifra = request.POST.get('sestra'))
+            sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
+            od = request.POST.get('od')
+            do = request.POST.get('do')
+            error = False
+            context['sestra1'] = sestra1
+            context['sestra2'] = sestra2
+            context['datumOd'] = od
+            context['datumDo'] = do
             context['error'] = error
-            return render(request, 'patronaza/nadomescanja.html', context)
-        if (not error):
-            od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                            '%Y-%m-%d').date()
-            do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                            '%Y-%m-%d').date()
-        if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
-            context['datum'] = True
-            return render(request, 'patronaza/nadomescanja.html', context)
-        if(od > do):
-            context['vecji'] = True
-            return render(request, 'patronaza/nadomescanja.html', context)
-        dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
-            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
-        dodeljeno2 = DodeljenoOsebje.objects.filter(id_osebja=sestra2,id_nadomestna=sestra2)\
-            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=None)
-        return HttpResponseRedirect('/patronaza/domov')
+            try:
+                datetime.datetime.strptime(od, '%d.%m.%Y')
+                datetime.datetime.strptime(do, '%d.%m.%Y')
+            except:
+                error = "Nepravilen format datuma. Pravilen format d.m.Y"
+                context['error'] = error
+                return render(request, 'patronaza/nadomescanja.html', context)
+            if (not error):
+                od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                                '%Y-%m-%d').date()
+                do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                                '%Y-%m-%d').date()
+            if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
+                context['datum'] = True
+                return render(request, 'patronaza/nadomescanja.html', context)
+            if(od > do):
+                context['vecji'] = True
+                return render(request, 'patronaza/nadomescanja.html', context)
+            dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
+                .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
+            dodeljeno2 = DodeljenoOsebje.objects.filter(id_osebja=sestra2,id_nadomestna=sestra2)\
+                .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=None)
+            return HttpResponseRedirect('/patronaza/domov')
+    elif request.method == 'GET':
+        for key in request.GET.keys():
+            if key.startswith('preklic-'):
+                id_sestre = key[8:]
+                DodeljenoOsebje.objects.filter(id_osebja_id=id_sestre).update(id_nadomestna=None)
+
+
     return render(request, 'patronaza/nadomescanja.html', context)
 
 @login_required
@@ -1124,8 +1138,7 @@ def osebjeAdd(request):
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))}
-
+    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
     leto = request.GET.get("leto")
@@ -1137,33 +1150,26 @@ def planiranje_obiskov(request):
     except:
         datum = date.today() + timedelta(days=1)
 
-
     if request.method == 'POST':
-        if request.is_ajax():
-            form = PlaniranjeObiskovForm()
-            obiski_query = form.fields['obiski'].queryset.filter(
-                Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
-            request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani[]'))
-        else:
-            form = PlaniranjeObiskovForm(request.POST)
-            obiski_query = form.fields['obiski'].queryset.filter(
-                Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
-            if form.is_valid():
-                id_list = request.POST.getlist('obisk')
-                pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
-                for item in pobrisani:
-                    item.id_obisk.izbran_datum = None
-                    item.id_obisk.save()
+        form = PlaniranjeObiskovForm(request.POST)
+        obiski_query = form.fields['obiski'].queryset.filter(
+            (Q(id_osebja__id_racuna=request.user) & Q(id_nadomestna__id_racuna=None)) |
+                Q(id_nadomestna__id_racuna=request.user))
+        if form.is_valid():
+            id_list = request.POST.getlist('obisk')
+            pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
+            for item in pobrisani:
+                item.id_obisk.izbran_datum = None
+                item.id_obisk.save()
 
-                for id in id_list:
-                    obisk = obiski_query.get(id_obisk__id=id)
-                    obisk.id_obisk.izbran_datum = datum
-                    obisk.id_obisk.save()
-                    obisk.save()
-
+            for id in id_list:
+                obisk = obiski_query.get(id_obisk__id=id)
+                obisk.id_obisk.izbran_datum = datum
+                obisk.id_obisk.save()
+                obisk.save()
     else:
         form = PlaniranjeObiskovForm()
-        obiski_query = form.fields['obiski'].queryset.filter(Q(id_osebja__id_racuna=request.user) | Q(id_nadomestna__id_racuna=request.user))
+        obiski_query = form.fields['obiski'].queryset.filter((Q(id_osebja__id_racuna=request.user) & Q(id_nadomestna__id_racuna=None)) | Q(id_nadomestna__id_racuna=request.user))
 
     context['objekti'] = obiski_query
     context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
