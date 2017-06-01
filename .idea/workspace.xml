@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ae07a81-938b-4c02-a4f1-9c56a526d9cd" name="Default" comment="">
+    <list default="true" id="2ae07a81-938b-4c02-a4f1-9c56a526d9cd" name="Default" comment="Popravek">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" afterPath="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/views.py" afterPath="$PROJECT_DIR$/TPO_app/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css" afterPath="$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,11 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="1085" column="86" lean-forward="false" selection-start-line="1085" selection-start-column="86" selection-end-line="1085" selection-end-column="86" />
+            <state relative-caret-position="290">
+              <caret line="1179" column="0" lean-forward="false" selection-start-line="1179" selection-start-column="0" selection-end-line="1179" selection-end-column="0" />
               <folding>
                 <element signature="e#25#56#0" expanded="true" />
                 <element signature="e#947#1085#0" expanded="false" />
@@ -29,79 +28,88 @@
                 <element signature="e#2399#2961#0" expanded="false" />
                 <element signature="e#3010#10491#0" expanded="false" />
                 <element signature="e#10567#15027#0" expanded="false" />
-                <element signature="e#15089#16033#0" expanded="false" />
-                <element signature="e#16075#16584#0" expanded="false" />
-                <element signature="e#16610#17893#0" expanded="false" />
-                <element signature="e#18039#19282#0" expanded="false" />
-                <element signature="e#19315#22504#0" expanded="false" />
-                <element signature="e#22535#22994#0" expanded="false" />
-                <element signature="e#23049#23578#0" expanded="false" />
-                <element signature="e#25065#26760#0" expanded="false" />
-                <element signature="e#26802#28011#0" expanded="false" />
-                <element signature="e#28069#34561#0" expanded="false" />
-                <element signature="e#34611#40898#0" expanded="false" />
-                <element signature="e#40947#43331#0" expanded="false" />
-                <element signature="e#43396#43872#0" expanded="false" />
-                <element signature="e#43918#45094#0" expanded="false" />
-                <element signature="e#45149#47214#0" expanded="false" />
-                <element signature="e#49814#49843#0" expanded="false" />
-                <element signature="e#49871#49954#0" expanded="false" />
-                <element signature="e#50007#51629#0" expanded="false" />
-                <element signature="e#51694#52057#0" expanded="false" />
-                <element signature="e#52119#52485#0" expanded="false" />
-                <element signature="e#52545#52909#0" expanded="false" />
-                <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+                <element signature="e#16220#16729#0" expanded="false" />
+                <element signature="e#16755#18038#0" expanded="false" />
+                <element signature="e#18065#18135#0" expanded="false" />
+                <element signature="e#18184#19419#0" expanded="false" />
+                <element signature="e#19452#22641#0" expanded="false" />
+                <element signature="e#22672#23131#0" expanded="false" />
+                <element signature="e#23186#23715#0" expanded="false" />
+                <element signature="e#25202#26897#0" expanded="false" />
+                <element signature="e#26939#28148#0" expanded="false" />
+                <element signature="e#28206#34698#0" expanded="false" />
+                <element signature="e#34748#42579#0" expanded="false" />
+                <element signature="e#42637#45813#0" expanded="false" />
+                <element signature="e#45862#49252#0" expanded="false" />
+                <element signature="e#49317#49793#0" expanded="false" />
+                <element signature="e#49839#51015#0" expanded="false" />
+                <element signature="e#51070#52834#0" expanded="false" />
+                <element signature="e#52892#54982#0" expanded="false" />
+                <element signature="e#55032#56099#0" expanded="false" />
+                <element signature="e#56184#56213#0" expanded="false" />
+                <element signature="e#56241#56324#0" expanded="false" />
+                <element signature="e#56377#58506#0" expanded="false" />
+                <element signature="e#58571#58934#0" expanded="false" />
+                <element signature="e#58996#59362#0" expanded="false" />
+                <element signature="e#59422#59786#0" expanded="false" />
+                <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urediSkrbnistvo.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html">
+      <file leaf-file-name="index.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templatetags/index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+            <state relative-caret-position="293">
+              <caret line="30" column="16" lean-forward="true" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="77" column="20" lean-forward="false" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="63" />
+            <state relative-caret-position="1602">
+              <caret line="174" column="1" lean-forward="false" selection-start-line="174" selection-start-column="1" selection-end-line="174" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="posodabljanje_pacienta.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="14" lean-forward="false" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pregled.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="61" lean-forward="false" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+            <state relative-caret-position="596">
+              <caret line="147" column="61" lean-forward="false" selection-start-line="147" selection-start-column="61" selection-end-line="147" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
+        <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="24" column="11" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="24" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nadomescanja.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="681">
+              <caret line="95" column="14" lean-forward="false" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
+              <folding>
+                <element signature="e#2698#2719#0#HTML" expanded="true" />
+                <element signature="e#2987#3025#0#HTML" expanded="true" />
+                <element signature="e#3162#3203#0#HTML" expanded="true" />
+                <element signature="e#3341#3365#0#HTML" expanded="true" />
+                <element signature="e#3394#3419#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -158,22 +166,16 @@
       <list>
         <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/jquery.formset.js" />
         <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/nadomescanje.js" />
-        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html" />
-        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html" />
         <option value="$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py" />
         <option value="$PROJECT_DIR$/TPO_app/forms.py" />
         <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js" />
         <option value="$PROJECT_DIR$/TPO_app/static/patronaza/js/meritve.js" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalog.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/obiskPodrobnosti.html" />
-        <option value="$PROJECT_DIR$/TPO_app/templatetags/index.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/TPO_app/static/patronaza/css/delovniNalog.css" />
         <option value="$PROJECT_DIR$/TPO_app/models.py" />
-        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html" />
-        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/base.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html" />
-        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/index.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/plan_obiskov.html" />
@@ -182,8 +184,17 @@
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/login.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html" />
         <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/uredi_kontakt.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/base.html" />
         <option value="$PROJECT_DIR$/TPO_app/urls.py" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiskePacient.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templatetags/index.py" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html" />
+        <option value="$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html" />
         <option value="$PROJECT_DIR$/TPO_app/views.py" />
+        <option value="$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css" />
       </list>
     </option>
   </component>
@@ -215,6 +226,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -227,9 +239,124 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templatetags" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_Patronazna_Sluzba" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TPO_app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patronaza" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -637,19 +764,75 @@
       <option name="project" value="LOCAL" />
       <updated>1495740042613</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Konec #15">
+      <created>1495962575470</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1495962575470</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Popravki pri meritvah">
+      <created>1495993993497</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1495993993497</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Popravki pri meritvah">
+      <created>1495997660547</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1495997660547</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Popravki pri posodabljanju">
+      <created>1496000295738</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1496000295738</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Dodana zgodba #16">
+      <created>1496002727226</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1496002727226</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Popravek">
+      <created>1496003035605</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1496003035605</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Popravek">
+      <created>1496004099633</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1496004099633</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Dodana zgodba 13">
+      <created>1496330400409</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1496330400409</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5075" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.4925" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32898173" sideWeight="0.4925" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2689295" sideWeight="0.4975" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2689295" sideWeight="0.4975" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -689,6 +872,32 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -710,7 +919,13 @@
     <MESSAGE value="Popravljeno!" />
     <MESSAGE value="Dodan frontend za popravljanje skrbništev." />
     <MESSAGE value="Nekaj kozmetičnih popravkov" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nekaj kozmetičnih popravkov" />
+    <MESSAGE value="Konec #15" />
+    <MESSAGE value="Popravki pri meritvah" />
+    <MESSAGE value="Popravki pri posodabljanju" />
+    <MESSAGE value="Dodana zgodba #16" />
+    <MESSAGE value="Popravek" />
+    <MESSAGE value="Dodana zgodba 13" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodana zgodba 13" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -721,64 +936,11 @@
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="20" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/TPO_app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4454">
-          <caret line="262" column="26" lean-forward="false" selection-start-line="262" selection-start-column="26" selection-end-line="262" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10081">
-          <caret line="593" column="9" lean-forward="false" selection-start-line="593" selection-start-column="9" selection-end-line="593" selection-end-column="9" />
-          <folding>
-            <element signature="e#25#56#0" expanded="true" />
-            <element signature="e#947#1085#0" expanded="false" />
-            <element signature="e#1131#1720#0" expanded="false" />
-            <element signature="e#1766#2349#0" expanded="false" />
-            <element signature="e#2399#2961#0" expanded="false" />
-            <element signature="e#3010#10491#0" expanded="false" />
-            <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="64" column="44" lean-forward="false" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -813,28 +975,31 @@
             <element signature="e#2399#2961#0" expanded="false" />
             <element signature="e#3010#10491#0" expanded="false" />
             <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+            <element signature="e#16220#16729#0" expanded="false" />
+            <element signature="e#16755#18038#0" expanded="false" />
+            <element signature="e#18065#18135#0" expanded="false" />
+            <element signature="e#18184#19419#0" expanded="false" />
+            <element signature="e#19452#22641#0" expanded="false" />
+            <element signature="e#22672#23131#0" expanded="false" />
+            <element signature="e#23186#23715#0" expanded="false" />
+            <element signature="e#25202#26897#0" expanded="false" />
+            <element signature="e#26939#28148#0" expanded="false" />
+            <element signature="e#28206#34698#0" expanded="false" />
+            <element signature="e#34748#42579#0" expanded="false" />
+            <element signature="e#42637#45813#0" expanded="false" />
+            <element signature="e#45862#49252#0" expanded="false" />
+            <element signature="e#49317#49793#0" expanded="false" />
+            <element signature="e#49839#51015#0" expanded="false" />
+            <element signature="e#51070#52834#0" expanded="false" />
+            <element signature="e#52892#54982#0" expanded="false" />
+            <element signature="e#55032#56099#0" expanded="false" />
+            <element signature="e#56184#56213#0" expanded="false" />
+            <element signature="e#56241#56324#0" expanded="false" />
+            <element signature="e#56377#58506#0" expanded="false" />
+            <element signature="e#58571#58934#0" expanded="false" />
+            <element signature="e#58996#59362#0" expanded="false" />
+            <element signature="e#59422#59786#0" expanded="false" />
+            <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
           </folding>
         </state>
       </provider>
@@ -873,28 +1038,31 @@
             <element signature="e#2399#2961#0" expanded="false" />
             <element signature="e#3010#10491#0" expanded="false" />
             <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+            <element signature="e#16220#16729#0" expanded="false" />
+            <element signature="e#16755#18038#0" expanded="false" />
+            <element signature="e#18065#18135#0" expanded="false" />
+            <element signature="e#18184#19419#0" expanded="false" />
+            <element signature="e#19452#22641#0" expanded="false" />
+            <element signature="e#22672#23131#0" expanded="false" />
+            <element signature="e#23186#23715#0" expanded="false" />
+            <element signature="e#25202#26897#0" expanded="false" />
+            <element signature="e#26939#28148#0" expanded="false" />
+            <element signature="e#28206#34698#0" expanded="false" />
+            <element signature="e#34748#42579#0" expanded="false" />
+            <element signature="e#42637#45813#0" expanded="false" />
+            <element signature="e#45862#49252#0" expanded="false" />
+            <element signature="e#49317#49793#0" expanded="false" />
+            <element signature="e#49839#51015#0" expanded="false" />
+            <element signature="e#51070#52834#0" expanded="false" />
+            <element signature="e#52892#54982#0" expanded="false" />
+            <element signature="e#55032#56099#0" expanded="false" />
+            <element signature="e#56184#56213#0" expanded="false" />
+            <element signature="e#56241#56324#0" expanded="false" />
+            <element signature="e#56377#58506#0" expanded="false" />
+            <element signature="e#58571#58934#0" expanded="false" />
+            <element signature="e#58996#59362#0" expanded="false" />
+            <element signature="e#59422#59786#0" expanded="false" />
+            <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
           </folding>
         </state>
       </provider>
@@ -911,28 +1079,31 @@
             <element signature="e#2399#2961#0" expanded="false" />
             <element signature="e#3010#10491#0" expanded="false" />
             <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+            <element signature="e#16220#16729#0" expanded="false" />
+            <element signature="e#16755#18038#0" expanded="false" />
+            <element signature="e#18065#18135#0" expanded="false" />
+            <element signature="e#18184#19419#0" expanded="false" />
+            <element signature="e#19452#22641#0" expanded="false" />
+            <element signature="e#22672#23131#0" expanded="false" />
+            <element signature="e#23186#23715#0" expanded="false" />
+            <element signature="e#25202#26897#0" expanded="false" />
+            <element signature="e#26939#28148#0" expanded="false" />
+            <element signature="e#28206#34698#0" expanded="false" />
+            <element signature="e#34748#42579#0" expanded="false" />
+            <element signature="e#42637#45813#0" expanded="false" />
+            <element signature="e#45862#49252#0" expanded="false" />
+            <element signature="e#49317#49793#0" expanded="false" />
+            <element signature="e#49839#51015#0" expanded="false" />
+            <element signature="e#51070#52834#0" expanded="false" />
+            <element signature="e#52892#54982#0" expanded="false" />
+            <element signature="e#55032#56099#0" expanded="false" />
+            <element signature="e#56184#56213#0" expanded="false" />
+            <element signature="e#56241#56324#0" expanded="false" />
+            <element signature="e#56377#58506#0" expanded="false" />
+            <element signature="e#58571#58934#0" expanded="false" />
+            <element signature="e#58996#59362#0" expanded="false" />
+            <element signature="e#59422#59786#0" expanded="false" />
+            <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
           </folding>
         </state>
       </provider>
@@ -949,28 +1120,31 @@
             <element signature="e#2399#2961#0" expanded="false" />
             <element signature="e#3010#10491#0" expanded="false" />
             <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+            <element signature="e#16220#16729#0" expanded="false" />
+            <element signature="e#16755#18038#0" expanded="false" />
+            <element signature="e#18065#18135#0" expanded="false" />
+            <element signature="e#18184#19419#0" expanded="false" />
+            <element signature="e#19452#22641#0" expanded="false" />
+            <element signature="e#22672#23131#0" expanded="false" />
+            <element signature="e#23186#23715#0" expanded="false" />
+            <element signature="e#25202#26897#0" expanded="false" />
+            <element signature="e#26939#28148#0" expanded="false" />
+            <element signature="e#28206#34698#0" expanded="false" />
+            <element signature="e#34748#42579#0" expanded="false" />
+            <element signature="e#42637#45813#0" expanded="false" />
+            <element signature="e#45862#49252#0" expanded="false" />
+            <element signature="e#49317#49793#0" expanded="false" />
+            <element signature="e#49839#51015#0" expanded="false" />
+            <element signature="e#51070#52834#0" expanded="false" />
+            <element signature="e#52892#54982#0" expanded="false" />
+            <element signature="e#55032#56099#0" expanded="false" />
+            <element signature="e#56184#56213#0" expanded="false" />
+            <element signature="e#56241#56324#0" expanded="false" />
+            <element signature="e#56377#58506#0" expanded="false" />
+            <element signature="e#58571#58934#0" expanded="false" />
+            <element signature="e#58996#59362#0" expanded="false" />
+            <element signature="e#59422#59786#0" expanded="false" />
+            <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1010,20 +1184,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="37" column="83" lean-forward="false" selection-start-line="37" selection-start-column="83" selection-end-line="37" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalogPodrobnosti.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-442">
@@ -1042,20 +1202,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="37" lean-forward="false" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="147" column="61" lean-forward="false" selection-start-line="147" selection-start-column="61" selection-end-line="147" selection-end-column="61" />
         </state>
       </provider>
     </entry>
@@ -1080,24 +1226,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templatetags/index.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/js/delovniNalog.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5508">
           <caret line="324" column="4" lean-forward="false" selection-start-line="324" selection-start-column="4" selection-end-line="324" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="14" column="47" lean-forward="false" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -1130,14 +1262,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="61" lean-forward="false" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base_register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1152,16 +1276,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="49" lean-forward="true" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
+        <state relative-caret-position="1309">
           <caret line="77" column="20" lean-forward="false" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="63" />
           <folding />
         </state>
@@ -1171,13 +1288,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="29" column="49" lean-forward="false" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
-          <caret line="91" column="65" lean-forward="false" selection-start-line="91" selection-start-column="42" selection-end-line="91" selection-end-column="65" />
         </state>
       </provider>
     </entry>
@@ -1195,13 +1305,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="78" column="41" lean-forward="false" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/delovniNalog.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3383">
@@ -1211,39 +1314,130 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/delovniNalog.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        <state relative-caret-position="17">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html">
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiske.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="14" lean-forward="false" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+        <state relative-caret-position="373">
+          <caret line="95" column="41" lean-forward="false" selection-start-line="95" selection-start-column="41" selection-end-line="95" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/dodajSkrbnistvo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="49" lean-forward="true" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/pregled.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="102" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="102" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/urediSkrbnistvo.html">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="13" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/uredi_kontakt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="64" lean-forward="false" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/posodabljanje_pacienta.html">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+          <caret line="8" column="5" lean-forward="false" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="43" column="88" lean-forward="false" selection-start-line="43" selection-start-column="88" selection-end-line="43" selection-end-column="88" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="24" column="11" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="24" />
+        <state relative-caret-position="374">
+          <caret line="25" column="4" lean-forward="false" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiDelavneNaloge.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="78" column="41" lean-forward="false" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/izpisiObiskePacient.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="22" lean-forward="false" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/meritve.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="632" column="14" lean-forward="false" selection-start-line="632" selection-start-column="14" selection-end-line="632" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="596">
+          <caret line="147" column="61" lean-forward="false" selection-start-line="147" selection-start-column="61" selection-end-line="147" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_Patronazna_sluzba/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templates/patronaza/nadomescanja.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="95" column="14" lean-forward="false" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
+          <folding>
+            <element signature="e#2698#2719#0#HTML" expanded="true" />
+            <element signature="e#2987#3025#0#HTML" expanded="true" />
+            <element signature="e#3162#3203#0#HTML" expanded="true" />
+            <element signature="e#3341#3365#0#HTML" expanded="true" />
+            <element signature="e#3394#3419#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TPO_app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="1085" column="86" lean-forward="false" selection-start-line="1085" selection-start-column="86" selection-end-line="1085" selection-end-column="86" />
+        <state relative-caret-position="290">
+          <caret line="1179" column="0" lean-forward="false" selection-start-line="1179" selection-start-column="0" selection-end-line="1179" selection-end-column="0" />
           <folding>
             <element signature="e#25#56#0" expanded="true" />
             <element signature="e#947#1085#0" expanded="false" />
@@ -1252,29 +1446,48 @@
             <element signature="e#2399#2961#0" expanded="false" />
             <element signature="e#3010#10491#0" expanded="false" />
             <element signature="e#10567#15027#0" expanded="false" />
-            <element signature="e#15089#16033#0" expanded="false" />
-            <element signature="e#16075#16584#0" expanded="false" />
-            <element signature="e#16610#17893#0" expanded="false" />
-            <element signature="e#18039#19282#0" expanded="false" />
-            <element signature="e#19315#22504#0" expanded="false" />
-            <element signature="e#22535#22994#0" expanded="false" />
-            <element signature="e#23049#23578#0" expanded="false" />
-            <element signature="e#25065#26760#0" expanded="false" />
-            <element signature="e#26802#28011#0" expanded="false" />
-            <element signature="e#28069#34561#0" expanded="false" />
-            <element signature="e#34611#40898#0" expanded="false" />
-            <element signature="e#40947#43331#0" expanded="false" />
-            <element signature="e#43396#43872#0" expanded="false" />
-            <element signature="e#43918#45094#0" expanded="false" />
-            <element signature="e#45149#47214#0" expanded="false" />
-            <element signature="e#49814#49843#0" expanded="false" />
-            <element signature="e#49871#49954#0" expanded="false" />
-            <element signature="e#50007#51629#0" expanded="false" />
-            <element signature="e#51694#52057#0" expanded="false" />
-            <element signature="e#52119#52485#0" expanded="false" />
-            <element signature="e#52545#52909#0" expanded="false" />
-            <marker date="1495962373217" expanded="false" signature="23626:24992" ph="..." />
+            <element signature="e#16220#16729#0" expanded="false" />
+            <element signature="e#16755#18038#0" expanded="false" />
+            <element signature="e#18065#18135#0" expanded="false" />
+            <element signature="e#18184#19419#0" expanded="false" />
+            <element signature="e#19452#22641#0" expanded="false" />
+            <element signature="e#22672#23131#0" expanded="false" />
+            <element signature="e#23186#23715#0" expanded="false" />
+            <element signature="e#25202#26897#0" expanded="false" />
+            <element signature="e#26939#28148#0" expanded="false" />
+            <element signature="e#28206#34698#0" expanded="false" />
+            <element signature="e#34748#42579#0" expanded="false" />
+            <element signature="e#42637#45813#0" expanded="false" />
+            <element signature="e#45862#49252#0" expanded="false" />
+            <element signature="e#49317#49793#0" expanded="false" />
+            <element signature="e#49839#51015#0" expanded="false" />
+            <element signature="e#51070#52834#0" expanded="false" />
+            <element signature="e#52892#54982#0" expanded="false" />
+            <element signature="e#55032#56099#0" expanded="false" />
+            <element signature="e#56184#56213#0" expanded="false" />
+            <element signature="e#56241#56324#0" expanded="false" />
+            <element signature="e#56377#58506#0" expanded="false" />
+            <element signature="e#58571#58934#0" expanded="false" />
+            <element signature="e#58996#59362#0" expanded="false" />
+            <element signature="e#59422#59786#0" expanded="false" />
+            <marker date="1496330360517" expanded="false" signature="23763:25129" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/templatetags/index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="30" column="16" lean-forward="true" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TPO_app/static/patronaza/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1602">
+          <caret line="174" column="1" lean-forward="false" selection-start-line="174" selection-start-column="1" selection-end-line="174" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
