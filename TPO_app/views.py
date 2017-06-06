@@ -1034,7 +1034,7 @@ def izpisi_obiske_pacient(request):
 def nadomescanje(request):
     context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False, 'nadomestneSestre': None, 'danes': None}
     osebje = Osebje.objects.get(id_racuna=request.user)
-    ime = "Vodja patronaze " + unicode(osebje)
+    ime = "Vodja patronaze " + str(osebje)
     context['ime'] = ime
     sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     context['sestre'] = sestre
@@ -1138,7 +1138,7 @@ def osebjeAdd(request):
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
+    context = {'ime': str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))}
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
     leto = request.GET.get("leto")

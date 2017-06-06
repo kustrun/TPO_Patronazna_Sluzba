@@ -52,7 +52,7 @@
 				}
 				
 				$('#seznam_izbranih').append(
-					"<li class='izbran_obisk' id='izbran-" + obisk.id + "'><span class='flex-full'>#<span class='id-obiska'>" + obisk.id + "</span> <b>" + obisk.naziv + "</b></span><span class='flex-full'><a href=\"" + obisk.id_url + "\">Preglej delovni nalog</a></span><label for='obisk-" + obisk.id + "' class='izbrisi'>x</label></li>"
+					"<li class='izbran_obisk' id='izbran-" + obisk.id + "'><span class='flex-full'>#<span class='id-obiska'>" + obisk.id + "</span> <b>" + obisk.naziv + "</b></span><span class='flex-full'><a href=\"" + obisk.id_url + "\">Preglej delovni nalog</a></span><span class='flex-full'><a href='/patronaza/meritve/" + obisk.id + "'>Meritve</a></span><label for='obisk-" + obisk.id + "' class='izbrisi'>x</label></li>"
 				)
 					
 				izbrani_obiski.push(obisk)
