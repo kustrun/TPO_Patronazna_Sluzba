@@ -1,43 +1,96 @@
 {% extends "./base.html" %}
-{% load static %}
+{% load static i18n %}
+{% block extrahead %}
+<script>
+$(document).ready(function(){
+	$(".trigger-slide").click(function(event){
+        $("#form-" + this.id).slideToggle("slow")
+		console.log($(this).first())
+		$(this).children().first().toggleClass("rotate-90")
+    });
+});
+</script>
+{% endblock %}
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <ul class="list-group" id="list">
-        <li class="list-group-item">
-            <label>Patronažna sestra</label>
-            <select name = "sestra" id="sestra" required>
-                <option value="">---------</option>
-                {% for sestra in sestre %}
-                    <option value="{{ sestra.sifra }}" {% if sestra1 and sestra.sifra == sestra1.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
-                {% endfor %}
-            </select>
-        </li>
-        <li class="list-group-item">
-            <label>nadomestna patronažna sestra</label>
-            <select name = "nadomestnaSestra" id="nadomestnaSestra" required>
-                <option value="">---------</option>
-                {% for sestra in sestre %}
-                    <option value="{{ sestra.sifra }}" {% if sestra2 and sestra.sifra == sestra2.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
-                {% endfor %}
-            </select>
-        </li>
-        <li class="list-group-item">
-            <label>Od</label>
-            <input type="text" name="od" id="od" {% if datumOd %}value="{{ datumOd }}"{% endif %}  required>
-        </li>
-        <li class="list-group-item">
-            <label>Do</label>
-            <input type="text" name="do" id="do" {% if datumDo %}value="{{ datumDo }}"{% endif %} required>
-        </li>
-        {% if datum %}
-            <li class="list-group-item">Datum ne sme biti v preteklosti</li>
-        {% elif vecji %}
-            <li class="list-group-item">Začetni datum mora biti manjši ali enak končnemu</li>
-        {% elif error %}
-            <li class="list-group-item">Nepravilen format datuma. Pravilen je d.m.Y</li>
-        {% endif %}
-    </ul>
-    <input type="submit" value="Dodeli" class="btn btn-info btn-lg">
-</form>
+<div class="centered form-panel">
+	<label>Novo nadomeščanje:</label>
+	<form method="POST">
+		{% csrf_token %}
+		<ul class="list-group" id="list">
+			<li class="list-group-item">
+				<label>Patronažna sestra</label>
+				<select name = "sestra" id="sestra" required>
+					<option value="">---------</option>
+					{% for sestra in sestre %}
+						<option value="{{ sestra.sifra }}" {% if sestra1 and sestra.sifra == sestra1.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
+					{% endfor %}
+				</select>
+			</li>
+			<li class="list-group-item">
+				<label>nadomestna patronažna sestra</label>
+				<select name = "nadomestnaSestra" id="nadomestnaSestra" required>
+					<option value="">---------</option>
+					{% for sestra in sestre %}
+						<option value="{{ sestra.sifra }}" {% if sestra2 and sestra.sifra == sestra2.sifra %} selected="selected" {% endif %}>{{ sestra.sifra }} {{ sestra }}</option>
+					{% endfor %}
+				</select>
+			</li>
+			<li class="list-group-item">
+				<label>Od</label>
+				<input type="text" name="od" id="od" {% if datumOd %}value="{{ datumOd }}"{% endif %}  required>
+			</li>
+			<li class="list-group-item">
+				<label>Do</label>
+				<input type="text" name="do" id="do" {% if datumDo %}value="{{ datumDo }}"{% endif %} required>
+			</li>
+			{% if datum %}
+				<li class="list-group-item">Datum ne sme biti v preteklosti</li>
+			{% elif vecji %}
+				<li class="list-group-item">Začetni datum mora biti manjši ali enak končnemu</li>
+			{% elif error %}
+				<li class="list-group-item">Nepravilen format datuma. Pravilen je d.m.Y</li>
+			{% endif %}
+		</ul>
+		<div>
+			<input type="submit" value="Dodeli" class="btn btn-info btn-lg">
+		</div>
+	</form>
+</div>
+
+<div class="centered form-panel">
+	<label>Prekliči nadomeščanja:</label>
+	{% language 'sl' %}
+	<ul id="nadomestne-sestre">
+		{% for nadomestna in nadomestneSestre %}
+		<li id="nadomestna-{{ nadomestna.id_osebja.id }}" class="list-group-item">
+			<label id="{{ nadomestna.id_osebja.id }}" class="trigger-slide">
+				<span class="arrow-right"></span>
+				<span class="flex-full">#{{ nadomestna.id_osebja.id }} <b>{{ nadomestna.id_osebja.ime|upper }} {{ nadomestna.id_osebja.priimek|upper }}</b></span>
+				<span class="flex-full">Predviden datum zadnjega obiska: {{ nadomestna.id_obisk.predviden_datum }}</span>
+			</label>
+			<form style="display: none" id="form-{{ nadomestna.id_osebja.id }}" action="#" method="POST">
+				{% csrf_token %}
+				{% for obisk in nadomestniObiski %}
+					{% if obisk.id_osebja.id == nadomestna.id_osebja.id %}
+					<label>
+						{% if danes > obisk.id_obisk.predviden_datum %}
+						<input style="margin: 0 5px; flex-basis: 5%;" type="checkbox" id="obisk-{{ obisk.id_obisk.id }}" name="obisk" value="{{ obisk.id_obisk.id }}" checked/>
+						{% else %}
+						<input style="margin-right:5px; flex-basis: 5%;" type="checkbox" id="obisk-{{ obisk.id_obisk.id }}" name="obisk" value="{{ obisk.id_obisk.id }}" disabled/>
+						{% endif %}
+						<span style="flex-basis: 75%;">#{{ obisk.id_obisk.id }} <b style="margin-left: 5px;">{{ obisk.id_obisk.id_dn.id_vrsta.naziv }}</b></span>
+						<span class="flex-half">Predviden datum: {{ obisk.id_obisk.predviden_datum }}</span>
+						<span class="flex-half">Nadomestna sestra: {{ obisk.id_nadomestna.ime }} {{ obisk.id_nadomestna.priimek }}</span>
+					</label>
+					{% endif %}
+				{% endfor %}
+				<div>
+					<input type="submit" value="Prekliči izbrana nadomeščanja" name="preklic" class="btn btn-info"/>
+				</div>
+			</form>
+		</li>
+		{% endfor %}
+	</ul>
+	{% endlanguage %}
+</div>
 {% endblock %}

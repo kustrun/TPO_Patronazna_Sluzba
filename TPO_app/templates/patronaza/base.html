@@ -10,14 +10,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'patronaza/css/obisk.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'patronaza/css/delovniNalog.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'patronaza/css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'patronaza/css/koledar.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'patronaza/js/meritve.js' %}"></script>
     <script src="{% static 'patronaza/js/obisk.js' %}"></script>
     <script src="{% static 'patronaza/js/delovniNalog.js' %}"></script>
     <script src="{% static 'patronaza/js/nadomescanje.js' %}"></script>
 	<script src="{% static 'patronaza/js/jquery.formset.js' %}"></script>
     <script src="{% static 'patronaza/js/koledar.js' %}"></script>
     <script src="{% static 'patronaza/js/register.js' %}"></script>
+    {% block extrahead %}
+    {% endblock %}
 </head>
 <body>
     <header>
@@ -79,7 +83,9 @@
                 </div>
                     <ul class="list-group">
                         <li class="list-group-item"><a href="{% url 'change_password' %}">Spremeni geslo</a></li>
+                        {% if request.user.groups.all.0.name == 'Pacient' %}
                         <li class="list-group-item"><a href="{% url 'posodabljane_pacienta' %}">Posodobi profil</a></li>
+                        {% endif %}
                         <li class="list-group-item">Zadnja prijava: {{ request.user.last_login|date:"d.m.Y H:i" }}</li>
                     </ul>
                 <div class="modal-footer">

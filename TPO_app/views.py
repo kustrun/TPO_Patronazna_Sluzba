@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import simplejson as simplejson
+from django.core import serializers
 from django.shortcuts import render
-from django import forms
+from django import template
 from itertools import chain
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect,HttpResponse
@@ -373,7 +375,7 @@ def obiskPodrobnosti(request, obiskId):
         name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
     elif (Pacient.objects.filter(id_racuna=request.user).exists()):
         ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
-        name = str(request.user.groups.all()[0].name) + ' ' + str(Pacient.objects.get(id_racuna=request.user))
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
     else:
         ime = request.user.username
 
@@ -439,7 +441,7 @@ def logout(request):
 
 @login_required
 def change_password(request):
-	context = {'passwordChangeForm':PasswordChangeForm(), 'message':"", 'error':False}
+	context = {'passwordChangeForm':PasswordChangeForm(), 'message':"", 'error':False, 'ime': str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))}
 	error = False
 	message = ""
 
@@ -559,7 +561,8 @@ def pregled_skrbnistev(request):
     for r in result:
         r.datum_rojstva = r.datum_rojstva.strftime('%d.%m.%Y')
         pacijenti.append(SkrbnistvoForm(instance=r))
-    context['pacijenti'] = pacijenti
+
+    context['pacijenti'] = result
     return render(request, 'patronaza/pregled.html', context)
 
 @login_required
@@ -572,7 +575,7 @@ def dodaj_skrbnistvo(request):
         if sform.is_valid():
             if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists()):
                 context['kartica'] = True
-                return render(request, 'patronaza/registracija.html', context)
+                return render(request, 'patronaza/dodajSkrbnistvo.html', context)
             if(not sform.telefon_regex()):
                 context['telefon'] = True
                 context['skrbnistvoForm'] = sform
@@ -587,7 +590,38 @@ def dodaj_skrbnistvo(request):
             instance.id_okolis = Okolis.objects.get(sifra=str(instance.id_posta.st_poste))
             instance.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
-    return render(request, 'patronaza/dodajSkrbnistvo.html', context)
+    return render(request, 'patronaza/dodajSkrbnistvo.html', context)\
+#unicode??
+@login_required
+def uredi_skrbnistvo(request,pacientId):
+    context = {'napaka':False}
+    ime = "Pacient " + str(Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0])
+    pacient = Pacient.objects.get(pk=pacientId)
+    pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
+    sform = SkrbnistvoForm(instance=pacient)
+    context['ime'] = ime
+    context['skrbnistvoForm'] = SkrbnistvoForm(instance=pacient)
+    if(request.method == 'POST'):
+        sform = SkrbnistvoForm(request.POST,instance=pacient)
+        if sform.is_valid():
+            if (Pacient.objects.filter(st_kartice=sform.cleaned_data['st_kartice']).exists() and sform.cleaned_data['st_kartice'] != pacient.st_kartice):
+                context['napaka'] = "Številka kartice že obstaja"
+                print(context['napaka'])
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
+            if(not sform.telefon_regex()):
+                context['napaka'] = "Nepravilen format telefonske številke"
+                context['skrbnistvoForm'] = sform
+                print(context['napaka'])
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
+            if(not sform.date_valid()):
+                context['napaka'] = "Nepravilna oblika datuma. Pravilna oblika %d.%m.%Y"
+                print(context['napaka'])
+                context['skrbnistvoForm'] = sform
+                return render(request, 'patronaza/urediSkrbnistvo.html', context)
+            sform.save()
+            return HttpResponseRedirect(reverse('pregled_skrbnistev'))
+        context['napaka'] = "Nepravilna oblika datuma. Pravilna oblika %d.%m.%Y"
+    return render(request, 'patronaza/urediSkrbnistvo.html', context)
 
 def aktivacija(request,ur_id,date):
     context = {'potekla':False}
@@ -754,7 +788,6 @@ def izpisi_obiske(request):
     context['ime'] = ime
     context['oseba'] = oseba
 
-
     obiski = VrstaObiska.objects.all()
     statusi = StatusObiska.objects.all()
     zdravniki = None
@@ -767,26 +800,27 @@ def izpisi_obiske(request):
     sestra_list = []
     nadomestnaSestra_list = []
 
-
     if (request.user.groups.all()[0].name == 'Patronažna sestra'):
         #   dn_list = dn_list.filter(id_pacient__id_okolis=oseba.okolis)
         dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba))
         dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=oseba) | Q(id_nadomestna=oseba)).values('id_obisk')
-        obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
-        zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+        obiski_tmp = obiski_tmp.filter(id__in=dodeljenoOsebje)
+        zdravniki = Osebje.objects.filter(
+            Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
     elif (request.user.groups.all()[0].name == 'Zdravnik'):
         dn_list = dn_list.filter(id_dn__id_osebje=oseba)
         sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     else:
-        zdravniki = Osebje.objects.filter(Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
+        zdravniki = Osebje.objects.filter(
+            Q(id_racuna__groups__name='Zdravnik') | Q(id_racuna__groups__name='Vodja patronaže'))
         sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     context['obiski'] = obiski
     context['statusi'] = statusi
     context['zdravniki'] = zdravniki
     context['sestre'] = sestre
 
-    #requested_status = ""
-    
+    # requested_status = ""
+
 
     if request.method == 'POST':
         izdajatelj = request.POST.get('izdajatelj', False)
@@ -794,7 +828,7 @@ def izpisi_obiske(request):
         nadomestnaSestra = request.POST.get('nadomestnaSestra', False)
         pacient = request.POST.get('pacient', False)
         odDejanski = request.POST.get('odDejanski', False)
-        doDejanski = request.POST.get('doDejanski', False)        
+        doDejanski = request.POST.get('doDejanski', False)
         odPredviden = request.POST.get('odPredviden', False)
         doPredviden = request.POST.get('doPredviden', False)
         error = False
@@ -806,10 +840,12 @@ def izpisi_obiske(request):
                 error = "Nepravilen format datuma. Pravilen format d.m.Y"
                 pass
             if (not error):
-                odDejanski = datetime.datetime.strptime(datetime.datetime.strptime(odDejanski, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                                '%Y-%m-%d').date()
-                doDejanski = datetime.datetime.strptime(datetime.datetime.strptime(doDejanski, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                                '%Y-%m-%d').date()
+                odDejanski = datetime.datetime.strptime(
+                    datetime.datetime.strptime(odDejanski, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                    '%Y-%m-%d').date()
+                doDejanski = datetime.datetime.strptime(
+                    datetime.datetime.strptime(doDejanski, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                    '%Y-%m-%d').date()
         elif ((odDejanski and not doDejanski) or (not odDejanski and doDejanski)):
             error = "Izpolni oba datuma."
 
@@ -821,10 +857,12 @@ def izpisi_obiske(request):
                 error = "Nepravilen format datuma. Pravilen format d.m.Y"
                 pass
             if (not error):
-                odPredviden = datetime.datetime.strptime(datetime.datetime.strptime(odPredviden, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                                '%Y-%m-%d').date()
-                doPredviden = datetime.datetime.strptime(datetime.datetime.strptime(doPredviden, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                                '%Y-%m-%d').date()
+                odPredviden = datetime.datetime.strptime(
+                    datetime.datetime.strptime(odPredviden, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                    '%Y-%m-%d').date()
+                doPredviden = datetime.datetime.strptime(
+                    datetime.datetime.strptime(doPredviden, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                    '%Y-%m-%d').date()
         elif ((odPredviden and not doPredviden) or (not odPredviden and doPredviden)):
             error = "Izpolni oba datuma."
 
@@ -845,40 +883,32 @@ def izpisi_obiske(request):
         if (izdajatelj):
             dn_list = dn_list.filter(id_dn__id_osebje__sifra=izdajatelj)
         if (pacient):
-            nizi=pacient.split()
-            if len(nizi)==1:
-                dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
-            else:
-                ime_pacienta=nizi[0]
-                priimek_pacienta=nizi[1]
-                dn_list = dn_list.filter(Q(id_pacient__ime__contains=ime_pacienta) & Q(id_pacient__priimek__contains=priimek_pacienta))
-            
+            dn_list = dn_list.filter(Q(id_pacient__ime__contains=pacient) | Q(id_pacient__priimek__contains=pacient))
         if (sestra and nadomestnaSestra and sestra == nadomestnaSestra):
             medicinska = Osebje.objects.get(sifra=sestra)
-            dodeljenoOsebje = DodeljenoOsebje.objects.filter(Q(id_osebja=medicinska) | Q(id_nadomestna=medicinska)).values('id_obisk')
-            obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
+            dodeljenoOsebje = DodeljenoOsebje.objects.filter(
+                Q(id_osebja=medicinska) | Q(id_nadomestna=medicinska)).values('id_obisk')
+            obiski_tmp = obiski_tmp.filter(id__in=dodeljenoOsebje)
         else:
             if (sestra):
                 medicinska = Osebje.objects.get(sifra=sestra)
                 dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_osebja=medicinska).values('id_obisk')
-                obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
-            
+                obiski_tmp = obiski_tmp.filter(id__in=dodeljenoOsebje)
+
             if (nadomestnaSestra):
                 medicinska = Osebje.objects.get(sifra=nadomestnaSestra)
                 dodeljenoOsebje = DodeljenoOsebje.objects.filter(id_nadomestna=medicinska).values('id_obisk')
-                obiski_tmp=obiski_tmp.filter(id__in=dodeljenoOsebje)
+                obiski_tmp = obiski_tmp.filter(id__in=dodeljenoOsebje)
 
         if (odDejanski and doDejanski and not error):
-            obiski_tmp=obiski_tmp.filter(datum_obiska__range=(odDejanski, doDejanski))
+            obiski_tmp = obiski_tmp.filter(datum_obiska__range=(odDejanski, doDejanski))
         if (odPredviden and doPredviden and not error):
-            obiski_tmp=obiski_tmp.filter(predviden_datum__range=(odPredviden, doPredviden))
+            obiski_tmp = obiski_tmp.filter(predviden_datum__range=(odPredviden, doPredviden))
         if (vrsta):
             dn_list = dn_list.filter(id_dn__id_vrsta__id=vrsta)
         if (status):
-            obiski_tmp=obiski_tmp.filter(status_obiska__naziv=status)
+            obiski_tmp = obiski_tmp.filter(status_obiska__naziv=status)
 
-
-    
     for dn in dn_list:
         o = obiski_tmp.filter(id_dn=dn.id_dn)
         obiski_list = list(chain(obiski_list, o))
@@ -887,14 +917,14 @@ def izpisi_obiske(request):
             pacient_list.append(p)
 
     for obisk in obiski_list:
-        dodeljeno=DodeljenoOsebje.objects.get(id_obisk=obisk.id)
+        dodeljeno = DodeljenoOsebje.objects.get(id_obisk=obisk.id)
         medicinska = None
-        nadomestnaSestra='/'
+        nadomestnaSestra = '/'
 
-        if dodeljeno.id_osebja != None :
-            medicinska=dodeljeno.id_osebja
-        if dodeljeno.id_nadomestna != None :
-            nadomestnaSestra=dodeljeno.id_nadomestna
+        if dodeljeno.id_osebja != None:
+            medicinska = dodeljeno.id_osebja
+        if dodeljeno.id_nadomestna != None:
+            nadomestnaSestra = dodeljeno.id_nadomestna
 
         sestra_list.append(medicinska)
         nadomestnaSestra_list.append(nadomestnaSestra)
@@ -932,18 +962,17 @@ def izpisi_obiske_pacient(request):
     context['ime'] = ime
     context['oseba'] = oseba
 
-
     dn_list = Oskrba.objects.filter(id_pacient__lastnik_racuna=True)
     obiski_tmp = Obisk.objects.all()
-    pacienti=Pacient.objects.filter(id_racuna=request.user)
-    pacient1=pacienti[0]
-    pacient2=None
-    pacient3=None
-    if len(pacienti) == 2 :
-        pacient2=pacienti[1]
-    if len(pacienti)==3 :
-        pacient2=pacienti[1]
-        pacient3=pacienti[2]
+    pacienti = Pacient.objects.filter(id_racuna=request.user)
+    pacient1 = pacienti[0]
+    pacient2 = None
+    pacient3 = None
+    if len(pacienti) == 2:
+        pacient2 = pacienti[1]
+    if len(pacienti) == 3:
+        pacient2 = pacienti[1]
+        pacient3 = pacienti[2]
 
     obiski_list = []
     pacient_list = []
@@ -951,14 +980,16 @@ def izpisi_obiske_pacient(request):
     nadomestnaSestra_list = []
 
     if len(pacienti) == 1:
-        dn_list = dn_list.filter( Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek) )
+        dn_list = dn_list.filter(Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek))
     elif len(pacienti) == 2:
-        dn_list = dn_list.filter( (Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)))
-    elif len(pacienti)==3:
-        dn_list = dn_list.filter( (Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)) | (Q(id_pacient__ime=pacient3.ime) & Q(id_pacient__priimek=pacient3.priimek)))
+        dn_list = dn_list.filter((Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (
+        Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)))
+    elif len(pacienti) == 3:
+        dn_list = dn_list.filter((Q(id_pacient__ime=pacient1.ime) & Q(id_pacient__priimek=pacient1.priimek)) | (
+        Q(id_pacient__ime=pacient2.ime) & Q(id_pacient__priimek=pacient2.priimek)) | (
+                                 Q(id_pacient__ime=pacient3.ime) & Q(id_pacient__priimek=pacient3.priimek)))
 
-
-    obiski_tmp=obiski_tmp.filter(status_obiska__naziv="opravljen")
+    obiski_tmp = obiski_tmp.filter(status_obiska__naziv="opravljen")
 
     for dn in dn_list:
         o = obiski_tmp.filter(id_dn=dn.id_dn)
@@ -968,14 +999,14 @@ def izpisi_obiske_pacient(request):
             pacient_list.append(p)
 
     for obisk in obiski_list:
-        dodeljeno=DodeljenoOsebje.objects.get(id_obisk=obisk.id)
+        dodeljeno = DodeljenoOsebje.objects.get(id_obisk=obisk.id)
         medicinska = None
-        nadomestnaSestra='/'
+        nadomestnaSestra = '/'
 
-        if dodeljeno.id_osebja != None :
-            medicinska=dodeljeno.id_osebja
-        if dodeljeno.id_nadomestna != None :
-            nadomestnaSestra=dodeljeno.id_nadomestna
+        if dodeljeno.id_osebja != None:
+            medicinska = dodeljeno.id_osebja
+        if dodeljeno.id_nadomestna != None:
+            nadomestnaSestra = dodeljeno.id_nadomestna
 
         sestra_list.append(medicinska)
         nadomestnaSestra_list.append(nadomestnaSestra)
@@ -1001,46 +1032,60 @@ def izpisi_obiske_pacient(request):
 
 @login_required
 def nadomescanje(request):
-    context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False}
+    context={'datum': False, 'vecji' :False, 'sestra1': False, 'sestra2': False, 'datumOd': False, 'datumDo': False, 'nadomestneSestre': None, 'danes': None}
     osebje = Osebje.objects.get(id_racuna=request.user)
-    ime = "Vodja patronaže " + str(osebje)
+    ime = "Vodja patronaze " + str(osebje)
     context['ime'] = ime
     sestre = Osebje.objects.filter(id_racuna__groups__name='Patronažna sestra')
     context['sestre'] = sestre
+    context['nadomestniObiski'] = DodeljenoOsebje.objects.exclude(id_nadomestna=None).filter(id_obisk__status_obiska_id=1).order_by('id_osebja', 'id_obisk__predviden_datum')
+    context['nadomestneSestre'] = context['nadomestniObiski'].order_by('id_osebja', '-id_obisk__predviden_datum').distinct('id_osebja')
+    context['danes'] = date.today()
     if request.method == 'POST':
-        sestra1 = Osebje.objects.get(sifra = request.POST.get('sestra'))
-        sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
-        od = request.POST.get('od')
-        do = request.POST.get('do')
-        error = False
-        context['sestra1'] = sestra1
-        context['sestra2'] = sestra2
-        context['datumOd'] = od
-        context['datumDo'] = do
-        context['error'] = error
-        try:
-            datetime.datetime.strptime(od, '%d.%m.%Y')
-            datetime.datetime.strptime(do, '%d.%m.%Y')
-        except:
-            error = "Nepravilen format datuma. Pravilen format d.m.Y"
+        if request.POST.get('preklic'):
+            list_izbranih = request.POST.getlist('obisk')
+            DodeljenoOsebje.objects.filter(id_obisk__id__in=list_izbranih).update(id_nadomestna=None)
+        else:
+            sestra1 = Osebje.objects.get(sifra = request.POST.get('sestra'))
+            sestra2 = Osebje.objects.get(sifra = request.POST.get('nadomestnaSestra'))
+            od = request.POST.get('od')
+            do = request.POST.get('do')
+            error = False
+            context['sestra1'] = sestra1
+            context['sestra2'] = sestra2
+            context['datumOd'] = od
+            context['datumDo'] = do
             context['error'] = error
-            return render(request, 'patronaza/nadomescanja.html', context)
-        if (not error):
-            od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                            '%Y-%m-%d').date()
-            do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
-                                            '%Y-%m-%d').date()
-        if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
-            context['datum'] = True
-            return render(request, 'patronaza/nadomescanja.html', context)
-        if(od > do):
-            context['vecji'] = True
-            return render(request, 'patronaza/nadomescanja.html', context)
-        dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
-            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
-        dodeljeno2 = DodeljenoOsebje.objects.filter(id_osebja=sestra2,id_nadomestna=sestra2)\
-            .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=None)
-        return HttpResponseRedirect('/patronaza/domov')
+            try:
+                datetime.datetime.strptime(od, '%d.%m.%Y')
+                datetime.datetime.strptime(do, '%d.%m.%Y')
+            except:
+                error = "Nepravilen format datuma. Pravilen format d.m.Y"
+                context['error'] = error
+                return render(request, 'patronaza/nadomescanja.html', context)
+            if (not error):
+                od = datetime.datetime.strptime(datetime.datetime.strptime(od, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                                '%Y-%m-%d').date()
+                do = datetime.datetime.strptime(datetime.datetime.strptime(do, '%d.%m.%Y').strftime('%Y-%m-%d'),
+                                                '%Y-%m-%d').date()
+            if(od < datetime.datetime.now().date() or do < datetime.datetime.now().date()):
+                context['datum'] = True
+                return render(request, 'patronaza/nadomescanja.html', context)
+            if(od > do):
+                context['vecji'] = True
+                return render(request, 'patronaza/nadomescanja.html', context)
+            dodeljeno = DodeljenoOsebje.objects.filter(Q(id_osebja=sestra1) | Q(id_nadomestna=sestra1))\
+                .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=sestra2)
+            dodeljeno2 = DodeljenoOsebje.objects.filter(id_osebja=sestra2,id_nadomestna=sestra2)\
+                .filter(id_obisk__status_obiska=1).filter(id_obisk__datum_obiska__range=(od, do)).update(id_nadomestna=None)
+            return HttpResponseRedirect('/patronaza/domov')
+    elif request.method == 'GET':
+        for key in request.GET.keys():
+            if key.startswith('preklic-'):
+                id_sestre = key[8:]
+                DodeljenoOsebje.objects.filter(id_osebja_id=id_sestre).update(id_nadomestna=None)
+
+
     return render(request, 'patronaza/nadomescanja.html', context)
 
 @login_required
@@ -1065,12 +1110,14 @@ def osebjeAdd(request):
     if request.method == 'POST':
         uForm = UporabniskiForm(request.POST, request.FILES)
         oForm = OsebjeForm(request.POST, request.FILES)
+        uoForm = UporabniskiOkolisForm(request.POST, request.FILES)
 
         if uForm.is_valid() and oForm.is_valid():
             if (not uForm.password_regex()):
                 context['regex'] = True
                 context['uForm'] = uForm
                 context['oForm'] = oForm
+                context['uoForm'] = uoForm
                 return render(request, "patronaza/osebjeAdd.html", context)
 
             u = User.objects.create_user(username=uForm.cleaned_data['email'], email=uForm.cleaned_data['email'],
@@ -1079,22 +1126,25 @@ def osebjeAdd(request):
             o = oForm.save(commit=False)
             o.id_racuna = u
             o.izbrisan = 0
+            if uoForm.is_valid():
+                o.okolis=uoForm.cleaned_data['okolis']
             o.save()
             uForm.cleaned_data['groups'].user_set.add(u)
             return HttpResponseRedirect(reverse('index'))
     else:
         uForm = UporabniskiForm()
         oForm = OsebjeForm()
+        uoForm = UporabniskiOkolisForm()
 
     context['uForm'] = uForm
     context['oForm'] = oForm
+    context['uoForm'] = uoForm
 
     return render(request, "patronaza/osebjeAdd.html", context)
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': request.user.username}
-
+    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
     leto = request.GET.get("leto")
@@ -1106,74 +1156,205 @@ def planiranje_obiskov(request):
     except:
         datum = date.today() + timedelta(days=1)
 
-
     if request.method == 'POST':
-        if request.is_ajax():
-            form = PlaniranjeObiskovForm()
-            obiski_query = form.fields['obiski'].queryset.filter(
-                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
-            request.session['izbrani_obiski'] = json.loads(request.POST.get('izbrani[]'))
-        else:
-            form = PlaniranjeObiskovForm(request.POST)
-            obiski_query = form.fields['obiski'].queryset.filter(
-                Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
-            if form.is_valid():
-                id_list = [str(o['id']) for o in request.session['izbrani_obiski']]
-                print (id_list)
-                pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
-                for item in pobrisani:
-                    item.id_obisk.izbran_datum = None
-                    item.id_obisk.save()
+        form = PlaniranjeObiskovForm(request.POST)
+        obiski_query = form.fields['obiski'].queryset.filter(
+            (Q(id_osebja__id_racuna=request.user) & Q(id_nadomestna__id_racuna=None)) |
+                Q(id_nadomestna__id_racuna=request.user))
+        if form.is_valid():
+            id_list = request.POST.getlist('obisk')
+            pobrisani = obiski_query.filter(id_obisk__izbran_datum=datum)
+            for item in pobrisani:
+                item.id_obisk.izbran_datum = None
+                item.id_obisk.save()
 
-                for id in id_list:
-                    obisk = obiski_query.get(id_obisk__id=id)
-                    obisk.id_obisk.izbran_datum = datum
-                    obisk.id_obisk.save()
-                    obisk.save()
-                    print (obisk.id_obisk)
-
+            for id in id_list:
+                obisk = obiski_query.get(id_obisk__id=id)
+                obisk.id_obisk.izbran_datum = datum
+                obisk.id_obisk.save()
+                obisk.save()
     else:
         form = PlaniranjeObiskovForm()
-        obiski_query = form.fields['obiski'].queryset.filter(Q(id_osebja=request.user) | Q(id_nadomestna=request.user))
+        obiski_query = form.fields['obiski'].queryset.filter((Q(id_osebja__id_racuna=request.user) & Q(id_nadomestna__id_racuna=None)) | Q(id_nadomestna__id_racuna=request.user))
 
-    context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
-    context['obvezni'] = obiski_query.filter(id_obisk__obvezen=0).filter(id_obisk__izbran_datum=datum)
-    context['datumPrikaza'] = datum
     context['objekti'] = obiski_query
+    context['izbrani'] = obiski_query.filter(id_obisk__izbran_datum=datum)
+    context['obvezni'] = obiski_query.filter(id_obisk__obvezen=0)
+    context['datumPrikaza'] = datum
     context['planObiskovForm'] = form
     return render(request, 'patronaza/plan_obiskov.html', context)
 
 @login_required
 def posodabljane_pacienta(request):
-    context = {}
+    context = {'napaka': False}
     pacient = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
     ur = request.user
     context['ime'] = "Pacient " + str(pacient)
     pacient.datum_rojstva = pacient.datum_rojstva.strftime('%d.%m.%Y')
     pacientForm = PacientForm(instance=pacient)
     emailForm = UporabniskiRacunEmailForm(instance=request.user)
+    context['kontakt'] = KontaktnaOseba.objects.filter(pacient=pacient).exists()
     context['pacientForm'] = pacientForm
     context['emailForm'] = emailForm
     if request.method == 'POST':
         pform = PacientForm(request.POST,instance=pacient)
         eform = UporabniskiRacunEmailForm(request.POST,instance=ur)
         if pform.is_valid() and eform.is_valid():
+            if (Pacient.objects.filter(st_kartice=pform.cleaned_data['st_kartice']).exists() and pform.cleaned_data['st_kartice'] != pacient.st_kartice):
+                context['napaka'] = "Ta stevilka kartice že obstaja."
+                return render(request, 'patronaza/registracija.html', context)
+            elif (User.objects.filter(email=eform.cleaned_data['email']).exists() and eform.cleaned_data['email'] != ur.email):
+                context['napaka'] = "Email že obstaja."
+                return render(request, 'patronaza/registracija.html', context)
             if(not pform.date_valid()):
-                context['uporabniskiRacunForm'] = pform
-                context['pacientForm'] = pform
-                context['date'] = True
+                context['napaka'] = "Napačna oblika datuma. Pravilna oblika %d.%m.%Y"
                 print("date")
                 return render(request, 'patronaza/posodabljanje_pacienta.html', context)
             if(not pform.telefon_regex()):
-                context['uporabniskiRacunForm'] = pform
-                context['pacientForm'] = pform
-                context['telefon'] = True
+                context['napaka'] = "Ni telefonska številka"
                 print("telefon")
                 return render(request,'patronaza/posodabljanje_pacienta.html',context)
-            print("Test")
             pform.save()
-            eform.save()
+            ur.email = eform.cleaned_data['email']
+            ur.username = eform.cleaned_data['email']
+            ur.save()
             context['pacientForm'] = pform
             context['emailForm'] = eform
 
     return render(request, 'patronaza/posodabljanje_pacienta.html', context)
+
+@login_required
+def uredi_kontakt(request):
+    context = {}
+    pacient = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    context['ime'] = "Pacient " + str(pacient)
+    kontaktnaOseba = None
+    kontaktForm = KontaktForm()
+    if KontaktnaOseba.objects.filter(pacient__id_racuna=request.user).exists():
+        kontaktnaOseba = KontaktnaOseba.objects.get(pacient__id_racuna=request.user)
+    if kontaktnaOseba:
+        kontaktForm = KontaktForm(instance=kontaktnaOseba)
+    context['kontaktForm'] = kontaktForm
+    if request.method == 'POST':
+        if kontaktnaOseba:
+            kontaktForm = KontaktForm(request.POST,instance=kontaktnaOseba)
+        else:
+            kontaktForm = KontaktForm(request.POST)
+
+        if kontaktForm.is_valid():
+            if kontaktnaOseba:
+                kontaktForm.save()
+            else:
+                kontakt = kontaktForm.save(commit=False)
+                kontakt.pacient = pacient
+                kontakt.save()
+            context['kontaktForm'] = kontaktForm
+
+    return render(request, 'patronaza/uredi_kontakt.html', context)
+register = template.Library()
+@register.filter(name='cut')
+def cut(value, arg):
+    return value.replace(arg, '')
+
+def RepresentsInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+@login_required
+def meritve(request, obiskId):
+    ime = ''
+    if (Osebje.objects.filter(id_racuna=request.user).exists()):
+        ime = Osebje.objects.get(id_racuna=request.user)
+        name = str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))
+    elif (Pacient.objects.filter(id_racuna=request.user).exists()):
+        ime = Pacient.objects.filter(id_racuna=request.user).filter(lastnik_racuna=True)[0]
+    else:
+        ime = request.user.username
+
+    #if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        for key, value in request.POST.items():
+            if(value != '' and RepresentsInt(key) and OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=key).exists()):
+                op = OstaliPodatki.objects.get(id_obisk_id=obiskId, id_podatki_aktivnosti_id=key)
+                op.vrednost = value;
+
+                op.save()
+            elif(value != '' and RepresentsInt(key)):
+                if(key == '26' or key == '29' or key == '30'):
+                    glavniObisk = Obisk.objects.get(id=obiskId)
+                    obiski = Obisk.objects.filter(id_dn=glavniObisk.id_dn)
+                    for obisk in obiski:
+                        op = OstaliPodatki(id_obisk=obisk,
+                                           id_podatki_aktivnosti_id=key,
+                                           vrednost=value)
+                        op.save()
+                else:
+                    op = OstaliPodatki(id_obisk_id=obiskId,
+                                       id_podatki_aktivnosti_id=key,
+                                       vrednost=value)
+                    op.save()
+
+        return HttpResponseRedirect('/patronaza/domov')
+
+    ostaliPodatki = OstaliPodatki.objects.filter(id_obisk = obiskId)
+    izbraniObisk = Obisk.objects.get(id=obiskId)
+    dn = izbraniObisk.id_dn
+
+    vsiPodatki = PodatkiAktivnosti.objects.all()
+
+
+    return render(request, 'patronaza/meritve.html', {
+        'obisk': izbraniObisk,
+        'ostaliPodatki': ostaliPodatki,
+        'delovniNalog': dn,
+        'vsiPodatki': vsiPodatki,
+        'ime': name,
+    })
+
+def pridobiStevilko(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': 0,
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')
+
+def pridobiDatum(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': None,
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')
+
+def pridobiNiz(request, obiskId, podatkiAktivnostId):
+    op = OstaliPodatki.objects.filter(id_obisk_id=obiskId, id_podatki_aktivnosti_id=podatkiAktivnostId)
+
+    if (op.exists()):
+        vrednost = {
+            'vrednost': op[0].vrednost,
+        }
+    else:
+        vrednost = {
+            'vrednost': '',
+        }
+
+    data = simplejson.dumps(vrednost)
+    return HttpResponse(data, content_type='application/json')

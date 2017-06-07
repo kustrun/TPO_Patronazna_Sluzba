@@ -1,5 +1,28 @@
 {% extends "patronaza/base.html" %}
 
+{% block extrahead %}
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            toggleFields(); // call this first so we start out with the correct visibility depending on the selected form values
+            // this will call our toggleFields function every time the selection value of our other field changes
+            $("#id_groups").change(function () {
+                toggleFields();
+            });
+
+        });
+        // this toggles the visibility of other server
+        function toggleFields() {
+            if ($("#id_groups").val() === "4")
+                $("#okol").show();
+            else
+                $("#okol").hide();
+        }
+    </script>
+
+{% endblock %}
+
 {% block content %}
 	<form method="post" autocomplete="on" id="login_form" enctype='multipart/form-data'>
 		<fieldset >
@@ -7,6 +30,9 @@
 			{% csrf_token %}
 			{{ uForm.as_p }}
 			{{ oForm.as_p }}
+			<div id="okol">
+			{{ uoForm.as_p }}
+			</div>
 			{% if regex %}
 			<p>Geslo mora vsebovati vsaj en numeričen in en črkovni znak</p>
 			{% endif %}

@@ -66,11 +66,14 @@ body {
 	background-color: #994d00;
 }
 
+.small-form {
+	max-width: 420px;
+}
+
 .form-panel {
 	width: 100%;
 	margin-top: 10vh;
 	justify-content: center;
-	max-width: 420px;
 	min-width: 330px;
 	background-color: white;
 	padding: 35px;
@@ -103,4 +106,70 @@ body {
 	margin: 0;
 	padding: 0;
 	font-weight: normal;
+}
+
+#nadomestne-sestre > li {
+	display: flex;
+	flex-flow: column;
+	align-items: baseline;
+}
+
+#nadomestne-sestre > li > label {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 5px;
+	font-weight: normal;
+}
+
+#nadomestne-sestre > li:hover {
+	background-color: #eee;
+}
+
+#nadomestne-sestre > li > label:hover, #nadomestne-sestre > li > form label:hover {
+	cursor: pointer;
+}
+
+#nadomestne-sestre > li form {
+	padding: 0;
+	width: 98%;
+	margin: 10px 10px 0 5px;
+}
+
+#nadomestne-sestre > li > form div {
+	display: flex;
+	justify-content: flex-end;
+	margin: 5px 40px;
+}
+
+#nadomestne-sestre > li > form label {
+	display: flex;
+	align-items: baseline;
+	margin-bottom: 3px;
+	border-bottom: 1px solid #ddd
+}
+
+#nadomestne-sestre > li > form label:hover {
+	background-color: #ddd;
+}
+
+.flex-full {
+	flex-basis: 100%;
+}
+
+.flex-half {
+	flex-basis: 50%;
+}
+
+.arrow-right {
+	padding: 0;
+	margin: 4px 20px 6px 10px;
+	border-left: 8px solid #aaa;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+}
+
+.rotate-90 {
+	transform: rotate(90deg)
 }
