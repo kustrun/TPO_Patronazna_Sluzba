@@ -14,7 +14,7 @@
                 <h3>Meritve:</h3>
                 {% for podatek in vsiPodatki %}
                     {% if podatek.id_aktivnost.storitev == 10 %}
-                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' %}
 
                             {% if podatek.id_aktivnost.aktivnost == 'Telesna teža pred nosečnostjo' and obisk.zaporedna_st_obiska > 1 %}
                                 <li class="list-group-item">
@@ -49,6 +49,45 @@
                                         <label>{{ podatek.id_aktivnost.aktivnost }}</label>
                                         {% with id=obisk.id %}
                                             <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                        {% endwith %}
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+
+                            {% if podatek.id_aktivnost.aktivnost == 'Telesna teža pred nosečnostjo' and obisk.zaporedna_st_obiska > 1 %}
+                                <li class="list-group-item">
+                                    {% if podatek.obvezen == 1 %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" disabled>
+                                        {% endwith %}
+                                        {% if podatek.id_vrsta_podatka.enote != None %}
+                                            {{ podatek.id_vrsta_podatka.enote }}
+                                        {% endif %}
+                                        *
+                                    {% else %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" disabled>
+                                        {% endwith %}
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item">
+                                    {% if podatek.obvezen == 1 %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" required>
+                                        {% endwith %}
+                                        {% if podatek.id_vrsta_podatka.enote != None %}
+                                            {{ podatek.id_vrsta_podatka.enote }}
+                                        {% endif %}
+                                        *
+                                    {% else %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
                                         {% endwith %}
                                     {% endif %}
                                 </li>
@@ -124,7 +163,7 @@
                 <h3>Meritve:</h3>
                 {% for podatek in vsiPodatki %}
                     {% if podatek.id_aktivnost.storitev == 20 %}
-                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' %}
 
                             {% if podatek.id_aktivnost.aktivnost == 'Pregled materinske knjižice in odpustnice iz porodnišnice: Porodna teža otroka' and obisk.zaporedna_st_obiska > 1 or podatek.id_aktivnost.aktivnost == 'Pregled materinske knjižice in odpustnice iz porodnišnice: Porodna višina otroka' and obisk.zaporedna_st_obiska > 1 %}
                                 <li class="list-group-item">
@@ -163,6 +202,45 @@
                                     {% endif %}
                                 </li>
                             {% endif %}
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            {% if podatek.id_aktivnost.aktivnost == 'Pregled materinske knjižice in odpustnice iz porodnišnice: Porodna teža otroka' and obisk.zaporedna_st_obiska > 1 or podatek.id_aktivnost.aktivnost == 'Pregled materinske knjižice in odpustnice iz porodnišnice: Porodna višina otroka' and obisk.zaporedna_st_obiska > 1 %}
+                                <li class="list-group-item">
+                                    {% if podatek.obvezen == 1 %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" disabled>
+                                        {% endwith %}
+                                        {% if podatek.id_vrsta_podatka.enote != None %}
+                                            {{ podatek.id_vrsta_podatka.enote }}
+                                        {% endif %}
+                                        *
+                                    {% else %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
+                                        {% endwith %}
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item">
+                                    {% if podatek.obvezen == 1 %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" required>
+                                        {% endwith %}
+                                        {% if podatek.id_vrsta_podatka.enote != None %}
+                                            {{ podatek.id_vrsta_podatka.enote }}
+                                        {% endif %}
+                                        *
+                                    {% else %}
+                                        <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                        {% with id=obisk.id %}
+                                            <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
+                                        {% endwith %}
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+
                         {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -233,7 +311,7 @@
                 <h3>Meritve:</h3>
                 {% for podatek in vsiPodatki %}
                     {% if podatek.id_aktivnost.storitev == 30 %}
-                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' %}
                             <li class="list-group-item">
                                 {% if podatek.obvezen == 1 %}
                                     <label>{{ podatek.id_aktivnost.aktivnost }}</label>
@@ -251,6 +329,25 @@
                                     {% endwith %}
                                 {% endif %}
                             </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+
                         {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -321,7 +418,7 @@
                 <h3>Meritve:</h3>
                 {% for podatek in vsiPodatki %}
                     {% if podatek.id_aktivnost.storitev == 40 %}
-                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' %}
                             <li class="list-group-item">
                                 {% if podatek.obvezen == 1 %}
                                     <label>{{ podatek.id_aktivnost.aktivnost }}</label>
@@ -336,6 +433,24 @@
                                     <label>{{ podatek.id_aktivnost.aktivnost }}</label>
                                     {% with id=obisk.id %}
                                         <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
                                     {% endwith %}
                                 {% endif %}
                             </li>
@@ -535,7 +650,7 @@
                 <h3>Meritve:</h3>
                 {% for podatek in vsiPodatki %}
                     {% if podatek.id_aktivnost.storitev == 70 %}
-                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' or podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                        {% if podatek.id_vrsta_podatka.podatkovni_tip == 'integer' %}
                             <li class="list-group-item">
                                 {% if podatek.obvezen == 1 %}
                                     <label>{{ podatek.id_aktivnost.aktivnost }}</label>
@@ -550,6 +665,24 @@
                                     <label>{{ podatek.id_aktivnost.aktivnost }}</label>
                                     {% with id=obisk.id %}
                                         <input type="number" name="{{ podatek.id }}" value="{{ podatek | getInt:id }}">
+                                    {% endwith %}
+                                {% endif %}
+                            </li>
+                        {% elif podatek.id_vrsta_podatka.podatkovni_tip == 'decimal' %}
+                            <li class="list-group-item">
+                                {% if podatek.obvezen == 1 %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}" required>
+                                    {% endwith %}
+                                    {% if podatek.id_vrsta_podatka.enote != None %}
+                                        {{ podatek.id_vrsta_podatka.enote }}
+                                    {% endif %}
+                                    *
+                                {% else %}
+                                    <label>{{ podatek.id_aktivnost.aktivnost }}</label>
+                                    {% with id=obisk.id %}
+                                        <input type="number" step="0.01" name="{{ podatek.id }}" value="{{ podatek | getDecimal:id }}">
                                     {% endwith %}
                                 {% endif %}
                             </li>
@@ -627,8 +760,7 @@
             <p>{{ error }}</p>
         {% endif %}
 
-        <input type="submit" name="save" value="Shrani podatke" class="btn btn-info btn-lg">
-        <input type="submit" name="end" value="Zakluči obisk" class="btn btn-info btn-lg">
+        <input type="submit" value="Shrani podatke" class="btn btn-info btn-lg">
     </form>
 
 {% endblock %}
