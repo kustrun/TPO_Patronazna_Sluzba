@@ -10,6 +10,14 @@ def index(List, i):
     return List[int(i)]
 
 @register.filter
+def getDecimal(value, arg):
+    with urllib.request.urlopen("https://patronaza.herokuapp.com/patronaza/pridobiStevilko/" + str(arg) + "/" + str(value.id)) as url:
+        data = json.loads(url.read().decode())
+        return float(data["vrednost"])
+
+    return None
+
+@register.filter
 def getInt(value, arg):
     with urllib.request.urlopen("https://patronaza.herokuapp.com/patronaza/pridobiStevilko/" + str(arg) + "/" + str(value.id)) as url:
         data = json.loads(url.read().decode())
