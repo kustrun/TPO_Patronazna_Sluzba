@@ -45,6 +45,7 @@ class PacientForm(forms.ModelForm):
     spol = forms.CharField(widget=forms.Select(choices=CHOICES))
     telefon = forms.CharField(required=True)
     datum_rojstva = forms.DateField(input_formats=['%d.%m.%Y'])
+    st_kartice=forms.CharField(max_length=9,min_length=9)
     class Meta:
         model = Pacient
         fields = ['ime','priimek','datum_rojstva','naslov','id_posta','st_kartice','telefon','spol']
@@ -76,6 +77,7 @@ class SkrbnistvoForm(forms.ModelForm):
     spol = forms.CharField(widget=forms.Select(choices=CHOICES))
     telefon = forms.CharField(required=False)
     datum_rojstva = forms.DateField(input_formats=['%d.%m.%Y'])
+    st_kartice = forms.CharField(max_length=9, min_length=9)
     class Meta:
         model = Pacient
         fields = ['ime','priimek','datum_rojstva','naslov','id_posta','st_kartice','telefon','spol','razmerje_ur']
@@ -278,3 +280,8 @@ class UporabniskiForm(forms.ModelForm):
         if(re.match(regex,password)):
             return True
         return False
+
+class UporabniskiOkolisForm(forms.ModelForm):
+    class Meta:
+        model=Osebje
+        fields=['okolis']

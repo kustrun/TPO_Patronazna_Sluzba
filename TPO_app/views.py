@@ -591,7 +591,7 @@ def dodaj_skrbnistvo(request):
             instance.save()
             return HttpResponseRedirect(reverse('pregled_skrbnistev'))
     return render(request, 'patronaza/dodajSkrbnistvo.html', context)\
-#unicode??
+
 @login_required
 def uredi_skrbnistvo(request,pacientId):
     context = {'napaka':False}
@@ -713,7 +713,11 @@ def izpisi_delavne_naloge(request):
         context['sestraSifra'] = sestra
         context['nadomestnaSestra'] = nadomestnaSestra
         context['pacient'] = pacient
-        context['vrsta'] = vrsta
+        if(vrsta):
+            context['vrstaDN'] = int(vrsta)
+        else:
+            context['vrstaDN'] = vrsta
+        print(context['vrstaDN'])
         context['odDatum'] = od
         context['doDatum'] = do
         if (izdajatelj):
@@ -1110,12 +1114,14 @@ def osebjeAdd(request):
     if request.method == 'POST':
         uForm = UporabniskiForm(request.POST, request.FILES)
         oForm = OsebjeForm(request.POST, request.FILES)
+        uoForm = UporabniskiOkolisForm(request.POST, request.FILES)
 
         if uForm.is_valid() and oForm.is_valid():
             if (not uForm.password_regex()):
                 context['regex'] = True
                 context['uForm'] = uForm
                 context['oForm'] = oForm
+                context['uoForm'] = uoForm
                 return render(request, "patronaza/osebjeAdd.html", context)
 
             u = User.objects.create_user(username=uForm.cleaned_data['email'], email=uForm.cleaned_data['email'],
@@ -1124,21 +1130,25 @@ def osebjeAdd(request):
             o = oForm.save(commit=False)
             o.id_racuna = u
             o.izbrisan = 0
+            if uoForm.is_valid():
+                o.okolis=uoForm.cleaned_data['okolis']
             o.save()
             uForm.cleaned_data['groups'].user_set.add(u)
             return HttpResponseRedirect(reverse('index'))
     else:
         uForm = UporabniskiForm()
         oForm = OsebjeForm()
+        uoForm = UporabniskiOkolisForm()
 
     context['uForm'] = uForm
     context['oForm'] = oForm
+    context['uoForm'] = uoForm
 
     return render(request, "patronaza/osebjeAdd.html", context)
 
 @login_required
 def planiranje_obiskov(request):
-    context = {'ime': unicode(request.user.groups.all()[0].name) + ' ' + unicode(Osebje.objects.get(id_racuna=request.user))}
+    context = {'ime': str(request.user.groups.all()[0].name) + ' ' + str(Osebje.objects.get(id_racuna=request.user))}
     dan = request.GET.get("dan")
     mesec = request.GET.get("mesec")
     leto = request.GET.get("leto")
@@ -1290,7 +1300,12 @@ def meritve(request, obiskId):
                                        id_podatki_aktivnosti_id=key,
                                        vrednost=value)
                     op.save()
-
+        if request.POST.get('end'):
+            obisk = Obisk.objects.get(pk=obiskId)
+            status = StatusObiska.objects.get(pk=2)
+            obisk.status_obiska = status
+            print(obisk.status_obiska.id)
+            obisk.save()
         return HttpResponseRedirect('/patronaza/domov')
 
     ostaliPodatki = OstaliPodatki.objects.filter(id_obisk = obiskId)

@@ -63,7 +63,7 @@
                 <select name = "vrsta">
                     <option value="">---------</option>
                     {% for obisk in obiski %}
-                        <option value="{{ obisk.id }}" {% if obisk.id == vrsta %}selected{% endif %}>{{ obisk.naziv }}</option>
+                        <option value="{{ obisk.id }}" {% if obisk.id == vrstaDN %}selected{% endif %}>{{ obisk.naziv }}</option>
                     {% endfor %}
                 </select>
             </li>

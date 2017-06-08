@@ -288,7 +288,7 @@ class Okolis(models.Model):
         db_table = 'okolis'
 
     def __str__(self):
-        return self.sifra
+        return self.sifra + ' ' + self.naziv
 
 
 class Osebje(models.Model):
