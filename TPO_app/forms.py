@@ -244,7 +244,7 @@ class PasswordChangeForm(forms.Form):
 class OsebjeForm(forms.ModelForm):
     class Meta:
         model=Osebje
-        fields=['ime', 'priimek', 'sifra','telefon', 'id_zd', 'okolis']
+        fields=['ime', 'priimek', 'sifra','telefon', 'id_zd']
         labels = {
             'id_zd': _('Izvajalec zdravstvene dejavnosti'),
         }
