@@ -1044,7 +1044,7 @@ def nadomescanje(request):
     context['sestre'] = sestre
     context['nadomestniObiski'] = DodeljenoOsebje.objects.exclude(id_nadomestna=None).filter(id_obisk__status_obiska_id=1).order_by('id_osebja', 'id_obisk__predviden_datum')
     context['nadomestneSestre'] = context['nadomestniObiski'].order_by('id_osebja', '-id_obisk__predviden_datum').distinct('id_osebja')
-    context['danes'] = date.today() + timedelta(days=20)
+    context['danes'] = date.today()
     if request.method == 'POST':
         if request.POST.get('preklic'):
             list_izbranih = request.POST.getlist('obisk')
