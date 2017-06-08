@@ -269,13 +269,6 @@ $(document).ready(function(){
     });
 
     //PACIENT
-    $('#id_izberiPacienta-0-ime > option').each(function() {
-        if(this.value.search("False") >= 0) {
-            $('#id_izberiPacienta-0-ime option[value="' + this.value + '"]').remove();
-        }
-    });
-
-
     var split;
     if( typeof $('#id_izberiPacienta-0-ime').val() != 'undefined') {
         split = $('#id_izberiPacienta-0-ime').val().split("&");
