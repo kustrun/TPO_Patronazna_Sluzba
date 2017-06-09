@@ -304,11 +304,17 @@ $(document).ready(function(){
 
     //DISABLE EDITING ON PAGE delovniNalogPodrobno
     if(window.location.href.indexOf("delovniNalogPodrobno") > 0) {
+        $('#id_izberiPacienta-0-ime > option').each(function() {
+            if(this.value.search("False") >= 0) {
+                $('#id_izberiPacienta-0-ime option[value="' + this.value + '"]').remove();
+            }
+        });
 
         $('.add-row').css("display", "none");
         $('.delete-row').css("display", "none");
         $("input").prop('disabled', true);
         $("select").attr('disabled', true);
+
         var split = $('#id_datum_prvega_obiska').val().split("-")
         $('#id_datum_prvega_obiska').val(split[2] + "." + split[1] + "." + split[0])
 
